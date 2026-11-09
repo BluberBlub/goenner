@@ -1,0 +1,31 @@
+---
+// Vollflächige Waldgrün-Bühne: die Praxis bezieht Stellung (Altseite: "Psychotherapeutische Versorgung in Not!").
+import Section from '../components/Section.astro';
+---
+<Section variant="buehne" bg="dark" class="overflow-hidden">
+  <svg slot="bleed" class="hoehenlinien text-on-primary" viewBox="0 0 1200 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
+    <g stroke="currentColor" stroke-width="1.2">
+      <path d="M-20 420C200 380 360 460 600 420S980 340 1220 390" />
+      <path d="M-20 460C210 420 370 500 610 460S990 380 1220 430" />
+      <path d="M-20 500C220 460 380 540 620 500S1000 420 1220 470" />
+      <path d="M-20 540C230 500 390 580 630 540S1010 460 1220 510" />
+    </g>
+  </svg>
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-8">
+      <p class="etikett flex items-center gap-3 opacity-85"><span class="h-px w-8 bg-accent" aria-hidden="true"></span>Psychotherapeutische Versorgung in Not</p>
+      <h2 class="mt-6 text-[2.1rem] leading-[1.15] sm:text-5xl lg:text-[3.5rem]">
+        Wir gehen davon aus, dass ab 2027 bis zu 40 % der ambulanten Psychotherapieplätze in der gesetzlichen Krankenversicherung wegfallen.
+      </h2>
+    </div>
+    <div class="lg:col-span-4 lg:mt-32">
+      <p class="text-lg leading-relaxed opacity-90">
+        Wir bemühen uns weiter um eine gute Versorgung aller Patientinnen und Patienten, unabhängig von ihrer Krankenkasse. Die aktuellen Einschnitte machen es aber unmöglich, den Versorgungsumfang wie bisher zu halten.
+      </p>
+      <a href="/versorgung-in-not/" class="mt-6 inline-flex items-center gap-2 font-semibold underline decoration-accent decoration-2 underline-offset-[6px]">
+        Unsere Position zur Reform
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</Section>

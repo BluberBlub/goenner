@@ -1,0 +1,97 @@
+---
+import Seite from '../layouts/Seite.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Cta from '../components/Cta.astro';
+import SeitenIntro from '../sections/SeitenIntro.astro';
+import Portrait from '../components/Portrait.astro';
+import { approbiert, inAusbildung, type Person } from '../data/team';
+
+const mitgliedschaften = [
+  { t: 'Landespsychotherapeutenkammer Baden-Württemberg (LPK BW)', a: 'Körperschaft des öffentlichen Rechts. Sie vertritt die Psychologischen Psychotherapeuten und Kinder- und Jugendlichenpsychotherapeuten in Baden-Württemberg als Interessenvertretung, Selbstverwaltung und Berufsaufsicht. Voraussetzung für die Mitgliedschaft ist die Approbation.' },
+  { t: 'Kassenärztliche Vereinigung Baden-Württemberg (KV BW)', a: 'Ihr gehören alle Ärzte und Psychotherapeuten an, die zur ambulanten Behandlung gesetzlich Versicherter zugelassen oder ermächtigt sind. Körperschaft des öffentlichen Rechts unter der Rechtsaufsicht des Landesgesundheitsministeriums.' },
+  { t: 'Freie Liste der Psychotherapeuten', a: 'Verbands- und verfahrensübergreifender Zusammenschluss engagierter Psychotherapeutinnen und Psychotherapeuten in Baden-Württemberg, der psychotherapeutische Interessen, vor allem der Niedergelassenen, mit einer besseren Versorgung psychisch erkrankter Menschen verbindet.' },
+  { t: 'Deutsche Psychotherapeutenvereinigung (DPtV)', a: 'Mit über 9.000 Mitgliedern der größte Berufsverband für Psychologische Psychotherapeuten und Kinder- und Jugendlichenpsychotherapeuten in Deutschland. Sie setzt sich für die Belange des Berufsstands und eine bessere psychotherapeutische Versorgung ein.' },
+  { t: 'Arbeitsgemeinschaft für VerhaltensModifikation (AVM)', a: 'Für die AVM-Ausbildungszentren in Ulm und Bamberg ist unsere Praxis als Lehrpraxis anerkannt.' },
+];
+const gruppen: { titel: string; text: string; leute: Person[] }[] = [
+  { titel: 'Psychologische Psychotherapeutinnen und Psychotherapeuten', text: 'Approbiert, mit Fachkunde in Verhaltenstherapie.', leute: approbiert },
+  { titel: 'Psychologinnen und Psychologen in Ausbildung', text: 'Mit abgeschlossenem Universitätsstudium in Psychologie und Erfahrung in der stationären psychosomatischen oder psychiatrischen Behandlung.', leute: inAusbildung },
+];
+---
+<Seite
+  title="Therapieteam in Ravensburg | Praxis Dr. Gönner"
+  description="Zehn approbierte Psychologische Psychotherapeutinnen und Psychotherapeuten und vier Psychologinnen und Psychologen in Ausbildung: unser Team, Qualifikationen und Mitgliedschaften."
+  lcpBild="/images/praxis-flur.jpg"
+  lcpVarianten
+>
+  <PageHero
+    eyebrow="Therapieteam"
+    title="Vierzehn Menschen, ein Haus."
+    subtitle="Unser Team, unsere Qualifikationen und Mitgliedschaften."
+    image="/images/praxis-flur.jpg"
+    imagePosition="50% 50%"
+  />
+  <SeitenIntro
+    eyebrow="Qualifikationen"
+    titel="Studium, Ausbildung, <em>Approbation</em>."
+    text="Alle unsere festen und freien Psychotherapeutinnen und Psychotherapeuten haben ein Psychologiestudium an einer Universität abgeschlossen, eine mehrjährige staatlich anerkannte Zusatzausbildung in Verhaltenstherapie absolviert (vergleichbar der Facharztweiterbildung) und die Approbation als Psychologische Psychotherapeutin oder Psychologischer Psychotherapeut erhalten."
+    fakten={[
+      { k: 'Approbiert', v: 'zehn Psychotherapeutinnen und Psychotherapeuten' },
+      { k: 'In Ausbildung', v: 'vier Psychologinnen und Psychologen' },
+      { k: 'Fortbildung', v: 'regelmäßig intern und extern, mit Intervision' },
+    ]}
+  >
+    <p class="mt-4 leading-relaxed text-text/80">Die Approbation ist die staatliche Zulassung zur unbeschränkten, eigenständigen Ausübung der Psychotherapie als Heilkunde im Sinne des Psychotherapeutengesetzes (PsychThG § 1 Abs. 3). Die Berufsbezeichnung ist rechtlich geschützt und setzt nach dem Studium eine mindestens dreijährige Vollzeit- oder fünfjährige berufsbegleitende Ausbildung in einem wissenschaftlich anerkannten Verfahren voraus. Wir legen großen Wert darauf, dass unser Wissen dem neuesten Stand der Wissenschaft entspricht.</p>
+  </SeitenIntro>
+
+  {gruppen.map((g, gi) => (
+    <Section variant="standard" bg={gi === 0 ? 'base' : 'tint'}>
+      <SektionsKopf eyebrow={gi === 0 ? 'Approbiert' : 'In psychotherapeutischer Ausbildung'} titel={g.titel} text={g.text} groesse="mittel" />
+      <div class="grid gap-6 md:grid-cols-2 lg:gap-8">
+        {g.leute.map((p) => (
+          <article id={p.slug} class="nebel-karte grid scroll-mt-28 grid-cols-[6.5rem_1fr] gap-5 bg-background p-5 sm:grid-cols-[9rem_1fr] sm:gap-7 sm:p-7" data-reveal>
+            <Portrait person={p} sizes="150px" />
+            <div class="min-w-0">
+              <h3 class="text-[1.55rem] leading-snug">{p.name}</h3>
+              <p class="mt-1 text-sm font-semibold text-primary">{p.titel}{p.frei && ', freie Mitarbeit'}</p>
+              <p class="mt-1 text-sm leading-relaxed text-text/75">{p.rolle}</p>
+              {p.fachkunde && (
+                <p class="mt-4 text-sm leading-relaxed"><span class="etikett text-primary/80">Fachkunde</span><br />{p.fachkunde.join(', ')}</p>
+              )}
+              <ul class="inhalt-liste mt-4 text-sm leading-relaxed text-text/80">
+                {p.werdegang.map((w) => <li>{w}</li>)}
+              </ul>
+              {p.links && (
+                <p class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                  {p.links.map((l) => <a href={l.href} target="_blank" rel="noopener" class="font-semibold text-primary underline decoration-accent decoration-2 underline-offset-4">{l.label}</a>)}
+                </p>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </Section>
+  ))}
+
+  <Section variant="standard" bg="base" id="mitgliedschaften">
+    <SektionsKopf eyebrow="Mitgliedschaften" titel="Wo wir <em>organisiert</em> sind." />
+    <div class="grid gap-x-8 md:grid-cols-2 lg:grid-cols-3">
+      {mitgliedschaften.map((m) => (
+        <article class="border-t border-primary/15 py-6" data-reveal>
+          <h3 class="text-[1.3rem] leading-snug">{m.t}</h3>
+          <p class="mt-2 leading-relaxed text-text/75">{m.a}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Cta
+    titel="Wer passt zu Ihnen?"
+    text="Das klären wir gemeinsam in der Sprechstunde. Schreiben Sie uns über das Kontaktformular."
+    buttonText="Kontakt aufnehmen"
+    buttonHref="/kontakt/"
+    telefonZeigen={false}
+  />
+</Seite>

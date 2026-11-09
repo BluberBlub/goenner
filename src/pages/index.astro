@@ -1,0 +1,49 @@
+---
+import Seite from '../layouts/Seite.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Fragen from '../components/Fragen.astro';
+import Cta from '../components/Cta.astro';
+import StartHero from '../sections/StartHero.astro';
+import Schwerpunkte from '../sections/Schwerpunkte.astro';
+import Wartezeit from '../sections/Wartezeit.astro';
+import Weg from '../sections/Weg.astro';
+import TeamAnriss from '../sections/TeamAnriss.astro';
+import Villa from '../sections/Villa.astro';
+import VersorgungAnriss from '../sections/VersorgungAnriss.astro';
+import LehreAnriss from '../sections/LehreAnriss.astro';
+import { fragenStart } from '../data/fragen';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: fragenStart.map((q) => ({ '@type': 'Question', name: q.f, acceptedAnswer: { '@type': 'Answer', text: q.a.replace(/<[^>]+>/g, '') } })),
+};
+---
+<Seite
+  title="Psychotherapie in Ravensburg | Praxis Dr. Gönner"
+  description="Verhaltenstherapie für Erwachsene in Ravensburg: Einzel- und Gruppentherapie, AOK- und BKK-Verträge, Supervision und Lehrpraxis. Karlstraße 8, alle Kassen."
+  lcpName="therapieraum-sessel"
+  lcpSizes="(min-width: 1280px) 1200px, 100vw"
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <StartHero />
+  <Schwerpunkte />
+  <Wartezeit />
+  <Weg />
+  <TeamAnriss />
+  <Villa />
+  <VersorgungAnriss />
+  <LehreAnriss />
+  <Section variant="standard" bg="base">
+    <SektionsKopf eyebrow="Häufige Fragen" titel="Was Sie vor dem ersten <em>Termin</em> wissen sollten." />
+    <Fragen fragen={fragenStart} />
+  </Section>
+  <Cta
+    titel="Der erste Schritt darf klein sein."
+    text="Schreiben Sie uns über das Kontaktformular. Wir melden uns innerhalb von zwei Wochen, wenn wir Ihnen ein Vorgespräch anbieten können."
+    buttonText="Therapieplatz anfragen"
+    buttonHref="/kontakt/"
+    telefonZeigen={false}
+  />
+</Seite>

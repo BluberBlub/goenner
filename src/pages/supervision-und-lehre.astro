@@ -1,0 +1,105 @@
+---
+import Seite from '../layouts/Seite.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Cta from '../components/Cta.astro';
+import SeitenIntro from '../sections/SeitenIntro.astro';
+import Portrait from '../components/Portrait.astro';
+import { approbiert } from '../data/team';
+import { lehreGoenner, lehreGoennerFrueher, lehreMoehrle, rollenName } from '../data/lehre';
+
+const goenner = approbiert.find((p) => p.slug === 'goenner')!;
+const moehrle = approbiert.find((p) => p.slug === 'moehrle')!;
+const personen = [
+  {
+    p: goenner, name: 'Dr. Dipl.-Psych. Sascha Gönner',
+    text: 'Supervisor, Dozent, Selbsterfahrungsleiter und Prüfer in der staatlichen Ausbildung von Psychotherapeutinnen und Psychotherapeuten gemäß Psychotherapeutengesetz (PsychThG) und Ausbildungs- und Prüfungsverordnung für Psychologische Psychotherapeuten (PsychTh-APrV), anerkannt durch das Regierungspräsidium Stuttgart. Supervisor in der Facharztweiterbildung für das ZfP Südwürttemberg. Anerkannt als Lehrpraxisinhaber für verschiedene Institute.',
+    schwerpunkte: ['Angst- und Zwangsstörungen', 'Emotionszentrierte Therapie mit Imagination, inneren Anteilen und Stuhldialogen', 'Konfrontations- und Expositionsbehandlung (EMR)', 'Bedingungs- und Verhaltensanalyse, hypothetische Störungsmodelle'],
+    institute: lehreGoenner,
+  },
+  {
+    p: moehrle, name: 'Dipl.-Psych. Christoph Möhrle',
+    text: 'Supervisor und Dozent in der staatlichen Ausbildung von Psychotherapeutinnen und Psychotherapeuten gemäß Psychotherapeutengesetz (PsychThG) und Ausbildungs- und Prüfungsverordnung für Psychologische Psychotherapeuten (PsychTh-APrV), anerkannt durch das Regierungspräsidium Stuttgart.',
+    schwerpunkte: ['Suizidalität und Krisenintervention', 'Störungen des Sozialverhaltens', 'Zwangsstörungen'],
+    institute: lehreMoehrle,
+  },
+];
+const rollen = (r: string[]) => r.map((k) => rollenName[k]).join(', ');
+---
+<Seite
+  title="Supervision und Lehrpraxis Verhaltenstherapie | Dr. Gönner"
+  description="Supervision, Dozententätigkeit, Selbsterfahrung und Lehrpraxis in Ravensburg: Dr. Sascha Gönner und Christoph Möhrle in der staatlichen Psychotherapeutenausbildung."
+  lcpBild="/images/therapieraum-tisch.jpg"
+  lcpVarianten
+>
+  <PageHero
+    eyebrow="Supervision und Lehre"
+    title="Erfahrung weitergeben."
+    subtitle="Supervision, Lehre und eine staatlich anerkannte Lehrpraxis."
+    image="/images/therapieraum-tisch.jpg"
+    imagePosition="50% 55%"
+  />
+  <SeitenIntro
+    eyebrow="Für Fachkolleginnen und Fachkollegen"
+    titel="Suchen Sie einen Supervisor, Dozenten oder eine <em>Lehrpraxis</em>?"
+    text="Dr. Gönner und Dipl.-Psych. Möhrle sind als Supervisoren, Dozenten und Selbsterfahrungsleiter für verschiedene Institute in der staatlichen Ausbildung von Psychotherapeutinnen und Psychotherapeuten tätig, in Kooperation mit dem ZfP Südwürttemberg auch in der Weiterbildung von Fachärztinnen und Fachärzten."
+    fakten={[
+      { k: 'Anerkannt durch', v: 'Regierungspräsidium Stuttgart' },
+      { k: 'Lehrpraxis', v: 'staatlich anerkannt' },
+      { k: 'Facharztweiterbildung', v: 'ZfP Südwürttemberg' },
+    ]}
+  />
+
+  {personen.map((x, i) => (
+    <Section variant="standard" bg={i === 0 ? 'base' : 'tint'}>
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-5">
+          <div class="grid grid-cols-[7rem_1fr] items-end gap-5 sm:grid-cols-[9rem_1fr]">
+            <Portrait person={x.p} sizes="150px" />
+            <div>
+              <p class="etikett text-primary">{i === 0 ? 'Praxisinhaber' : 'Freie Mitarbeit'}</p>
+              <h2 class="mt-2 text-[1.9rem] leading-tight sm:text-[2.3rem]">{x.name}</h2>
+            </div>
+          </div>
+          <p class="mt-6 leading-relaxed text-text/85">{x.text}</p>
+          <p class="etikett mt-8 text-primary">Schwerpunkte in der Lehre</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {x.schwerpunkte.map((s) => <li class="pill !text-base">{s}</li>)}
+          </ul>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7 lg:mt-24">
+          <p class="etikett text-primary">Kooperierende Ausbildungsinstitute</p>
+          <ul class="fakten mt-3">
+            {x.institute.map((inst) => (
+              <li class="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-6">
+                <span class="leading-snug">{inst.name}</span>
+                <span class="shrink-0 text-sm text-primary sm:text-right">{rollen(inst.rollen)}</span>
+              </li>
+            ))}
+          </ul>
+          {i === 0 && (
+            <>
+              <p class="etikett mt-10 text-text/60">Frühere Tätigkeiten</p>
+              <ul class="fakten mt-3 text-text/75">
+                {lehreGoennerFrueher.map((inst) => (
+                  <li class="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-6">
+                    <span class="leading-snug">{inst.name}</span>
+                    <span class="shrink-0 text-sm sm:text-right">{rollen(inst.rollen)}, {inst.zeit}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      </div>
+    </Section>
+  ))}
+
+  <Cta
+    titel="Interesse an Supervision oder Lehrpraxis?"
+    text="Schreiben Sie uns, wir melden uns bei Ihnen."
+    buttonText="Anfrage senden"
+    buttonHref="/kontakt/"
+  />
+</Seite>

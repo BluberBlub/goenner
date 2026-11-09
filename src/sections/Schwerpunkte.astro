@@ -1,0 +1,35 @@
+---
+// SIGNATURE MOMENT "Der Nebel lichtet sich": die zwölf Schwerpunkte liegen unscharf in einer Nebelfläche
+// und werden beim Hineinscrollen nacheinander scharf (CSS .lichten in site.css).
+// Botschaft: In den Probesitzungen bekommt das Diffuse einen Namen und damit einen Weg.
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import { schwerpunkte } from '../data/schwerpunkte';
+---
+<Section variant="buehne" bg="base">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-5">
+      <SektionsKopf
+        eyebrow="Behandlungsschwerpunkte"
+        titel="Zwölf Themen, mit denen Menschen zu uns <em>kommen</em>."
+        text="Wir behandeln Erwachsene mit dem gesamten Spektrum psychischer Erkrankungen, bei denen eine ambulante Psychotherapie angezeigt ist. In diesen Bereichen haben wir besonders viel Erfahrung."
+      >
+        <Fragment slot="aktionen">
+          <a href="/behandlung/#schwerpunkte" class="link-pfeil">
+            Alle Schwerpunkte im Detail
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </Fragment>
+      </SektionsKopf>
+      <p class="randnotiz mt-8 max-w-sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        <span>Für Menschen mit Zwangsstörungen gibt es bei uns dauerhaft eine <mark>offene Gruppe</mark>.</span>
+      </p>
+    </div>
+    <div class="lg:col-span-7 lg:mt-24">
+      <ul class="nebel nebel-karte lichten flex flex-wrap gap-2.5 p-6 sm:gap-3 sm:p-10 lg:p-12" aria-label="Unsere Behandlungsschwerpunkte">
+        {schwerpunkte.map((s, i) => <li class="pill" style={`--i:${i}`}>{s.kurz}</li>)}
+      </ul>
+    </div>
+  </div>
+</Section>

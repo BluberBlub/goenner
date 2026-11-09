@@ -1,0 +1,15 @@
+---
+// Responsives Foto aus public/images: AVIF und WebP (800 + groß), JPG-Fallback, feste Maße gegen CLS.
+import { bilder, bildSet, type BildName } from '../data/bilder';
+
+interface Props { name: BildName; alt?: string; class?: string; pos?: string; sizes?: string; eager?: boolean; dekorativ?: boolean; }
+const { name, alt, class: cls = '', pos = '50% 50%', sizes = '100vw', eager = false, dekorativ = false } = Astro.props;
+const b = bilder[name];
+---
+<picture>
+  <source type="image/avif" srcset={bildSet(name, 'avif')} sizes={sizes} />
+  <source type="image/webp" srcset={bildSet(name, 'webp')} sizes={sizes} />
+  <img src={`/images/${name}.jpg`} alt={dekorativ ? '' : (alt ?? b.alt)} aria-hidden={dekorativ ? 'true' : undefined}
+       width={b.w} height={b.h} class={`object-cover ${cls}`} style={`object-position:${pos}`}
+       loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
+</picture>

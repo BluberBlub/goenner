@@ -1,0 +1,40 @@
+---
+// Team-Anriss: vierzehn Köpfe als ruhiges Schwarz-Weiß-Band. Asymmetrisch: Text links, Raster rechts versetzt.
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Portrait from '../components/Portrait.astro';
+import { approbiert, inAusbildung } from '../data/team';
+const alle = [...approbiert, ...inAusbildung];
+---
+<Section variant="standard" bg="base">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-4">
+      <SektionsKopf
+        eyebrow="Therapieteam"
+        titel="Vierzehn Menschen, <em>ein</em> Haus."
+        text="Zehn approbierte Psychologische Psychotherapeutinnen und Psychotherapeuten mit Fachkunde in Verhaltenstherapie, dazu vier Psychologinnen und Psychologen in psychotherapeutischer Ausbildung."
+      >
+        <Fragment slot="aktionen">
+          <a href="/team/" class="link-pfeil">
+            Das ganze Team kennenlernen
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </Fragment>
+      </SektionsKopf>
+      <p class="randnotiz mt-8">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        <span>Alle bilden sich regelmäßig in internen und externen <mark>Fortbildungen und Intervisionen</mark> fort.</span>
+      </p>
+    </div>
+    <ul class="grid grid-cols-3 gap-3 sm:grid-cols-5 sm:gap-4 lg:col-span-8 lg:mt-24 lg:grid-cols-7">
+      {alle.map((p) => (
+        <li data-reveal>
+          <a href={`/team/#${p.slug}`} class="group block" aria-label={`${p.name}, ${p.titel}`}>
+            <Portrait person={p} sizes="(min-width: 1024px) 140px, 30vw" />
+            <p class="mt-2 text-[0.8125rem] leading-snug text-text/80 group-hover:text-primary">{p.name}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Section>

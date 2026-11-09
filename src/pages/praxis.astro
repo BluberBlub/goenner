@@ -1,0 +1,108 @@
+---
+import Seite from '../layouts/Seite.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import KontaktKarte from '../components/KontaktKarte.astro';
+import Cta from '../components/Cta.astro';
+import SeitenIntro from '../sections/SeitenIntro.astro';
+import Foto from '../components/Foto.astro';
+import type { BildName } from '../data/bilder';
+
+const raeume: { name: BildName; klasse: string; pos?: string }[] = [
+  { name: 'therapieraum-sessel', klasse: 'lg:col-span-7 aspect-[4/3]' },
+  { name: 'therapieraum-tisch', klasse: 'lg:col-span-5 aspect-[4/3] lg:aspect-auto', pos: '50% 60%' },
+  { name: 'praxis-wartebereich-panorama', klasse: 'lg:col-span-5 aspect-[4/3] lg:aspect-auto' },
+  { name: 'praxis-flur', klasse: 'lg:col-span-7 aspect-[4/3]' },
+];
+---
+<Seite
+  title="Praxisräume und Anfahrt in Ravensburg | Praxis Dr. Gönner"
+  description="Helle Räume in einer Jugendstilvilla in der Karlstraße 8 in Ravensburg, Parkhaus P2 Untertor gegenüber, fünf Gehminuten zum Bahnhof. Mit Kunst im Wartezimmer."
+  lcpBild="/images/therapieraum-gruppe.jpg"
+  lcpVarianten
+>
+  <PageHero
+    eyebrow="Praxisräume"
+    title="Raum zum Durchatmen."
+    subtitle="Eine Jugendstilvilla mitten in der Ravensburger Innenstadt."
+    image="/images/therapieraum-gruppe.jpg"
+    imagePosition="50% 62%"
+  />
+  <SeitenIntro
+    eyebrow="Die Praxis"
+    titel="Großzügig, hell und <em>mitten</em> in der Stadt."
+    text="Unsere Praxis liegt im Hochparterre einer Jugendstilvilla in der Karlstraße 8, mitten in der Ravensburger Innenstadt. Die Räume sind großzügig, hell und modern eingerichtet. Machen Sie sich gern schon vorab einen ersten Eindruck."
+    fakten={[
+      { k: 'Adresse', v: 'Karlstraße 8, 88212 Ravensburg' },
+      { k: 'Lage', v: 'Hochparterre' },
+      { k: 'Parken', v: 'Parkhaus P2 Untertor gegenüber' },
+      { k: 'Bahn', v: 'fünf Gehminuten zum Bahnhof' },
+    ]}
+  />
+
+  <Section variant="standard" bg="base">
+    <SektionsKopf eyebrow="Ein erster Eindruck" titel="Unsere <em>Behandlungsräume</em>." />
+    <div class="grid gap-4 lg:grid-cols-12 lg:gap-6">
+      {raeume.map((r) => (
+        <div class:list={['overflow-hidden rounded-karte', r.klasse]} data-reveal>
+          <Foto name={r.name} sizes="(min-width: 1024px) 60vw, 100vw" pos={r.pos} class="block h-full w-full" />
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section variant="standard" bg="none" class="nebel-zart" id="kunst">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SektionsKopf
+          eyebrow="Kunst im Wartezimmer"
+          titel="Warten, und dabei etwas <em>entdecken</em>."
+          text="In unserem Wartebereich stellen wir Werke talentierter Künstlerinnen und Künstler aus und geben ihnen die Gelegenheit, ihre Arbeiten zu zeigen."
+        >
+          <p class="mt-4 text-lg leading-relaxed text-text/80">Derzeit zeigen wir Arbeiten von Michaela Zollmann, einer Künstlerin aus der Region, die sich vom Leben und von den Werken Frida Kahlos inspirieren ließ. Ihre Bilder greifen Themen und Motive auf, die an Kahlos kreative und leidenschaftliche Persönlichkeit erinnern. Für ihre Mixed Media Art verwendet sie Muscheln, Strukturpaste, Blattgold und Federn, die den Werken eine eigene Textur und Tiefe geben.</p>
+          <Fragment slot="aktionen">
+            <a href="https://www.kunst-online.com/collections/ela-zollmann" target="_blank" rel="noopener" class="link-pfeil">
+              Weitere Werke von Michaela Zollmann
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </Fragment>
+        </SektionsKopf>
+      </div>
+      <div class="grid grid-cols-2 gap-4 lg:col-span-7 lg:gap-6">
+        <div class="overflow-hidden rounded-karte" data-reveal>
+          <Foto name="kunst-frida" sizes="(min-width: 1024px) 380px, 50vw" class="block aspect-[3/4] w-full" />
+        </div>
+        <div class="mt-12 overflow-hidden rounded-karte lg:mt-24" data-reveal>
+          <Foto name="kunst-ausstellung-zollmann" sizes="(min-width: 1024px) 380px, 50vw" class="block aspect-[3/4] w-full" />
+        </div>
+        <div class="col-span-2 overflow-hidden rounded-karte" data-reveal>
+          <Foto name="kunst-spiegel" sizes="(min-width: 1024px) 760px, 100vw" pos="50% 40%" class="block aspect-[16/9] w-full" />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section variant="standard" bg="base" id="anfahrt">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-6">
+        <SektionsKopf
+          eyebrow="So finden Sie uns"
+          titel="Mit Bus, Bahn oder Auto <em>leicht</em> erreichbar."
+          text="Die Praxis liegt in der Karlstraße 8, mitten in der Ravensburger Innenstadt. Vom Bahnhof sind es fünf Minuten zu Fuß. Wenn Sie mit dem Auto kommen, parken Sie am besten im direkt gegenüberliegenden Parkhaus P2 Untertor in der Adlerstraße 39. Die Praxis befindet sich im Hochparterre."
+        />
+      </div>
+      <div class="lg:col-span-5 lg:col-start-8 lg:mt-24">
+        <KontaktKarte />
+      </div>
+    </div>
+  </Section>
+
+  <Cta
+    titel="Wir freuen uns auf Ihren Besuch."
+    text="Für ein Vorgespräch melden Sie sich am besten über unser Kontaktformular an."
+    buttonText="Therapieplatz anfragen"
+    buttonHref="/kontakt/"
+    telefonZeigen={false}
+  />
+</Seite>

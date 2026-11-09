@@ -1,0 +1,23 @@
+---
+// Praxisräume: Foto-Karte, die Textkarte ragt über die Bildkante hinaus (Bild-Text-Verzahnung).
+import Section from '../components/Section.astro';
+import Foto from '../components/Foto.astro';
+---
+<Section variant="standard" bg="base" class="lg:pb-40">
+  <div class="relative">
+    <div class="overflow-hidden rounded-karte">
+      <Foto name="praxis-flur" sizes="(min-width: 1280px) 1200px, 100vw" pos="50% 55%" class="block h-[50svh] min-h-[20rem] w-full lg:h-[68svh]" />
+    </div>
+    <div class="relative mx-4 -mt-20 rounded-karte bg-background p-7 shadow-2xl sm:mx-10 sm:max-w-xl sm:p-10 lg:absolute lg:-bottom-16 lg:left-12 lg:m-0" data-reveal>
+      <p class="etikett text-primary">Die Praxis</p>
+      <h2 class="mt-3 text-[2rem] leading-tight sm:text-[2.6rem]">Eine Jugendstilvilla, <em>mitten</em> in Ravensburg.</h2>
+      <p class="mt-4 leading-relaxed text-text/80">
+        Großzügige, helle Räume im Hochparterre der Karlstraße 8. Direkt gegenüber liegt das Parkhaus P2 Untertor, zum Bahnhof sind es fünf Gehminuten. Im Wartebereich stellen wir Kunst aus, derzeit Arbeiten von Michaela Zollmann.
+      </p>
+      <a href="/praxis/" class="link-pfeil mt-6">
+        Räume, Kunst und Anfahrt
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</Section>

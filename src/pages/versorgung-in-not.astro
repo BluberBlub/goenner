@@ -1,0 +1,57 @@
+---
+import Seite from '../layouts/Seite.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Cta from '../components/Cta.astro';
+import SeitenIntro from '../sections/SeitenIntro.astro';
+---
+<Seite
+  title="Psychotherapie in Not: unsere Position | Praxis Dr. Gönner"
+  description="Warum die Einschnitte durch das GKV-Beitragsstabilisierungsgesetz die ambulante psychotherapeutische Versorgung gefährden, und was das für unsere Patienten bedeutet."
+  lcpBild="/images/kunst-frida.jpg"
+  lcpVarianten
+>
+  <PageHero
+    eyebrow="Versorgung in Not"
+    title="Psychotherapie in Not."
+    subtitle="Unsere Position zu den Einschnitten in der ambulanten Psychotherapie."
+    image="/images/kunst-frida.jpg"
+    imagePosition="50% 30%"
+  />
+  <SeitenIntro
+    eyebrow="Was sich ändert"
+    titel="Weniger Therapieplätze, obwohl der <em>Bedarf</em> wächst."
+    text="Wir bemühen uns weiterhin um eine hochwertige Versorgung aller Patientinnen und Patienten, unabhängig davon, bei welcher Krankenkasse sie versichert sind. Angesichts der politischen Entscheidungen der Bundesregierung und der damit verbundenen massiven Begrenzungen und Einschnitte werden aber auch wir den Versorgungsumfang nicht wie bisher aufrechterhalten können."
+    fakten={[
+      { k: 'Erwartung ab 2027', v: 'bis zu 40 % weniger ambulante Therapieplätze in der GKV' },
+      { k: 'Für unsere Patienten', v: 'Patientinnen und Patienten anderer gesetzlicher Kassen müssen mit noch längeren Wartezeiten rechnen oder können nicht mehr aufgenommen werden' },
+    ]}
+  />
+  <Section variant="standard" bg="base">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <SektionsKopf eyebrow="Unsere Einschätzung" titel="Diese Reform löst keine Probleme, sie <em>verschärft</em> sie." groesse="mittel" />
+        <div class="space-y-5 text-lg leading-relaxed text-text/85">
+          <p>Der Bundestag hat mit dem GKV-Beitragsstabilisierungsgesetz auf einer verzerrten Datengrundlage weitreichende Einschnitte für die psychotherapeutische Versorgung in Deutschland beschlossen. Und das, obwohl es schon jetzt lange Wartezeiten, eine unzureichende Versorgung und immer weiter wachsende Arbeitsunfähigkeitszeiten wegen psychischer Erkrankungen gibt.</p>
+          <p>Die Honorarkürzungen Anfang des Jahres waren nur der Anfang. Vor allem die Einbudgetierung der Psychotherapie und die Abschaffung des Mindesthonorars für psychotherapeutische Leistungen werden die Versorgung dramatisch verschlechtern und viele Praxen in ihrer Existenz bedrohen.</p>
+          <p>Psychisch kranke Menschen werden noch schwerer einen Therapieplatz finden, Behandlungen werden in die deutlich teurere und oft weniger wirksame stationäre Versorgung verschoben. Viele Patientinnen und Patienten werden schon heute nur deshalb stationär behandelt, weil sie nicht zeitnah einen ambulanten Platz finden. Die Arbeitsunfähigkeitszeiten der Unbehandelten werden weiter steigen: ein Kosten-Eigentor.</p>
+          <p>Am Ende werden nicht nur wir Psychotherapeutinnen und Psychotherapeuten, sondern vor allem unsere Patientinnen und Patienten unter dieser Politik leiden.</p>
+        </div>
+      </div>
+      <aside class="self-start lg:col-span-4 lg:col-start-9 lg:mt-24">
+        <div class="nebel nebel-karte p-8 sm:p-10" data-reveal>
+          <p class="etikett text-primary">Es gibt Lösungen</p>
+          <p class="mt-4 font-display text-[1.45rem] leading-snug">Sinnvolle Ideen aus der Profession und aus dem Gemeinsamen Bundesausschuss (G-BA) liegen längst vor.</p>
+          <p class="mt-4 leading-relaxed text-text/80">Ein Beispiel ist das im Innovationsfonds des G-BA geförderte und von allen Seiten gelobte Projekt ProTherapy: Regionale Psychotherapeutenschaften übernehmen dort die Verantwortung für eine bessere ambulante Versorgung und eine gezielte Zuweisung schwer psychisch kranker Menschen.</p>
+        </div>
+      </aside>
+    </div>
+  </Section>
+  <Cta
+    titel="Sie suchen trotzdem einen Therapieplatz?"
+    text="Mit dem AOK-Hausarztvertrag oder dem BKK-Selektivvertrag bekommen Sie bei uns innerhalb von zwei Wochen ein Vorgespräch."
+    buttonText="Mehr zu den Verträgen"
+    buttonHref="/aok-und-bkk/"
+  />
+</Seite>

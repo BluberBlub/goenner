@@ -1,0 +1,38 @@
+---
+// Für Fachpublikum: Supervision, Dozententätigkeit, Lehrpraxis. Institute als ruhige Haarlinien-Liste.
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import { lehreGoenner } from '../data/lehre';
+// Laut Startseite der Altseite gilt die Anerkennung für beide AVM-Ausbildungszentren (Ulm und Bamberg)
+const lehrpraxis = lehreGoenner.filter((i) => i.rollen.includes('LP')).map((i) => i.name.startsWith('Arbeitsgemeinschaft') ? 'AVM-Ausbildungszentren Ulm und Bamberg' : i.name);
+---
+<Section variant="standard" bg="tint">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-5">
+      <SektionsKopf
+        eyebrow="Für Fachkolleginnen und Fachkollegen"
+        titel="Supervision, Lehre und eine anerkannte <em>Lehrpraxis</em>."
+        text="Dr. Gönner und Dipl.-Psych. Möhrle sind als Supervisoren, Dozenten und Selbsterfahrungsleiter in der staatlichen Ausbildung von Psychotherapeutinnen und Psychotherapeuten tätig, in Kooperation mit dem ZfP Südwürttemberg auch in der Weiterbildung von Fachärztinnen und Fachärzten."
+      >
+        <Fragment slot="aktionen">
+          <div class="flex flex-col gap-4 sm:flex-row sm:gap-8">
+            <a href="/supervision-und-lehre/" class="link-pfeil">
+              Supervision und Lehre
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="/stellenangebote/" class="link-pfeil">
+              Stellenangebote
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </Fragment>
+      </SektionsKopf>
+    </div>
+    <div class="lg:col-span-6 lg:col-start-7 lg:mt-24">
+      <p class="etikett text-primary">Als Lehrpraxis anerkannt für</p>
+      <ul class="fakten mt-4">
+        {lehrpraxis.map((n) => <li class="text-[0.975rem] leading-snug">{n}</li>)}
+      </ul>
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,61 @@
+---
+import Seite from '../layouts/Seite.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Fragen from '../components/Fragen.astro';
+import Cta from '../components/Cta.astro';
+import SeitenIntro from '../sections/SeitenIntro.astro';
+
+const fragen = [
+  { f: 'Wer kann die Verträge nutzen?', a: '<p>Gesetzlich Versicherte, die am Hausarztvertrag der AOK Baden-Württemberg teilnehmen, und Versicherte einer Betriebskrankenkasse, die am BKK-Selektivvertrag teilnimmt. Welche Betriebskrankenkassen dabei sind, steht in der <a class="underline underline-offset-4" href="https://www.medi-verbund.de/wp-content/uploads/2022/06/2026-01-01_Anlage-10-Liste-der-am-Vertrag-teilnehmenden-BKK.pdf" target="_blank" rel="noopener">Liste der teilnehmenden BKK (PDF, MEDI Verbund)</a>.</p>' },
+  { f: 'Warum geht es mit diesen Verträgen schneller?', a: '<p>Patientinnen und Patienten aus diesen Verträgen behandeln wir außerhalb unseres durch die Kassenärztliche Vereinigung begrenzten Kontingents an Behandlungsplätzen. Deshalb bekommen Sie innerhalb von zwei Wochen einen Vorgesprächstermin und in der Regel auch früher einen Therapieplatz.</p>' },
+  { f: 'Muss ich mich vorher einschreiben?', a: '<p>Die Einschreibung in die Verträge ist direkt in unserer Praxis möglich. Als AOK-Versicherte oder AOK-Versicherter müssen Sie dafür bereits am AOK-Hausarztvertrag teilnehmen.</p>' },
+  { f: 'Was brauche ich für den ersten Termin?', a: '<p>Ihre Versichertenkarte und, falls vorhanden, Arzt- oder Klinikberichte. Wer am Hausarzt- oder Facharztprogramm der AOK teilnimmt, braucht zusätzlich eine Überweisung des Hausarztes.</p>' },
+];
+---
+<Seite
+  title="AOK-Facharztvertrag und BKK-Vertrag | Praxis Dr. Gönner"
+  description="AOK-Hausarztvertrag oder BKK-Selektivvertrag? Dann bekommen Sie in unserer Praxis für Psychotherapie in Ravensburg innerhalb von zwei Wochen ein Vorgespräch."
+  lcpBild="/images/kunst-spiegel.jpg"
+  lcpVarianten
+>
+  <PageHero
+    eyebrow="AOK Baden-Württemberg und BKK"
+    title="Vorgespräch innerhalb von zwei&nbsp;Wochen."
+    subtitle="Mit dem Facharztvertrag der AOK Baden-Württemberg und dem BKK-Selektivvertrag."
+    image="/images/kunst-spiegel.jpg"
+    imagePosition="50% 45%"
+  />
+  <SeitenIntro
+    eyebrow="Facharztvertrag und Selektivvertrag"
+    titel="Ein schnellerer Weg für <em>viele</em> gesetzlich Versicherte."
+    text="Nehmen Sie am Hausarztvertrag der AOK Baden-Württemberg teil oder sind Sie bei einer Betriebskrankenkasse versichert, die am BKK-Selektivvertrag teilnimmt? Dann können Sie die Vorteile dieser Verträge nutzen und bekommen innerhalb von zwei Wochen einen Vorgesprächstermin in unserer Praxis."
+    fakten={[
+      { k: 'Vorgespräch', v: 'innerhalb von zwei Wochen' },
+      { k: 'Therapieplatz', v: 'in der Regel früher' },
+      { k: 'Einschreibung', v: 'direkt in unserer Praxis' },
+    ]}
+  />
+  <Section variant="standard" bg="base">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SektionsKopf eyebrow="Fragen zu den Verträgen" titel="Was Sie zu den Verträgen <em>wissen</em> sollten." groesse="mittel" />
+        <a href="https://www.medi-verbund.de/wp-content/uploads/2022/06/2026-01-01_Anlage-10-Liste-der-am-Vertrag-teilnehmenden-BKK.pdf" target="_blank" rel="noopener" class="link-pfeil">
+          Liste der teilnehmenden BKK (PDF)
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+      <div class="lg:col-span-7">
+        <Fragen fragen={fragen} />
+      </div>
+    </div>
+  </Section>
+  <Cta
+    titel="Sie nutzen einen der Verträge?"
+    text="Dann können Sie direkt ein Vorgespräch vereinbaren. Wählen Sie im Formular einfach Ihren Versicherungsstatus aus."
+    buttonText="Vorgespräch vereinbaren"
+    buttonHref="/kontakt/"
+    telefonZeigen={false}
+  />
+</Seite>

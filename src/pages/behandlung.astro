@@ -1,0 +1,121 @@
+---
+import Seite from '../layouts/Seite.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import SektionsKopf from '../components/SektionsKopf.astro';
+import Cta from '../components/Cta.astro';
+import SeitenIntro from '../sections/SeitenIntro.astro';
+import KrisenHinweis from '../sections/KrisenHinweis.astro';
+import Foto from '../components/Foto.astro';
+import { schwerpunkte } from '../data/schwerpunkte';
+
+const grenzen = [
+  {
+    t: 'Akute Selbstgefährdung',
+    a: 'Nicht behandeln können wir Menschen, die akut suizidal sind, also immer wieder den drängenden Wunsch oder die Absicht haben, sich das Leben zu nehmen, oder dies konkret planen. Gedanken an Lebensüberdruss, Lebensmüdigkeit oder sogar an einen Suizid kommen bei Depressionen und anderen Erkrankungen nicht selten vor, ohne dass jemand sie umsetzen will. Darüber offen mit einer Therapeutin oder einem Therapeuten zu sprechen, ist oft entlastend. Sind Sie aber nicht sicher, dass Sie während der ambulanten Therapie am Leben bleiben und sich nichts antun, ist eine ambulante Therapie in der Regel nicht angezeigt. Wenden Sie sich dann direkt oder über Ihren Hausarzt oder Psychiater an eine psychiatrische Klinik, in der Sie engmaschig betreut werden und geschützt sind.',
+  },
+  {
+    t: 'Abhängigkeit oder schwerer Substanzmissbrauch',
+    a: 'Nicht behandeln können wir Menschen mit einer Abhängigkeit von Medikamenten, Drogen oder Alkohol oder mit schwerem Substanzmissbrauch, auch nicht in der Nachsorge nach einem Entzug oder einer stationären Entwöhnung. Erste Anlaufstelle sind Suchtberatungsstellen, die auch bei der Vermittlung qualifizierter Therapeutinnen, Therapeuten oder Einrichtungen weiterhelfen.',
+  },
+  {
+    t: 'Akute Psychosen',
+    a: 'Bei akuten Psychosen, etwa manischen oder bipolaren affektiven Störungen oder Schizophrenien, ist eine ambulante Psychotherapie nicht angezeigt. Ist eine psychotische Erkrankung nicht mehr akut, ist eine Behandlung nur möglich, wenn gleichzeitig eine kontinuierliche psychiatrische Betreuung und gegebenenfalls medikamentöse Behandlung stattfindet. Zum Erstgespräch sollten dann möglichst eine Überweisung und ein Befundbericht des Psychiaters vorliegen.',
+  },
+];
+---
+<Seite
+  title="Verhaltenstherapie und Schwerpunkte | Praxis Dr. Gönner"
+  description="Kognitive Verhaltenstherapie, Schematherapie und ACT für Erwachsene in Ravensburg: Einzel- und Gruppentherapie, Behandlungsschwerpunkte und Grenzen der Behandlung."
+  lcpBild="/images/therapieraum-gruppe.jpg"
+  lcpVarianten
+>
+  <PageHero
+    eyebrow="Behandlung"
+    title="Wissenschaftlich fundiert, auf Sie zugeschnitten."
+    subtitle="Verhaltenstherapie für Erwachsene in Einzel- und Gruppentherapie."
+    image="/images/therapieraum-gruppe.jpg"
+    imagePosition="50% 60%"
+  />
+  <SeitenIntro
+    eyebrow="Therapiekonzept"
+    titel="Kognitive Verhaltenstherapie und die <em>dritte Welle</em>."
+    text="In unserem therapeutischen Ansatz verbinden wir die kognitive Verhaltenstherapie (KVT) mit neueren Entwicklungen wie der Schematherapie und der Akzeptanz- und Commitmenttherapie (ACT). Dazu kommen emotionszentrierte, imaginative, achtsamkeitsbasierte und systemische Techniken."
+    fakten={[
+      { k: 'Für wen', v: 'Erwachsene' },
+      { k: 'Formen', v: 'Einzel- und Gruppentherapie' },
+      { k: 'Gruppengröße', v: 'höchstens fünf Teilnehmende' },
+      { k: 'Kassen', v: 'alle gesetzlichen und privaten' },
+    ]}
+  >
+    <p class="mt-4 text-lg leading-relaxed text-text/80">Die Wirksamkeit kognitiv-verhaltenstherapeutischer Methoden ist bei vielen psychischen und psychosomatischen Störungen wissenschaftlich belegt. Unser Handeln ist deshalb von abgesicherten und zugleich innovativen Behandlungskonzepten geprägt, die wir an die Bedürfnisse und Besonderheiten jedes Menschen anpassen.</p>
+  </SeitenIntro>
+
+  <Section variant="standard" bg="base">
+    <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <div class="overflow-hidden rounded-karte">
+          <Foto name="therapieraum-tisch" sizes="(min-width: 1024px) 480px, 100vw" pos="50% 55%" class="block aspect-[4/5] w-full" />
+        </div>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7">
+        <SektionsKopf
+          eyebrow="Gruppentherapie"
+          titel="Manchmal hilft es, <em>nicht allein</em> zu sein."
+          text="Gruppentherapien können sehr wirkungsvoll sein, etwa bei Selbstunsicherheit oder Schwierigkeiten in sozialen Kontakten. Unsere Gruppen haben höchstens fünf Teilnehmerinnen und Teilnehmer."
+        />
+        <ul class="inhalt-liste text-lg leading-relaxed text-text/85">
+          <li>Wir stellen die Gruppen mit großer Sorgfalt nach inhaltlichen oder persönlichen Kriterien zusammen, damit ein guter Zusammenhalt entsteht und alle voneinander profitieren.</li>
+          <li>Gruppen bieten wir auch begleitend zur Einzeltherapie und zur Nachsorge an.</li>
+          <li>Für Menschen mit Zwangsstörungen gibt es dauerhaft eine offene Gruppe.</li>
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <Section variant="standard" bg="none" id="schwerpunkte" class="nebel-zart">
+    <SektionsKopf
+      eyebrow="Wer bei uns behandelt wird"
+      titel="Behandlungs- und <em>Arbeitsschwerpunkte</em>."
+      text="Wir behandeln Erwachsene, die unter einer psychischen Erkrankung oder psychosomatischen Beschwerden leiden, die in einer schweren emotionalen oder Lebenskrise stecken oder sich schwer an eine belastende Lebenssituation anpassen können. Grundsätzlich behandeln wir das gesamte Spektrum psychischer Krankheitsbilder, bei denen eine ambulante Psychotherapie angezeigt ist."
+    />
+    <ol class="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+      {schwerpunkte.map((s, i) => (
+        <li class="border-t border-primary/15 py-6" data-reveal>
+          <span class="etikett text-primary/70">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-2 text-[1.35rem] leading-snug">{s.titel}</h3>
+          <p class="mt-2 leading-relaxed text-text/75">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section variant="standard" bg="base" id="grenzen">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <SektionsKopf
+          eyebrow="Kontraindikationen"
+          titel="Wann wir <em>nicht</em> die Richtigen sind."
+          text="Wir sagen offen, wo ambulante Psychotherapie an ihre Grenzen kommt. Nicht um abzuweisen, sondern damit Sie schnell an die Stelle kommen, die Ihnen wirklich helfen kann."
+        />
+        <KrisenHinweis />
+      </div>
+      <div class="space-y-4 lg:col-span-6 lg:col-start-7 lg:mt-24">
+        {grenzen.map((g) => (
+          <article class="nebel-karte bg-background p-7 sm:p-8" data-reveal>
+            <h3 class="text-[1.6rem] leading-snug">{g.t}</h3>
+            <p class="mt-3 leading-relaxed text-text/80">{g.a}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </Section>
+
+  <Cta
+    titel="Erkennen Sie sich in einem der Themen wieder?"
+    text="In der Sprechstunde klären wir gemeinsam, was Sie belastet und welcher Weg zu Ihnen passt."
+    buttonText="Therapieplatz anfragen"
+    buttonHref="/kontakt/"
+    telefonZeigen={false}
+  />
+</Seite>

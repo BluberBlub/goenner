@@ -1,0 +1,19 @@
+---
+// Portrait einer Person aus dem Team: Schwarz-Weiß-Foto oder Initialen-Kachel, wenn kein Foto vorliegt.
+import { initialen, type Person } from '../data/team';
+interface Props { person: Person; class?: string; sizes?: string; }
+const { person: p, class: cls = '', sizes = '(min-width: 1024px) 220px, 45vw' } = Astro.props;
+const basis = `/images/team/${p.slug}`;
+---
+<div class:list={['portrait relative overflow-hidden rounded-karte bg-primary/5 aspect-[3/4]', cls]}>
+  {p.foto ? (
+    <picture>
+      {p.foto.varianten && <source type="image/avif" srcset={`${basis}-800.avif 800w`} sizes={sizes} />}
+      {p.foto.varianten && <source type="image/webp" srcset={`${basis}-800.webp 800w`} sizes={sizes} />}
+      <img src={`${basis}.jpg`} alt={`Portrait ${p.name}`} width={p.foto.w} height={p.foto.h}
+           class="absolute inset-0 h-full w-full object-cover" style="object-position:50% 22%" loading="lazy" decoding="async" />
+    </picture>
+  ) : (
+    <span class="initialen" role="img" aria-label={`${p.name}, noch kein Foto`}>{initialen(p.name)}</span>
+  )}
+</div>

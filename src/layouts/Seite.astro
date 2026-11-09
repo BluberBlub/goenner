@@ -1,0 +1,18 @@
+---
+// Projekt-Hülle: bindet das Projekt-CSS ein und reicht alles an das gesperrte BaseLayout durch.
+// lcpName: Hero-Bild der Seite (eigener Hero mit <Foto>), wird als AVIF-Satz vorgeladen.
+// Unterseiten mit PageHero geben stattdessen lcpBild + lcpVarianten weiter.
+import BaseLayout from './BaseLayout.astro';
+import { bildSet, type BildName } from '../data/bilder';
+import '../styles/site.css';
+
+interface Props { title: string; description: string; ogImage?: string; lcpName?: BildName; lcpSizes?: string; lcpBild?: string; lcpVarianten?: boolean; }
+const { lcpName, lcpSizes = '100vw', ...props } = Astro.props;
+---
+<BaseLayout {...props}>
+  <Fragment slot="head">
+    {lcpName && <link rel="preload" as="image" type="image/avif" imagesrcset={bildSet(lcpName, 'avif')} imagesizes={lcpSizes} fetchpriority="high" />}
+    <slot name="head" />
+  </Fragment>
+  <slot />
+</BaseLayout>
