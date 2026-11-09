@@ -1,12 +1,12 @@
 ---
-// Einheitliche Intro-Karte aller Unterseiten: eine Nebelkarte schiebt sich über die Unterkante des Heros
+// Einheitliche Intro-Karte aller Unterseiten: eine Nebelkarte direkt unter dem Hero
 // und verbindet ihn mit dem Inhalt. Links worum es geht, rechts versetzt "Auf einen Blick".
 import SektionsKopf from '../components/SektionsKopf.astro';
 
 interface Props { eyebrow: string; titel: string; text: string; fakten?: { k: string; v: string }[] }
 const { eyebrow, titel, text, fakten = [] } = Astro.props;
 ---
-<section class="relative z-10 -mt-16 sm:-mt-24">
+<section class="relative z-10 pt-10 sm:pt-14">
   <div class="container">
     <div class="nebel nebel-karte grid gap-10 bg-background px-6 py-10 sm:px-10 sm:py-14 lg:grid-cols-12 lg:gap-8 lg:px-14">
       <div class="lg:col-span-7">

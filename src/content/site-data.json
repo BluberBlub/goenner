@@ -205,10 +205,13 @@
   },
   "bildZuordnung": {
     "hero-startseite": "/images/therapieraum-sessel.jpg",
-    "behandlung": "/images/therapieraum-gruppe.jpg",
-    "ablauf-kosten": "/images/therapieraum-tisch.jpg",
-    "team": "/images/praxis-flur.jpg",
-    "praxis": "/images/wartezimmer-kunst.jpg",
-    "kunst": "/images/kunst-ausstellung-zollmann.jpg"
+    "behandlung-gruppenraum": "/images/therapieraum-gruppe.jpg",
+    "gruppentherapie-raum": "/images/therapieraum-tisch.jpg",
+    "flur-der-praxis-jugendstilvilla": "/images/praxis-flur.jpg",
+    "wartebereich": "/images/praxis-wartebereich-panorama.jpg",
+    "ablauf-wartezimmer-mit-kunst": "/images/wartezimmer-kunst.jpg",
+    "kunst-im-wartezimmer-gemaelde-michaela-zollmann": "/images/kunst-frida.jpg",
+    "kunst-im-wartezimmer-ausstellung": "/images/kunst-ausstellung-zollmann.jpg",
+    "kunst-im-wartezimmer-gemaelde-und-spiegel": "/images/kunst-spiegel.jpg"
   }
 }
