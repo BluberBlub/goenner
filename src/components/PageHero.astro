@@ -1,0 +1,51 @@
+---
+// @LOCKED v5 – Unterseiten-Hero. pt statt fester Abstände (kein Nav-Overlap bei 320px).
+// v4: Hero-Bild wird bevorzugt geladen (fetchpriority), wichtigster PageSpeed-Hebel (LCP).
+//     Texte dürfen &nbsp; und <br> enthalten (Opitz). Eyebrow auf Bild weiß mit Akzentlinie.
+// v5 (Joos, Bioladen, Weber, Spöri): Höhe = sichtbares Fenster minus Navigation und Demo-Leiste
+//     (--hero-h), dadurch auf allen Unterseiten gleich hoch. Wird der Inhalt höher (Handy), wächst
+//     der Hero mit. Bildvarianten von bild-formate.js (name-800.avif, name.avif, .webp) werden
+//     automatisch als <picture> genutzt: das Handy lädt das kleine AVIF statt der großen Datei.
+//     Explizit möglich: imageSrcsetAvif / imageSrcsetWebp ("url 800w, url 1600w").
+//     Tipp: dasselbe Bild als lcpBild an BaseLayout geben, dann wird genau dieser Satz vorgeladen.
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import siteData from '../content/site-data.json';
+interface Props { title: string; subtitle?: string; image: string; imagePosition?: string; eyebrow?: string; imageSrcsetAvif?: string; imageSrcsetWebp?: string; }
+const { title, subtitle, image, imagePosition = '50% 50%', eyebrow, imageSrcsetAvif, imageSrcsetWebp } = Astro.props;
+const variante = (pfad, ext) => {
+  const m = /^(\/.+)\.(jpe?g|png|webp|avif)$/i.exec(pfad || '');
+  if (!m) return undefined;
+  const da = (p) => existsSync(join(process.cwd(), 'public', p));
+  const gross = `${m[1]}.${ext}`, klein = `${m[1]}-800.${ext}`;
+  if (da(klein) && da(gross)) return `${klein} 800w, ${gross} 1600w`;
+  return da(gross) && gross !== pfad ? `${gross} 1600w` : undefined;
+};
+// Akzentlinie vor der Dachzeile: auf dem abgedunkelten Bild nur in Akzentfarbe, wenn sie dort trägt,
+// sonst weiß (Spöri: dunkelblauer Strich auf dunklem Bild "kaum sichtbar")
+const lum = (hex) => { const x = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex || ''); if (!x) return 0; const [r, g, b] = [x[1], x[2], x[3]].map(v => { const c = parseInt(v, 16) / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const linie = (lum(siteData.design?.farben?.accent || '#D4A853') + 0.05) / 0.07 >= 3 ? 'bg-accent' : 'bg-white/90';
+const avif = imageSrcsetAvif || variante(image, 'avif');
+const webp = imageSrcsetWebp || variante(image, 'webp');
+---
+<section data-hero class="relative pt-28 sm:pt-32 lg:pt-36 pb-12 lg:pb-16 min-h-[var(--hero-h,60vh)] flex items-end overflow-hidden">
+  <picture>
+    {avif && <source type="image/avif" srcset={avif} sizes="100vw" />}
+    {webp && <source type="image/webp" srcset={webp} sizes="100vw" />}
+    <img src={image} alt="" aria-hidden="true"
+         class="absolute inset-0 w-full h-full object-cover"
+         style={`object-position:${imagePosition}`} width="1920" height="1080"
+         loading="eager" fetchpriority="high" decoding="async" />
+  </picture>
+  <div class="absolute inset-0 bg-black/45"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+  <div class="container relative z-10 text-white">
+    {eyebrow && (
+      <p class="inline-flex items-center gap-3 text-sm font-medium tracking-widest uppercase text-white/90 mb-3" style="text-shadow:0 1px 8px rgba(0,0,0,.5)" data-eyebrow>
+        <span class:list={['w-8 h-0.5', linie]} aria-hidden="true"></span><span set:html={eyebrow} />
+      </p>
+    )}
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold" style="text-shadow:0 2px 16px rgba(0,0,0,.5)" set:html={title} />
+    {subtitle && <p data-lead class="mt-4 max-w-2xl text-white/90" style="text-shadow:0 1px 8px rgba(0,0,0,.5)" set:html={subtitle} />}
+  </div>
+</section>

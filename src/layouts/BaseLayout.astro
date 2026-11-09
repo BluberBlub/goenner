@@ -1,0 +1,457 @@
+---
+// @LOCKED v7 – GESPERRTE STANDARD-KOMPONENTE. NIEMALS verändern oder neu bauen.
+// Wird bei jedem Start aus dem Root synchronisiert. Anpassung NUR über site-data.json.
+// v5: Schriftfarbe auf Farbflächen automatisch nach Kontrast (text-on-primary/-secondary/-accent),
+//     Reveal- und Zähler-System (data-reveal, data-counter), Umbruch ohne Hurenkinder,
+//     sanfte Seitenübergänge (reines CSS), Vorladen von LCP-Bild und Schriften.
+// v6 (Spöri, Weber, Joos, Bioladen): einheitlicher Radius aus design.radius (rounded-knopf,
+//     rounded-karte), Hero-Höhe als Variable (--hero-h = Fenster minus Navigation und Demo-Leiste),
+//     Sprungziele nicht unter dem Header, sichtbarer Tastatur-Fokus, "Zum Inhalt"-Link,
+//     Umbruch-Klassen der Middleware (.bind, .wort-ganz, .mwd), LCP-Vorladen als AVIF-Satz,
+//     wenn bild-formate.js Varianten erzeugt hat, Scroll-Effekte (data-scroll) mit Motion.
+// v7 (Schwabenpflege): kein Hochspringen beim Neuladen (Niko: "No-Go"), Wisch-Reihen für Handys
+//     (class="wisch" am Raster: mobil wischbar mit Punkten, ab 768 px normales Raster).
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import siteData from '../content/site-data.json';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import StickyContact from '../components/StickyContact.astro';
+import DemoBar from '../components/DemoBar.astro';
+import '../styles/fonts.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  lcpBild?: string;   // Hero-Bild dieser Seite: wird vorgeladen (PageSpeed, LCP)
+  lcpVarianten?: boolean;   // true, wenn der Hero <picture> mit AVIF-Varianten nutzt (PageHero tut das)
+}
+const { title, description, ogImage, lcpBild, lcpVarianten = false } = Astro.props;
+
+const siteUrl = (siteData.meta?.siteUrl || Astro.site?.href || '').replace(/\/$/, '');
+const ogRaw = ogImage || '/images/og-image.jpg';
+const ogAbs = ogRaw.startsWith('http') ? ogRaw : `${siteUrl}${ogRaw}`;
+const f = siteData.design?.farben || {};
+const fonts = siteData.design?.fonts || {};
+const canonical = `${siteUrl}${Astro.url.pathname}`;
+// staging: true in site-data meta -> noindex (Staging-Subdomain). Beim Go-Live auf false!
+const staging = siteData.meta?.staging === true;
+
+// Farben normalisieren (#abc -> #aabbcc). Ungültige Werte fallen auf die Vorgabe zurück.
+const hex6 = (h, vorgabe) => {
+  const s = String(h || '').trim();
+  if (/^#?[\da-f]{6}$/i.test(s)) return s.startsWith('#') ? s : `#${s}`;
+  const k = /^#?([\da-f])([\da-f])([\da-f])$/i.exec(s);
+  return k ? `#${k[1]}${k[1]}${k[2]}${k[2]}${k[3]}${k[3]}` : vorgabe;
+};
+const primary    = hex6(f.primary, '#1A5C4A');
+const secondary  = hex6(f.secondary, '#2D8C6A');
+const accent     = hex6(f.accent, '#D4A853');
+const background = hex6(f.background, '#FAF8F4');
+const text       = hex6(f.text, '#1F2937');
+
+// RGB-Tripel für Tailwind-Opacity-Modifier (bg-primary/5 etc.) – ohne das
+// werden Abstufungs-Klassen NICHT generiert (stiller Total-Ausfall).
+const hexRgb = (hex) => {
+  const m = /^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex);
+  return m ? `${parseInt(m[1],16)} ${parseInt(m[2],16)} ${parseInt(m[3],16)}` : '0 0 0';
+};
+
+// Schriftfarbe auf Farbflächen: Weiß, solange es auf der Fläche trägt (Kontrast >= 2.2,
+// z. B. Gold, Markengrün, Dunkelblau), sonst dunkel (Gelb, Hellgrün, Pastell).
+// Überschreiben: design.textAuf = { "accent": "weiss" | "dunkel", "primary": …, "secondary": … }
+const lum = (hex) => {
+  const m = /^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex);
+  if (!m) return 0;
+  const [r, g, b] = [m[1], m[2], m[3]].map(x => {
+    const v = parseInt(x, 16) / 255;
+    return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const kontrast = (a, b) => { const [h, d] = [lum(a), lum(b)].sort((x, y) => y - x); return (h + 0.05) / (d + 0.05); };
+const dunkel = kontrast(text, '#ffffff') >= 7 ? text : '#111111';
+const textAuf = siteData.design?.textAuf || {};
+const auf = (flaeche, key) =>
+  textAuf[key] === 'weiss' ? '#ffffff'
+  : textAuf[key] === 'dunkel' ? dunkel
+  : kontrast('#ffffff', flaeche) >= 2.2 ? '#ffffff' : dunkel;
+const onPrimary = auf(primary, 'primary');
+const onSecondary = auf(secondary, 'secondary');
+const onAccent = auf(accent, 'accent');
+
+const fontPreload = (siteData.design?.fontPreload || []).filter(p => typeof p === 'string' && p.endsWith('.woff2'));
+
+// Einheitlicher Radius (Spöri, Weber, Joos: "border radius überall einheitlich").
+// design.radius = "eckig" | "dezent" | "weich" | "rund" (Standard) oder { "knopf": "4px", "karte": "4px" }
+const RADIUS = { eckig: ['0px', '0px'], dezent: ['4px', '4px'], weich: ['0.75rem', '1rem'], rund: ['9999px', '1.5rem'] };
+const rw = siteData.design?.radius;
+const [radiusKnopf, radiusKarte] = typeof rw === 'object' && rw
+  ? [rw.knopf || '9999px', rw.karte || '1.5rem']
+  : (RADIUS[rw] || RADIUS.rund);
+
+// LCP-Bild: mit lcpVarianten (Hero als <picture>, z. B. PageHero) und vorhandenen Varianten von
+// bild-formate.js wird genau der AVIF-Satz vorgeladen, den <picture> nimmt (Handy 800 px, Desktop groß).
+// Ohne lcpVarianten wie bisher die Datei selbst: ein einfaches <img> lädt nie AVIF, sonst doppelter Download.
+const variante = (pfad, ext) => {
+  const m = /^(\/.+)\.(jpe?g|png|webp|avif)$/i.exec(pfad || '');
+  if (!m) return null;
+  const da = (p) => existsSync(join(process.cwd(), 'public', p));
+  const gross = `${m[1]}.${ext}`, klein = `${m[1]}-800.${ext}`;
+  if (da(klein) && da(gross)) return `${klein} 800w, ${gross} 1600w`;
+  return da(gross) ? `${gross} 1600w` : null;
+};
+const lcpAvif = lcpVarianten ? variante(lcpBild, 'avif') : null;
+---
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={staging ? 'noindex, nofollow' : 'index, follow'} />
+  <meta name="theme-color" content={primary} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  {fontPreload.map(p => <link rel="preload" as="font" type="font/woff2" href={p} crossorigin />)}
+  {lcpBild && (lcpAvif
+    ? <link rel="preload" as="image" type="image/avif" imagesrcset={lcpAvif} imagesizes="100vw" fetchpriority="high" />
+    : <link rel="preload" as="image" href={lcpBild} fetchpriority="high" />)}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content={siteData.meta?.firmenname} />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:image" content={ogAbs} />
+  <meta property="og:image:secure_url" content={ogAbs} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={title} />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={ogAbs} />
+  <meta name="twitter:image:alt" content={title} />
+  {/* Demo-Statistik (Niko, 21.10.2026): meldet dem Akquise-Tool, wann und wie lange die Demo angesehen wird.
+      Keine Cookies. Nur solange meta.demo = true; beim Livegang (meta.demo = false) fällt die Zeile von selbst weg.
+      Unverändert lassen: keine IDs ergänzen, die Zuordnung läuft über die Demo-Adresse. qa-checks prüft beides. */}
+  {siteData.meta?.demo === true && <script is:inline src="https://crawler.niko-endres.de/t/demo.js" defer></script>}
+  <slot name="head" />
+</head>
+<body>
+  <a href="#inhalt" class="zum-inhalt">Zum Inhalt springen</a>
+  <DemoBar />
+  <Header />
+  <main id="inhalt" tabindex="-1"><slot /></main>
+  <Footer />
+  <StickyContact />
+  <CookieBanner />
+
+  <style is:global define:vars={{
+    'color-primary': primary,
+    'color-secondary': secondary,
+    'color-accent': accent,
+    'color-background': background,
+    'color-text': text,
+    'color-primary-rgb': hexRgb(primary),
+    'color-secondary-rgb': hexRgb(secondary),
+    'color-accent-rgb': hexRgb(accent),
+    'color-background-rgb': hexRgb(background),
+    'color-text-rgb': hexRgb(text),
+    'color-on-primary-rgb': hexRgb(onPrimary),
+    'color-on-secondary-rgb': hexRgb(onSecondary),
+    'color-on-accent-rgb': hexRgb(onAccent),
+    'on-primary-invert': onPrimary === '#ffffff' ? '1' : '0',
+    'radius-knopf': radiusKnopf,
+    'radius-karte': radiusKarte,
+    'font-display': fonts.display || "'Source Serif 4', Georgia, serif",
+    'font-body': fonts.body || "'Source Sans 3', system-ui, sans-serif"
+  }}>
+    /* @LOCKED – define:vars legt die Variablen an. KEINE :root-Umdefinition (zirkulär = kaputt)! */
+    :root { --demo-bar-h: 0px; --nav-h: 4rem; }   /* --demo-bar-h überschreibt DemoBar, wenn aktiv */
+    @media (min-width: 1024px) { :root { --nav-h: 5rem; } }
+    /* Hero = sichtbare Fensterhöhe minus Navigation und Demo-Leiste (Joos, Bioladen, Weber, Spöri).
+       Nutzung: min-h-[var(--hero-h)] bzw. h-[var(--hero-h)]. PageHero nutzt sie automatisch. */
+    :root { --hero-h: calc(100svh - var(--nav-h) - var(--demo-bar-h)); }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 1rem); }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      background: var(--color-background);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      /* Footer sitzt auch auf kurzen Seiten (404, Impressum) unten (Opitz) */
+      min-height: 100vh; min-height: 100svh;
+      display: flex; flex-direction: column;
+    }
+    body > main { flex: 1 0 auto; }
+    h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; }
+    /* Keine Hurenkinder: Überschriften ausgewogen, Absätze ohne Einzelwort in der letzten Zeile */
+    h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+    p, li, blockquote, figcaption, dd { text-wrap: pretty; }
+    /* Lesefluss (Schneider, Niko-Regel; HTML dazu aus middleware.ts v3): kurze Einleitungen mit gleich
+       langen Zeilen, Satz-Blöcke je Zeile, Überschriften-Teile an der natürlichen Fuge */
+    p[data-lead], p.lead { text-wrap: balance; }
+    .satz { display: block; text-wrap: balance; }
+    .teil { display: inline-block; max-width: 100%; text-wrap: balance; }
+    /* Randlose Bühnen (Hero über volle Breite): Inhalt trotzdem an der Contentkante. Abstand wie
+       .container, gemessen an der Hülle (cqw) statt am Fenster. Nutzung: class="buehne-huelle" an der
+       Bühne, im Inhalt padding-left: var(--rand) (Schneider: "Hero-Text muss in Contentbreite bleiben") */
+    .buehne-huelle { container-type: inline-size; }
+    .buehne-huelle > * { --rand: calc(max(0px, (100cqw - 1280px) / 2) + clamp(1.5rem, 5cqw, 4rem)); }
+    img { max-width: 100%; display: block; }
+    /* Umbruch-Regeln (src/middleware.ts): letzte zwei Wörter zusammen, Bindestrich-Wörter ganz,
+       (m/w/d) klein und nie getrennt. display: contents, sonst entsteht in Buttons eine Flex-Lücke.
+       KEIN hyphens: auto: Niko-Regel "keine Trennung mitten im Wort", getrennt wird nur an Wortfugen. */
+    .bind { white-space: nowrap; display: contents; }
+    .wort-ganz { white-space: nowrap; }
+    /* v7: gebundene Paare bleiben auch unter 480 px zusammen; nur wo eins wirklich übersteht, löst das Skript es (bind--frei) */
+    @media (max-width: 479px) { .wort-ganz--lang { white-space: normal; } }
+    .bind--frei { white-space: normal; }
+    /* Wisch-Reihen (Schwabenpflege: mobil ~20.000 px Seitenlänge, "signifikant verbessern"): Kartengruppen
+       werden auf dem Handy gewischt statt endlos gestapelt. Die nächste Karte schaut am Rand hervor.
+       Nutzung: <div class="grid md:grid-cols-3 gap-6 wisch">…Karten…</div> (wisch--schmal: schmalere Karten) */
+    .wisch-punkte { display: none; }
+    @media (max-width: 767px) {
+      .wisch { display: flex !important; flex-direction: row !important; gap: 1rem; overflow-x: auto; overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory; scroll-padding-inline: clamp(1.5rem, 5vw, 4rem);
+        margin-inline: calc(-1 * clamp(1.5rem, 5vw, 4rem)); padding-inline: clamp(1.5rem, 5vw, 4rem);
+        padding-block: .25rem 1.25rem; scrollbar-width: none; }
+      .wisch::-webkit-scrollbar { display: none; }
+      .wisch > * { flex: 0 0 84%; max-width: 22rem; scroll-snap-align: start; align-self: stretch; }
+      .wisch--schmal > * { flex-basis: 72%; }
+      .wisch-punkte { display: flex; justify-content: center; }
+      .wisch-punkte button { width: 1.5rem; height: 1.5rem; display: grid; place-items: center; background: none; padding: 0; border: 0; }
+      .wisch-punkte button::before { content: ''; width: .5rem; height: .5rem; border-radius: 9999px; background: rgb(var(--color-primary-rgb) / .22); transition: transform .3s ease, background-color .3s ease; }
+      .wisch-punkte button.ist-aktiv { width: 2rem; }
+      .wisch-punkte button.ist-aktiv::before { transform: scaleX(2.8); background: rgb(var(--color-accent-rgb)); }
+      .bg-primary .wisch-punkte button:not(.ist-aktiv)::before { background: rgb(var(--color-on-primary-rgb) / .3); }
+    }
+    .mwd { font-size: 0.8em; font-weight: 500; font-style: normal; letter-spacing: 0.02em; opacity: 0.75; white-space: nowrap; }
+    /* Tastatur-Fokus immer sichtbar (in der Farbe des Elements, trägt auf jedem Grund) */
+    :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+    main:focus { outline: none; }
+    .zum-inhalt { position: fixed; left: 1rem; top: -4rem; z-index: 80; padding: .6rem 1rem; background: var(--color-background); color: var(--color-text); border-radius: var(--radius-knopf); box-shadow: 0 6px 20px rgb(0 0 0 / .15); }
+    .zum-inhalt:focus { top: 1rem; }
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin-inline: auto;
+      padding-left: clamp(1.5rem, 5vw, 4rem);
+      padding-right: clamp(1.5rem, 5vw, 4rem);
+    }
+    .font-display { font-family: var(--font-display); }
+
+    /* Reveal (Kit): nur Elemente UNTERHALB des ersten Bildschirms werden animiert.
+       Hero und alles, was beim Laden sichtbar ist, steht sofort da. Ohne JS: alles sichtbar. */
+    [data-reveal] {
+      transition: opacity .75s cubic-bezier(.16, 1, .3, 1), transform .75s cubic-bezier(.16, 1, .3, 1);
+      transition-delay: var(--rv-delay, 0ms);
+    }
+    [data-reveal].rv-warten { opacity: 0; transform: translateY(28px); transition: none; }
+    [data-reveal="links"].rv-warten  { transform: translateX(-32px); }
+    [data-reveal="rechts"].rv-warten { transform: translateX(32px); }
+    [data-reveal="zoom"].rv-warten   { transform: scale(.94); }
+    [data-reveal="blende"].rv-warten { transform: none; }
+    /* Seitliches Einfahren darf nie horizontal scrollen lassen: mobil nur von unten,
+       und Sektionen mit seitlichen Reveals schneiden waagerecht ab (senkrecht bleibt frei). */
+    @media (max-width: 767px) {
+      [data-reveal="links"].rv-warten, [data-reveal="rechts"].rv-warten { transform: translateY(24px); }
+    }
+    section:has([data-reveal="links"], [data-reveal="rechts"]) { overflow-x: clip; }
+    @media print { [data-reveal].rv-warten { opacity: 1; transform: none; } }
+    /* Scroll-Effekte (data-scroll): Wörter starten gedimmt, ohne JS bleibt alles voll sichtbar */
+    [data-scroll="woerter"].sc-bereit .sc-wort { opacity: var(--sc-min, .22); }
+
+    /* Seitenübergang: sanftes Überblenden zwischen Unterseiten (Chrome, Edge, Safari). */
+    @view-transition { navigation: auto; }
+    body > header { view-transition-name: seitenkopf; }
+    ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+    }
+  </style>
+
+  <script>
+    // Wortbindung (Middleware) nur dort, wo sie passt: steht ein gebundenes Paar über den Rand
+    // seiner Box, wird genau diese Bindung gelöst. Läuft beim Laden und nach Größenänderung.
+    const BLOCK = 'p,li,h1,h2,h3,h4,h5,h6,dd,dt,figcaption,blockquote,td,th,label,button,div';
+    const bindungPruefen = () => {
+      const binds = [...document.querySelectorAll('.bind')];
+      if (!binds.length) return;
+      binds.forEach((b) => b.classList.remove('bind--frei'));
+      const bloecke = new Set(binds.map((b) => b.parentElement?.closest(BLOCK)).filter(Boolean));
+      bloecke.forEach((el) => {
+        // erst die Satzanfangs-Bindungen lösen, nur wenn es dann noch übersteht auch die Schluss-Bindung
+        if (el.scrollWidth <= el.clientWidth + 1) return;
+        el.querySelectorAll('.bind--anfang').forEach((b) => b.classList.add('bind--frei'));
+        if (el.scrollWidth > el.clientWidth + 1) el.querySelectorAll('.bind').forEach((b) => b.classList.add('bind--frei'));
+      });
+    };
+    bindungPruefen();
+    if (document.fonts?.ready) document.fonts.ready.then(bindungPruefen);
+    let bindTimer = 0;
+    window.addEventListener('resize', () => { clearTimeout(bindTimer); bindTimer = setTimeout(bindungPruefen, 120); });
+
+    // Kein Hochspringen beim Neuladen (Niko, Schwabenpflege 2026-10-12: "No-Go"): Der Browser stellt die
+    // Scrollposition bei Reload und Zurück selbst wieder her. Neue Seiten beginnen ohnehin oben.
+
+    // Wisch-Reihen (mobil): Punkte zeigen Anzahl und Position, Tippen springt zur Karte
+    document.querySelectorAll('.wisch').forEach((reihe) => {
+      const karten = [...reihe.children].filter((k) => getComputedStyle(k).display !== 'none');
+      if (karten.length < 2) return;
+      const punkte = document.createElement('div');
+      punkte.className = 'wisch-punkte';
+      punkte.setAttribute('aria-hidden', 'true');
+      karten.forEach((k) => {
+        const p = document.createElement('button');
+        p.type = 'button'; p.tabIndex = -1;
+        p.addEventListener('click', () => reihe.scrollTo({ left: k.offsetLeft - reihe.offsetLeft - parseFloat(getComputedStyle(reihe).paddingLeft), behavior: 'smooth' }));
+        punkte.append(p);
+      });
+      reihe.after(punkte);
+      const aktual = () => {
+        const mitte = reihe.scrollLeft + reihe.clientWidth / 3;
+        let aktiv = 0;
+        karten.forEach((k, j) => { if (k.offsetLeft - reihe.offsetLeft <= mitte) aktiv = j; });
+        if (reihe.scrollLeft + reihe.clientWidth >= reihe.scrollWidth - 4) aktiv = karten.length - 1;
+        [...punkte.children].forEach((p, j) => p.classList.toggle('ist-aktiv', j === aktiv));
+      };
+      reihe.addEventListener('scroll', () => requestAnimationFrame(aktual), { passive: true });
+      aktual();
+    });
+
+    // ── Reveal + Zähler (Kit) ──
+    // data-reveal ["" | links | rechts | zoom | blende]  ·  Geschwister werden automatisch gestaffelt.
+    // data-counter: Zahl steht fertig im HTML (SEO, ohne JS korrekt) und zählt nur hoch,
+    // wenn sie beim Laden UNTERHALB des ersten Bildschirms liegt. Format bleibt exakt erhalten.
+    const ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!ruhig && 'IntersectionObserver' in window) {
+      const vh = window.innerHeight;
+      const imErstenBild = (el) => el.getBoundingClientRect().top < vh;
+      const imHero = (el) => !!el.closest('main > section:first-of-type');
+
+      const zeigen = new IntersectionObserver((eintraege) => eintraege.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.remove('rv-warten');
+        zeigen.unobserve(e.target);
+      }), { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        if (imHero(el) || imErstenBild(el)) return;
+        const geschwister = [...(el.parentElement?.children || [])].filter((c) => c.hasAttribute('data-reveal'));
+        const i = geschwister.indexOf(el);
+        if (i > 0 && !el.style.getPropertyValue('--rv-delay')) el.style.setProperty('--rv-delay', `${Math.min(i, 5) * 90}ms`);
+        el.classList.add('rv-warten');
+        zeigen.observe(el);
+      });
+
+      const zahlMuster = /(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?/;
+      const starte = (el) => {
+        const original = el.textContent || '';
+        const m = original.match(zahlMuster);
+        if (!m) return;
+        const stellen = m[2] ? m[2].length : 0;
+        const gruppiert = m[1].includes('.');
+        const ziel = parseFloat(m[1].replace(/\./g, '') + (m[2] ? '.' + m[2] : ''));
+        const istJahr = !gruppiert && !m[2] && ziel >= 1800 && ziel <= 2100;
+        const start = el.dataset.counterVon ? parseFloat(el.dataset.counterVon) : (istJahr ? ziel - 30 : 0);
+        const vor = original.slice(0, m.index);
+        const nach = original.slice((m.index || 0) + m[0].length);
+        const fmt = (v) => v.toLocaleString('de-DE', { minimumFractionDigits: stellen, maximumFractionDigits: stellen, useGrouping: gruppiert });
+        const dauer = 1600;
+        let t0 = 0;
+        const schritt = (t) => {
+          if (!t0) t0 = t;
+          const p = Math.min((t - t0) / dauer, 1);
+          const wert = start + (ziel - start) * (1 - Math.pow(1 - p, 3));
+          el.textContent = p < 1 ? vor + fmt(wert) + nach : original;
+          if (p < 1) requestAnimationFrame(schritt);
+        };
+        requestAnimationFrame(schritt);
+      };
+      // Offener Cookie-Banner verdeckt den unteren Rand: dort erst nach der Entscheidung zählen (HMT)
+      const wartend = new Set();
+      const verdeckt = (el) => {
+        const b = document.getElementById('cookie-banner');
+        if (!b || getComputedStyle(b).display === 'none') return false;
+        const rb = b.getBoundingClientRect(), re = el.getBoundingClientRect();
+        return re.bottom > rb.top && re.top < rb.bottom;
+      };
+      const zaehlen = new IntersectionObserver((eintraege) => eintraege.forEach((e) => {
+        if (!e.isIntersecting) return;
+        zaehlen.unobserve(e.target);
+        if (verdeckt(e.target)) wartend.add(e.target); else starte(e.target);
+      }), { threshold: 0.4 });
+      window.addEventListener('cookieconsent', () => { wartend.forEach(starte); wartend.clear(); });
+
+      document.querySelectorAll('[data-counter]').forEach((el) => {
+        if (imHero(el) || imErstenBild(el)) return;
+        zaehlen.observe(el);
+      });
+
+      window.addEventListener('beforeprint', () =>
+        document.querySelectorAll('.rv-warten').forEach((el) => el.classList.remove('rv-warten')));
+    }
+
+    // ── Scroll-Effekte (Kit, Motion) ──
+    // data-scroll="parallax" | "zoom" | "woerter" | "fortschritt"   (data-staerke für parallax/zoom)
+    // Motion wird nur geladen, wenn die Seite einen Effekt nutzt; bei "Bewegung reduzieren" nie.
+    // Erst NACH dem Laden der Seite (im Leerlauf): sonst konkurriert das Paket mit dem Hero-Bild
+    // um die Leitung (Test: LCP 1,0 s -> 1,6 s). Die Effekte liegen ohnehin unterhalb des Heros.
+    const nachLaden = (fn) => {
+      const los = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
+      document.readyState === 'complete' ? los() : window.addEventListener('load', los, { once: true });
+    };
+    if (!ruhig && document.querySelector('[data-scroll]')) nachLaden(() => {
+      import('motion').then(({ animate, scroll }) => {
+        document.querySelectorAll('[data-scroll]').forEach((el) => {
+          const art = el.getAttribute('data-scroll');
+          const staerke = parseFloat(el.getAttribute('data-staerke') || '');
+          const bereich = el.closest('section') || el;
+          if (art === 'parallax') {
+            const s = Number.isFinite(staerke) ? staerke : 10;
+            scroll(animate(el, { transform: [`translateY(-${s}%)`, `translateY(${s}%)`] }, { ease: 'linear' }),
+              { target: bereich, offset: ['start end', 'end start'] });
+          } else if (art === 'zoom') {
+            const s = Number.isFinite(staerke) ? staerke : 1.12;
+            scroll(animate(el, { transform: [`scale(${s})`, 'scale(1)'] }, { ease: 'linear' }),
+              { target: el, offset: ['start end', 'center center'] });
+          } else if (art === 'fortschritt') {
+            const y = el.getAttribute('data-richtung') === 'y';
+            el.style.transformOrigin = y ? 'top' : 'left';
+            scroll(animate(el, { transform: y ? ['scaleY(0)', 'scaleY(1)'] : ['scaleX(0)', 'scaleX(1)'] }, { ease: 'linear' }),
+              { target: bereich, offset: ['start 80%', 'end 60%'] });
+          } else if (art === 'woerter') {
+            // Textknoten in Wort-Spans zerlegen (Auszeichnungen wie <em> bleiben erhalten)
+            const knoten = [];
+            const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            while (tw.nextNode()) if (tw.currentNode.textContent.trim()) knoten.push(tw.currentNode);
+            knoten.forEach((n) => {
+              const frag = document.createDocumentFragment();
+              n.textContent.split(/(\s+)/).forEach((t) => {
+                if (!t) return;
+                if (/^\s+$/.test(t)) { frag.append(t); return; }
+                const sp = document.createElement('span'); sp.className = 'sc-wort'; sp.textContent = t; frag.append(sp);
+              });
+              n.replaceWith(frag);
+            });
+            const woerter = [...el.querySelectorAll('.sc-wort')];
+            el.classList.add('sc-bereit');
+            const min = parseFloat(getComputedStyle(el).getPropertyValue('--sc-min')) || 0.22;
+            scroll((p) => {
+              const n = p * woerter.length * 1.15;
+              woerter.forEach((w, i) => { w.style.opacity = String(Math.min(1, Math.max(min, min + (n - i) * (1 - min)))); });
+            }, { target: el, offset: ['start 85%', 'end 45%'] });
+          }
+        });
+      }).catch(() => {});
+    });
+  </script>
+</body>
+</html>

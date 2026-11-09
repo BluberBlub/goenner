@@ -1,0 +1,97 @@
+---
+// @LOCKED v3 – Öffnungszeiten mit Live-Status (Spöri). Wochentage mit gleichen Zeiten werden
+// zusammengefasst (Mo–Do), wie man Öffnungszeiten liest; der heutige Tag ist hervorgehoben.
+// Statustexte in natürlichem Deutsch ("Jetzt geöffnet, heute bis 17 Uhr", "Mittagspause, ab 13 Uhr
+// wieder geöffnet"). Ohne JavaScript bleibt die Tabelle vollständig lesbar. Zeitzone Europe/Berlin.
+// Daten: site-data.json kontakt.oeffnungszeitenWoche = { "mo": ["08:00-12:00", "13:00-17:00"],
+//        "di": [...], "mi": [...], "do": [...], "fr": ["08:00-12:00"], "sa": [], "so": [] }
+// Props: variante "tabelle" (Standard) | "status" (nur Statuszeile), dunkel, class.
+// Auf derselben Seite KontaktKarte mit ohneZeiten nutzen: Öffnungszeiten nie doppelt.
+import siteData from '../content/site-data.json';
+interface Props { variante?: 'tabelle' | 'status'; dunkel?: boolean; class?: string; }
+const { variante = 'tabelle', dunkel = false, class: cls = '' } = Astro.props;
+
+const KURZ = ['mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'];
+const NAME = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const roh = siteData.kontakt?.oeffnungszeitenWoche || {};
+const woche = KURZ.map((k) => (roh[k] || []).map((z) => String(z).split(/\s*[-–]\s*/)).filter((z) => z.length === 2));
+// v3 (Schneider, Niko: "08:30 statt 8:30"): Uhrzeiten immer voll, zweistellig mit Minuten
+const uhr = (z) => (/^\d:/.test(z) ? `0${z}` : z);
+const gruppen = [];
+woche.forEach((zeiten, i) => {
+  const l = gruppen[gruppen.length - 1];
+  if (l && JSON.stringify(l.zeiten) === JSON.stringify(zeiten)) l.bis = i;
+  else gruppen.push({ von: i, bis: i, zeiten });
+});
+const tage = (g) => g.von === g.bis ? NAME[g.von] : `${NAME[g.von]}–${NAME[g.bis]}`;
+const kurztext = gruppen.filter((g) => g.zeiten.length)
+  .map((g) => `${tage(g)} ${g.zeiten.map((z) => `${uhr(z[0])}–${uhr(z[1])}`).join(' und ')} Uhr`).join(', ');
+const hatDaten = woche.some((t) => t.length);
+---
+{hatDaten && (
+  <div class:list={['oeffnungszeiten', cls]} data-oeffnung={JSON.stringify(woche)}>
+    <p class="flex items-center gap-2.5 font-semibold" aria-live="polite">
+      <span class="oz-punkt inline-block w-2.5 h-2.5 rounded-full bg-current opacity-40" aria-hidden="true"></span>
+      <span class="oz-status">{variante === 'status' ? kurztext : 'Öffnungszeiten'}</span>
+    </p>
+    {variante === 'tabelle' && (
+      <table class="mt-4 w-full text-[15px]" style="font-variant-numeric: tabular-nums">
+        <caption class="sr-only">Öffnungszeiten</caption>
+        <tbody>
+          {gruppen.map((g) => (
+            <tr data-tage={Array.from({ length: g.bis - g.von + 1 }, (_, k) => g.von + k).join(',')}
+                class:list={['border-t align-top', dunkel ? 'border-on-primary/20' : 'border-primary/15']}>
+              <th scope="row" class="py-2.5 pr-4 text-left font-normal whitespace-nowrap">{tage(g)}</th>
+              <td class="py-2.5 text-right">
+                {g.zeiten.length
+                  ? g.zeiten.map((z, n) => <>{n > 0 && <> und<br /></>}<span class="whitespace-nowrap">{uhr(z[0])}–{uhr(z[1])}{n === g.zeiten.length - 1 && <>&nbsp;Uhr</>}</span></>)
+                  : <span class="opacity-75">geschlossen</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+)}
+
+<script>
+  const TAGE = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+  const minuten = (z: string) => { const [h, m] = z.split(':').map(Number); return h * 60 + (m || 0); };
+  const anzeige = (z: string) => (/^\d:/.test(z) ? `0${z}` : z);   // v3 (Niko): immer voll, "08:00"
+
+  document.querySelectorAll<HTMLElement>('[data-oeffnung]').forEach((box) => {
+    const woche: string[][][] = JSON.parse(box.dataset.oeffnung || '[]');   // Mo = 0
+    // Wochentag und Uhrzeit in Europe/Berlin, unabhängig von der Zeitzone des Geräts
+    const teile = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Berlin', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date()).map((t) => [t.type, t.value]));
+    const heute = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(teile.weekday);
+    const min = Number(teile.hour) * 60 + Number(teile.minute);
+    if (heute < 0) return;
+    const zeiten = woche[heute] || [];
+    const offen = zeiten.find(([a, b]) => min >= minuten(a) && min < minuten(b));
+    let text: string;
+    if (offen) text = `Jetzt geöffnet, heute bis ${anzeige(offen[1])} Uhr`;
+    else {
+      const spaeter = zeiten.find(([a]) => min < minuten(a));
+      if (spaeter) text = zeiten.indexOf(spaeter) > 0
+        ? `Mittagspause, ab ${anzeige(spaeter[0])} Uhr wieder geöffnet`
+        : `Jetzt geschlossen, heute ab ${anzeige(spaeter[0])} Uhr geöffnet`;
+      else {
+        let n = 1;
+        while (n < 8 && !(woche[(heute + n) % 7] || []).length) n++;
+        if (n >= 8) return;
+        const tag = (heute + n) % 7;
+        text = `Jetzt geschlossen, ${n === 1 ? 'morgen' : `am ${TAGE[tag]}`} ab ${anzeige(woche[tag][0][0])} Uhr geöffnet`;
+      }
+    }
+    const status = box.querySelector('.oz-status');
+    const punkt = box.querySelector<HTMLElement>('.oz-punkt');
+    if (status) status.textContent = text.replace(/ Uhr/g, ' Uhr');
+    if (punkt) { punkt.style.opacity = '1'; punkt.style.color = offen ? 'rgb(34 139 84)' : 'rgb(190 70 60)'; }
+    const reihe = [...box.querySelectorAll<HTMLElement>('tr[data-tage]')].find((tr) => tr.dataset.tage!.split(',').includes(String(heute)));
+    reihe?.classList.add('font-semibold');
+    const th = reihe?.querySelector('th');
+    if (th) th.textContent += ' (heute)';
+  });
+</script>

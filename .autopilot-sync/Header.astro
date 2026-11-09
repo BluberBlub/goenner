@@ -1,0 +1,305 @@
+---
+// @LOCKED v9 – Header mit Active-State, optionalen Dropdowns (Akkordeon mobil),
+// korrektem Scroll-Lock (iOS-fest) und garantiert klickbaren Elementen.
+// v6: größeres Logo (Opitz), Firmenname ausblendbar bei Wortmarken (meta.logoMitName),
+//     Button-Schrift automatisch nach Kontrast (text-on-primary), saubere tel:-Links,
+//     Menüpunkte ohne eigene Seite ("#") werden Buttons statt toter Links,
+//     aktive Seite in der Akzentfarbe (Opitz), solange sie auf dem Hintergrund lesbar
+//     ist (sonst primary), kein doppelter "Kontakt" neben dem Kontakt-Button (Alge).
+// v7 (Spöri, Weber, Joos): Active-Effekt IMMER sichtbar, auch bei Menüpunkten mit Untermenü
+//     (Linie statt nur Farbe) und beim Kontakt-Button (Rahmen im Abstand). Gruppen ohne eigene
+//     Seite leuchten nicht mehr auf der Startseite auf. "Startseite" darf in der Navigation stehen
+//     (Niko: generell). Radius aus design.radius (rounded-[var(--radius-knopf,9999px)]).
+// v8 (Waldsee Golf, Niko: "sehr viele Unterseiten, einfacher und ansprechender auffindbar"): optionales
+//     MEGA-MENÜ. Hat ein Menüpunkt in site-data.json ein Objekt "mega", öffnet er am Desktop ein breites
+//     Panel unter der Leiste: Unterseiten in Spalten (children[].gruppe = Spaltentitel), rechts eine
+//     Bildkarte mit Titel, Text, Fakten und Direktaktionen. Mobil zeigt das Akkordeon Bild und Aktionen.
+//     mega: { bild: "/images/x.webp", titel, text, fakten: ["…"], aktionen: [{ label, href }] }
+//     Ohne "mega" verhält sich der Header exakt wie v7.
+// v9 (Waldsee Golf, Niko: "bei dieser komplexen Seite auf jeden Fall eine Suche, direkt oben in der Nav"):
+//     meta.suche = "/suche/" zeigt eine Lupe vor dem Kontakt-Button (mobil neben dem Menü-Knopf).
+//     Sie ist ein echter Link (ohne JS landet man auf der Suchseite) mit data-suche-oeffnen: das Projekt
+//     hängt daran sein Such-Overlay (Muster: projekte/waldseegolf/src/components/Suche.astro + suchindex.mjs).
+//     Ohne meta.suche keine Lupe, alles wie v8.
+// navigation in site-data.json: [{label, href}] oder [{label, href, children:[{label, href, gruppe?}], mega?}]
+import siteData from '../content/site-data.json';
+const navAlle = siteData.navigation || [];
+// Nav-CTA: standardmäßig "Kontakt"-Button. Telefonnummer NUR wenn ausdrücklich
+// gewünscht (meta.navCta = "telefon"). Nummer als Button wirkt aufdringlich.
+const navCtaTyp = siteData.meta?.navCta || 'kontakt';
+const tel = siteData.kontakt?.telefon;
+const telHref = (t) => { let s = String(t).replace(/\(0\)/g, '').replace(/[^\d+]/g, ''); if (s.startsWith('00')) s = '+' + s.slice(2); else if (s.startsWith('0')) s = ({ AT: '+43', CH: '+41' }[siteData.kontakt?.land] || '+49') + s.slice(1); return `tel:${s}`; };
+const ctaHref = navCtaTyp === 'telefon' && tel ? telHref(tel) : '/kontakt/';
+const ctaText = navCtaTyp === 'telefon' && tel ? tel : 'Kontakt';
+const suche = typeof siteData.meta?.suche === 'string' ? siteData.meta.suche : '';
+const firma = siteData.meta?.firmenname || '';
+const logo = siteData.meta?.logo || '/images/logo.svg';
+// v7.2 (Schneider: breite Wortmarke kaum lesbar): Logohöhe über site-data, meta.logoHoehe = [mobil, desktop]
+// in Pixeln, z. B. [56, 70]. Ohne Angabe 48/56 px wie bisher.
+const lh = Array.isArray(siteData.meta?.logoHoehe) ? siteData.meta.logoHoehe : null;
+const logoStil = lh ? `--logo-h:${Number(lh[0])}px;--logo-h-lg:${Number(lh[1] ?? lh[0])}px` : undefined;
+// Wortmarke (Name steckt im Logo): Text daneben weglassen, sonst steht der Name doppelt da.
+const nameZeigen = siteData.meta?.logoMitName !== true && siteData.meta?.showLogoText !== false;
+// Menüpunkt, der nur den Kontakt-Button doppelt, fällt weg (Alge: "doppelter Kontakt")
+const ohneSlash = (h) => String(h || '').replace(/\/$/, '') || '/';
+const nav = navAlle.filter(i => ctaHref.startsWith('tel:') || i.children?.length || ohneSlash(i.href) !== ohneSlash(ctaHref));
+// Aktive Seite: Akzentfarbe, wenn sie auf dem Hintergrund trägt (Kontrast >= 2), sonst primary.
+// Wunsch fest einstellen: design.aktivFarbe = "accent" | "primary"
+const lum = (hex) => { const m = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex || ''); if (!m) return 0; const [r, g, b] = [m[1], m[2], m[3]].map(x => { const v = parseInt(x, 16) / 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const kontrast = (a, b) => { const [h, d] = [lum(a), lum(b)].sort((x, y) => y - x); return (h + 0.05) / (d + 0.05); };
+const farben = siteData.design?.farben || {};
+const wunsch = siteData.design?.aktivFarbe;
+const akzent = wunsch ? wunsch === 'accent' : kontrast(farben.accent || '#D4A853', farben.background || '#FAF8F4') >= 2;
+const aktivText = akzent ? 'text-accent' : 'text-primary';
+const aktivLinie = `relative after:absolute after:left-0 after:right-0 after:h-[2px] ${akzent ? 'after:bg-accent' : 'after:bg-primary'}`;
+const aktivFlaeche = akzent ? 'text-accent bg-accent/10' : 'text-primary bg-primary/5';
+// Menüpunkt mit Untermenü, aber ohne eigene Seite ("#" oder leer): Button statt totem Link.
+const echt = (h) => typeof h === 'string' && h.trim() !== '' && !h.trim().startsWith('#');
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href) => {
+  if (!echt(href)) return false;   // Gruppe ohne eigene Seite: nie "aktiv" (Joos: leuchtete auf der Startseite)
+  const h = (href || '').replace(/\/$/, '') || '/';
+  return h === '/' ? path === '/' : path === h || path.startsWith(h + '/');
+};
+// Kind aktiv = genauester Treffer unter den Geschwistern (/golf/ leuchtet nicht mit, wenn /golf/old-course/ passt)
+const kindAktiv = (item, c) => isActive(c.href) && !(item.children || []).some(x => x !== c && isActive(x.href) && ohneSlash(x.href).length > ohneSlash(c.href).length);
+const parentActive = (item) => isActive(item.href) || (item.children || []).some(c => kindAktiv(item, c));
+const ctaAktiv = !ctaHref.startsWith('tel:') && isActive(ctaHref);
+// Mega-Menü: Unterpunkte nach "gruppe" in Spalten ordnen (ohne Gruppe: Spalten zu je höchstens 6 Einträgen)
+const spalten = (item) => {
+  const kinder = item.children || [];
+  if (kinder.some(c => c.gruppe)) {
+    const m = new Map();
+    kinder.forEach(c => { const g = c.gruppe || ''; if (!m.has(g)) m.set(g, []); m.get(g).push(c); });
+    return [...m.entries()].map(([titel, liste]) => ({ titel, liste }));
+  }
+  const out = [];
+  for (let i = 0; i < kinder.length; i += 6) out.push({ titel: '', liste: kinder.slice(i, i + 6) });
+  return out;
+};
+const extern = (h) => /^https?:/.test(h || '');
+---
+<header class="fixed top-0 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-black/5">
+  <div class="container flex items-center justify-between h-16 lg:h-20">
+    <a href="/" class="flex items-center gap-3 shrink-0">
+      <!-- v7.1 (Schwabenpflege): Querformat-Logos nicht mehr auf 14rem gedeckelt (wirkten ~34 px hoch) -->
+      <img src={logo} alt={firma} style={logoStil} class="h-[var(--logo-h,3rem)] lg:h-[var(--logo-h-lg,3.5rem)] w-auto max-w-[min(62vw,22rem)] object-contain object-left" width="56" height="56" />
+      {nameZeigen && (
+        <span class="hidden sm:block leading-tight">
+          <span class="font-display font-bold text-lg block">{firma}</span>
+          {siteData.meta?.slogan && <span class="text-[11px] tracking-wide opacity-70 block">{siteData.meta.slogan}</span>}
+        </span>
+      )}
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-7" aria-label="Hauptnavigation">
+      {nav.map(item => item.children?.length ? (
+        <div class:list={['group', !item.mega && 'relative']}>
+          {echt(item.href) ? (
+            <a href={item.href}
+               aria-current={parentActive(item) ? 'page' : undefined}
+               class:list={['inline-flex items-center gap-1 text-sm font-medium py-6 transition-colors',
+                 parentActive(item) ? `${aktivText} ${aktivLinie} after:bottom-5` : 'hover:text-primary']}>
+              {item.label}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="mt-0.5 transition-transform group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+          ) : (
+            <button type="button" aria-haspopup="true"
+               class:list={['inline-flex items-center gap-1 text-sm font-medium py-6 transition-colors cursor-default',
+                 parentActive(item) ? `${aktivText} ${aktivLinie} after:bottom-5` : 'hover:text-primary']}>
+              {item.label}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="mt-0.5 transition-transform group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+          )}
+          {item.mega ? (
+          <div class="mega absolute inset-x-0 top-full opacity-0 invisible -translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 before:absolute before:inset-x-0 before:-top-3 before:h-3">
+            <div class="bg-background border-t border-b border-black/5 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.35)]">
+              <div class="container grid grid-cols-12 gap-10 py-10">
+                <div class="col-span-8 grid gap-8" style={`grid-template-columns: repeat(${Math.min(spalten(item).length, 3)}, minmax(0, 1fr))`}>
+                  {spalten(item).map(sp => (
+                    <div>
+                      {sp.titel && <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent mb-3">{sp.titel}</p>}
+                      <ul class="border-t border-black/10">
+                        {sp.liste.map(c => (
+                          <li class="border-b border-black/10">
+                            <a href={c.href} aria-current={kindAktiv(item, c) ? 'page' : undefined}
+                               class:list={['group/link flex items-center justify-between gap-3 py-3 font-display text-[1.15rem] leading-snug transition-colors',
+                                 kindAktiv(item, c) ? aktivText : 'hover:text-primary']}>
+                              {c.label}
+                              <span class="opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-accent" aria-hidden="true">→</span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <div class="col-span-4">
+                  <a href={echt(item.href) ? item.href : item.children[0].href} class="group/karte block overflow-hidden rounded-[var(--radius-karte,1.5rem)] bg-primary text-on-primary">
+                    {item.mega.bild && <div class="aspect-[16/9] overflow-hidden"><img src={item.mega.bild} alt="" loading="lazy" decoding="async" width="640" height="360" class="h-full w-full object-cover transition-transform duration-700 group-hover/karte:scale-105" /></div>}
+                    <div class="p-6">
+                      {item.mega.titel && <p class="font-display text-2xl leading-tight">{item.mega.titel}</p>}
+                      {item.mega.text && <p class="mt-2 text-sm opacity-85">{item.mega.text}</p>}
+                      {item.mega.fakten?.length > 0 && <ul class="mt-4 flex flex-wrap gap-2">{item.mega.fakten.map(f => <li class="text-[11px] font-semibold uppercase tracking-[0.12em] border border-on-primary/40 rounded-[var(--radius-knopf,9999px)] px-2.5 py-1 opacity-90">{f}</li>)}</ul>}
+                    </div>
+                  </a>
+                  {item.mega.aktionen?.length > 0 && (
+                    <div class="mt-3 grid gap-2" style={`grid-template-columns: repeat(${Math.min(item.mega.aktionen.length, 2)}, minmax(0, 1fr))`}>
+                      {item.mega.aktionen.map(a => (
+                        <a href={a.href} target={extern(a.href) ? '_blank' : undefined} rel={extern(a.href) ? 'noopener' : undefined}
+                           class="inline-flex items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.12em] border border-primary/30 text-primary px-3 py-2.5 rounded-[var(--radius-knopf,9999px)] hover:bg-primary hover:text-on-primary transition-colors">{a.label}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          ) : (
+          <div class="absolute left-1/2 -translate-x-1/2 top-full pt-1 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150">
+            <div class="bg-background rounded-[var(--radius-karte,1.5rem)] shadow-xl border border-black/5 py-2 min-w-52">
+              {item.children.map(c => (
+                <a href={c.href}
+                   aria-current={kindAktiv(item, c) ? 'page' : undefined}
+                   class:list={['block px-5 py-2.5 text-sm transition-colors',
+                     kindAktiv(item, c) ? `${aktivFlaeche} font-semibold` : 'hover:bg-black/5']}>
+                  {c.label}
+                </a>
+              ))}
+            </div>
+          </div>
+          )}
+        </div>
+      ) : (
+        <a href={item.href}
+           aria-current={isActive(item.href) ? 'page' : undefined}
+           class:list={['text-sm font-medium transition-colors relative py-1',
+             isActive(item.href)
+               ? `${aktivText} ${aktivLinie} after:-bottom-0.5`
+               : 'hover:text-primary']}>
+          {item.label}
+        </a>
+      ))}
+      {suche && (
+        <a href={suche} data-suche-oeffnen aria-label="Website durchsuchen" title="Suchen (Strg+K)"
+           class:list={['-mx-1 inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-knopf,9999px)] transition-colors hover:text-primary hover:bg-black/5', isActive(suche) && aktivText]}>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </a>
+      )}
+      <a href={ctaHref} aria-current={ctaAktiv ? 'page' : undefined}
+         class:list={['ml-1 inline-flex items-center gap-2 bg-primary text-on-primary text-sm font-semibold px-5 py-2.5 rounded-[var(--radius-knopf,9999px)] hover:bg-primary/85 transition-colors',
+           ctaAktiv && 'ring-1 ring-primary ring-offset-4 ring-offset-background']}>{ctaText}</a>
+    </nav>
+
+    {suche && (
+      <a href={suche} data-suche-oeffnen aria-label="Website durchsuchen" class="lg:hidden ml-auto mr-1 inline-flex h-10 w-10 items-center justify-center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </a>
+    )}
+    <button id="mobile-menu-btn" class="lg:hidden p-2 -mr-2" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menü öffnen">
+      <span class="menu-icon block"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span>
+      <span class="close-icon hidden"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+    </button>
+  </div>
+
+  <!-- Mobile-Menü: Vollhöhe, eigener Scroll (iOS-fest), Akkordeon für Untermenüs -->
+  <div id="mobile-menu" class="hidden lg:hidden bg-background border-t border-black/5
+       overflow-y-auto overscroll-contain"
+       style="-webkit-overflow-scrolling:touch; max-height: calc(100dvh - 4rem - var(--demo-bar-h, 0px))">
+    <nav class="container py-4 flex flex-col gap-1 pb-8" aria-label="Mobile Navigation">
+      {nav.map((item, i) => item.children?.length ? (
+        <div class="acc-group">
+          <button type="button" data-acc={i}
+                  class:list={['acc-btn w-full flex items-center justify-between py-3 px-2 rounded-[min(var(--radius-karte,1.5rem),0.5rem)] font-medium text-left',
+                    parentActive(item) ? aktivText : '']}
+                  aria-expanded="false">
+            {item.label}
+            <svg class="acc-icon transition-transform" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="acc-panel hidden pl-4 pb-1">
+            {item.mega?.bild && (
+              <a href={echt(item.href) ? item.href : item.children[0].href} class="relative mb-2 block overflow-hidden rounded-[min(var(--radius-karte,1.5rem),0.75rem)]">
+                <img src={item.mega.bild} alt="" loading="lazy" decoding="async" width="640" height="300" class="h-32 w-full object-cover" />
+                {item.mega.titel && <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2 pt-8 font-display text-lg text-white">{item.mega.titel}</span>}
+              </a>
+            )}
+            {echt(item.href) && !item.children.some(c => ohneSlash(c.href) === ohneSlash(item.href)) && <a href={item.href} class:list={['block py-2.5 px-2 rounded-[min(var(--radius-karte,1.5rem),0.5rem)] text-sm font-medium', isActive(item.href) ? aktivFlaeche : '']}>Übersicht</a>}
+            {item.children.map(c => (
+              <a href={c.href}
+                 aria-current={kindAktiv(item, c) ? 'page' : undefined}
+                 class:list={['block py-2.5 px-2 rounded-[min(var(--radius-karte,1.5rem),0.5rem)] text-sm', kindAktiv(item, c) ? `${aktivFlaeche} font-medium` : '']}>
+                {c.label}
+              </a>
+            ))}
+            {item.mega?.aktionen?.length > 0 && (
+              <div class="mt-2 mb-1 flex flex-wrap gap-2">
+                {item.mega.aktionen.map(a => (
+                  <a href={a.href} target={extern(a.href) ? '_blank' : undefined} rel={extern(a.href) ? 'noopener' : undefined}
+                     class="inline-flex items-center text-xs font-semibold uppercase tracking-[0.1em] border border-primary/30 text-primary px-3 py-2 rounded-[var(--radius-knopf,9999px)]">{a.label}</a>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <a href={item.href}
+           aria-current={isActive(item.href) ? 'page' : undefined}
+           class:list={['py-3 px-2 rounded-[min(var(--radius-karte,1.5rem),0.5rem)] font-medium',
+             isActive(item.href) ? `${aktivFlaeche} border-l-2 border-accent pl-3` : '']}>
+          {item.label}
+        </a>
+      ))}
+      <a href={ctaHref} aria-current={ctaAktiv ? 'page' : undefined}
+         class:list={['mt-3 inline-flex justify-center items-center gap-2 bg-primary text-on-primary font-semibold px-5 py-3 rounded-[var(--radius-knopf,9999px)]',
+           ctaAktiv && 'ring-1 ring-primary ring-offset-4 ring-offset-background']}>{ctaText}</a>
+    </nav>
+  </div>
+</header>
+<div class="h-16 lg:h-20" aria-hidden="true"></div>
+
+<script>
+  // @LOCKED – Scroll-Lock mit Positions-Speicherung (iOS-fest), Akkordeon exklusiv.
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  let savedY = 0;
+
+  function lock() {
+    savedY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+  }
+  function unlock() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    window.scrollTo(0, savedY);
+  }
+
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('hidden', open);
+    btn.querySelector('.menu-icon')?.classList.toggle('hidden', !open);
+    btn.querySelector('.close-icon')?.classList.toggle('hidden', open);
+    open ? unlock() : lock();
+  });
+
+  // Akkordeon: genau EIN Untermenü offen
+  menu?.querySelectorAll('.acc-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const grp = b.closest('.acc-group');
+      const panel = grp?.querySelector('.acc-panel');
+      const willOpen = panel?.classList.contains('hidden');
+      menu.querySelectorAll('.acc-panel').forEach(p => p.classList.add('hidden'));
+      menu.querySelectorAll('.acc-btn').forEach(x => { x.setAttribute('aria-expanded','false'); x.querySelector('.acc-icon')?.classList.remove('rotate-180'); });
+      if (willOpen) {
+        panel?.classList.remove('hidden');
+        b.setAttribute('aria-expanded','true');
+        b.querySelector('.acc-icon')?.classList.add('rotate-180');
+      }
+    });
+  });
+</script>

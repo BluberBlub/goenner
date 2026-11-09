@@ -1,0 +1,47 @@
+---
+// @LOCKED v4.1 – Cookie-Banner: nur ECHTE Optionen (statisch = akzeptieren/notwendige),
+// v3: Button-Schrift automatisch nach Kontrast (text-on-primary). Zwei Buttons sind
+// Absicht: ein dritter ("Einstellungen") hätte auf einer statischen Seite nichts zu tun.
+// id="cookie-banner" (StickyContact-Abstimmung), feuert "cookieconsent"-Event.
+// v4 (Spöri: "rechtlich falsch"): Der Text nennt externe Inhalte NUR, wenn die Seite welche lädt.
+//     site-data.json: "externeInhalte": ["Google Maps", "YouTube"] (leer/fehlt = keine).
+//     qa-checks meldet eingebundene Karten/Videos, die dort fehlen. Auf /stil-muster/ kein Banner
+//     (verdeckte sonst die Muster). Radius aus design.radius.
+import siteData from '../content/site-data.json';
+const extern = Array.isArray(siteData.externeInhalte) ? siteData.externeInhalte.filter(Boolean) : [];
+const liste = extern.length > 1 ? `${extern.slice(0, -1).join(', ')} und ${extern[extern.length - 1]}` : extern[0];
+const titel = extern.length ? 'Cookies & externe Inhalte' : 'Cookies & Datenschutz';
+const text = extern.length
+  ? `Diese Website nutzt nur technisch notwendige Cookies. Externe Inhalte (${liste}) werden erst nach Ihrer Zustimmung geladen.`
+  : 'Diese Website nutzt nur technisch notwendige Speicherungen und lädt keine Inhalte externer Anbieter.';
+---
+<div id="cookie-banner" class="hidden fixed inset-x-0 z-50 p-4 sm:p-5" style="bottom: var(--demo-bar-h, 0px)">
+  <div class="container max-w-3xl bg-white rounded-[var(--radius-karte,1.5rem)] shadow-2xl border border-black/10 p-5 sm:p-6">
+    <p class="font-semibold mb-1.5">{titel}</p>
+    <p class="text-sm text-text/70 mb-4">
+      {text}
+      Details in der <a href="/datenschutz/" class="underline hover:text-primary">Datenschutzerklärung</a>.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <button id="cookie-accept" class="bg-primary text-on-primary font-semibold px-5 py-2.5 rounded-[var(--radius-knopf,9999px)] hover:bg-primary/85 transition-colors">Alle akzeptieren</button>
+      <button id="cookie-essential" class="border border-black/15 font-medium px-5 py-2.5 rounded-[var(--radius-knopf,9999px)] hover:bg-black/5 transition-colors">Nur notwendige</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banner = document.getElementById('cookie-banner');
+  const set = (val) => {
+    localStorage.setItem('cookie-consent', val);
+    banner?.classList.add('hidden');
+    window.dispatchEvent(new CustomEvent('cookieconsent', { detail: val }));
+  };
+  if (banner && !localStorage.getItem('cookie-consent') && !location.pathname.includes('stil-muster')) banner.classList.remove('hidden');
+  document.getElementById('cookie-accept')?.addEventListener('click', () => set('all'));
+  document.getElementById('cookie-essential')?.addEventListener('click', () => set('essential'));
+  // Widerruf/Änderung jederzeit (Footer-Link "Cookie-Einstellungen", erscheint bei externen Inhalten)
+  document.querySelectorAll('[data-cookie-einstellungen]').forEach((b) => b.addEventListener('click', () => {
+    banner?.classList.remove('hidden');
+    document.getElementById('cookie-essential')?.focus();
+  }));
+</script>

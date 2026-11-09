@@ -1,0 +1,88 @@
+---
+// @LOCKED v2 – FAQ (Weber, Niko: "FAQs IMMER als Accordion"). Nur eine Frage offen (details name),
+// ganze Zeile klickbar, weiches Aufklappen, volle Contentbreite. Ohne JavaScript voll bedienbar.
+// v2 (Schneider, Niko: "schließen sich ruckartig", "die ganze Sektion wackelt"): Auf UND Zu laufen über
+// die Web Animations API (jeder Browser, ::details-content allein schließt in vielen hart). Die angeklickte
+// Frage bleibt per Scroll-Ausgleich an ihrer Stelle, während die Nachbarfrage zuklappt.
+// Props: fragen = [{ f: "Frage", a: "Antwort (HTML erlaubt)" }], gruppe (bei mehreren FAQs je Seite),
+//        erstesOffen (Standard true), dunkel (auf bg-primary).
+// Tipp: dieselben Fragen als FAQPage-Schema ausgeben (strukturierte Daten), wenn es echte FAQs sind.
+interface Props { fragen: { f: string; a: string }[]; gruppe?: string; erstesOffen?: boolean; dunkel?: boolean; class?: string }
+const { fragen = [], gruppe = 'faq', erstesOffen = true, dunkel = false, class: cls = '' } = Astro.props;
+---
+<div class:list={['fragen divide-y overflow-hidden rounded-[var(--radius-karte,1.5rem)] ring-1',
+  dunkel ? 'divide-on-primary/15 ring-on-primary/15' : 'divide-text/10 ring-black/5 bg-background shadow-sm', cls]}>
+  {fragen.map((q, i) => (
+    <details name={gruppe} class="frage group" open={erstesOffen && i === 0}>
+      <summary class:list={['flex cursor-pointer list-none items-center justify-between gap-5 px-5 py-5 sm:px-7 font-display text-lg sm:text-xl font-semibold transition-colors',
+        dunkel ? 'hover:bg-on-primary/5' : 'hover:bg-primary/5']}>
+        <span>{q.f}</span>
+        <span class="frage-plus flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15 transition-transform duration-300 group-open:rotate-45" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+      </summary>
+      <div class:list={['px-5 pb-6 sm:px-7 text-[15px] sm:text-base md:text-lg max-w-4xl', dunkel ? 'text-on-primary/80' : 'text-text/80']} set:html={q.a} />
+    </details>
+  ))}
+</div>
+
+<script>
+  const DAUER = 520;
+  const KURVE = 'cubic-bezier(.45,0,.2,1)';
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const inhalt = (d: HTMLDetailsElement) => d.querySelector<HTMLElement>(':scope > summary + *');
+  const animiere = (el: HTMLElement, auf: boolean) => {
+    const offen = { height: `${el.offsetHeight}px`, paddingBottom: getComputedStyle(el).paddingBottom, opacity: 1 };
+    const zu = { height: '0px', paddingBottom: '0px', opacity: 0 };
+    return el.animate(auf ? [zu, offen] : [offen, zu], { duration: DAUER, easing: KURVE });
+  };
+  const schliessen = (d: HTMLDetailsElement) => {
+    const el = inhalt(d);
+    if (!el || ruhig) { d.open = false; return; }
+    d.dataset.zu = '1';
+    animiere(el, false).finished.then(() => { d.open = false; delete d.dataset.zu; });
+  };
+  const oeffnen = (d: HTMLDetailsElement) => {
+    d.open = true;
+    const el = inhalt(d);
+    if (el && !ruhig) animiere(el, true);
+  };
+  // hält die angeklickte Frage an ihrer Bildschirmposition, solange der Nachbar zuklappt
+  const festhalten = (el: HTMLElement) => {
+    const start = el.getBoundingClientRect().top;
+    const ende = performance.now() + DAUER + 40;
+    const schritt = () => {
+      const delta = el.getBoundingClientRect().top - start;
+      if (Math.abs(delta) > 0.5) window.scrollBy({ top: delta, behavior: 'instant' as ScrollBehavior });
+      if (performance.now() < ende) requestAnimationFrame(schritt);
+    };
+    requestAnimationFrame(schritt);
+  };
+  document.documentElement.classList.add('fragen-js');
+  document.querySelectorAll<HTMLDetailsElement>('details.frage').forEach((d) => {
+    const s = d.querySelector('summary');
+    if (!s) return;
+    s.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (d.dataset.zu) return;
+      if (d.open) { schliessen(d); return; }
+      const gruppe = d.getAttribute('name');
+      const andere = gruppe ? [...document.querySelectorAll<HTMLDetailsElement>(`details.frage[open]`)].filter((o) => o !== d && o.getAttribute('name') === gruppe) : [];
+      if (!ruhig && andere.length) festhalten(s);
+      andere.forEach(schliessen);
+      oeffnen(d);
+    });
+  });
+</script>
+
+<style>
+  .frage summary::-webkit-details-marker { display: none; }
+  .frage::details-content { transition: height .35s ease, content-visibility .35s allow-discrete; height: 0; overflow: clip; }
+  .frage[open]::details-content { height: auto; }
+  @supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
+  @media (prefers-reduced-motion: reduce) { .frage::details-content { transition: none; } }
+  /* Mit Skript übernimmt die Web Animations API, die CSS-Transition darf nicht dazwischenfunken */
+  :global(.fragen-js) .frage::details-content { transition: none; height: auto; }
+  :global(.fragen-js) .frage > summary + * { overflow: hidden; }
+  :global(.fragen-js) .fragen { overflow-anchor: none; }
+</style>

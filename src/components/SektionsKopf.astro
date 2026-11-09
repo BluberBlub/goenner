@@ -1,0 +1,46 @@
+---
+// @LOCKED v1 – Einheitlicher Sektionskopf (Spöri + Weber, Niko: "immer Eyebrow, Headline, Text
+// untereinander, nicht nebeneinander"). Reihenfolge fest: Eyebrow, Headline, Text, dann Buttons/Links.
+// Linksbündig; mitte = true nur für einzelne große Momente.
+// titel/text dürfen HTML enthalten (<em>, <br>, &nbsp;). Weitere Absätze in den Standard-Slot,
+// Buttons/Links in den Slot "aktionen". Eyebrow beginnt immer mit Großbuchstaben (qa-copy prüft).
+// Aussehen projektbezogen über CSS anpassbar: .sektions-kopf [data-eyebrow] { … }
+interface Props {
+  eyebrow: string;
+  titel: string;
+  text?: string;
+  dunkel?: boolean;               // auf dunkler Fläche (bg-primary): Schrift text-on-primary
+  mitte?: boolean;
+  ebene?: 'h2' | 'h3';
+  groesse?: 'gross' | 'mittel' | 'klein';
+  class?: string;
+}
+const { eyebrow, titel, text, dunkel = false, mitte = false, ebene = 'h2', groesse = 'gross', class: cls = '' } = Astro.props;
+const Tag = ebene;
+const titelGroesse = {
+  gross: 'text-[2rem] sm:text-5xl lg:text-[3.4rem]',
+  mittel: 'text-[1.8rem] sm:text-4xl lg:text-[2.6rem]',
+  klein: 'text-[1.6rem] sm:text-3xl',
+}[groesse];
+const hatText = !!text || Astro.slots.has('default');
+---
+<div class:list={['sektions-kopf max-w-3xl mb-10 lg:mb-14', mitte && 'mx-auto text-center', cls]}>
+  <p data-eyebrow data-reveal
+     class:list={['inline-flex items-center gap-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em]', dunkel ? 'text-on-primary/85' : 'text-primary']}>
+    <span class:list={['w-8 h-px shrink-0', dunkel ? 'bg-on-primary/60' : 'bg-accent']} aria-hidden="true"></span>
+    <span set:html={eyebrow} />
+  </p>
+  <Tag data-reveal set:html={titel}
+       class:list={['mt-4 font-display font-bold leading-[1.15] text-balance', titelGroesse, dunkel ? 'text-on-primary' : 'text-primary']} />
+  {hatText && (
+    <div data-reveal class:list={['mt-5 space-y-4 max-w-2xl text-[15px] sm:text-base md:text-lg leading-relaxed', mitte && 'mx-auto', dunkel ? 'text-on-primary/80' : 'text-text/80']}>
+      {text && <p data-lead set:html={text} />}
+      <slot />
+    </div>
+  )}
+  {Astro.slots.has('aktionen') && (
+    <div data-reveal class:list={['mt-7 flex flex-wrap items-center gap-x-7 gap-y-3', mitte && 'justify-center']}>
+      <slot name="aktionen" />
+    </div>
+  )}
+</div>

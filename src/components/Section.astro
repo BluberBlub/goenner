@@ -1,0 +1,16 @@
+---
+// @LOCKED v2 – Standard-Sektion mit FIXEM Abstands-System.
+// Verhindert "zusammengewürfelt": nur diese Varianten existieren.
+// variant: standard | kompakt | buehne   bg: base | tint | dark | none
+// v2: dunkle Fläche nutzt text-on-primary (Schriftfarbe automatisch nach Kontrast).
+interface Props { variant?: 'standard'|'kompakt'|'buehne'; bg?: 'base'|'tint'|'dark'|'none'; id?: string; class?: string; }
+const { variant = 'standard', bg = 'base', id, class: cls = '' } = Astro.props;
+const pad = { standard: 'py-16 sm:py-20 lg:py-28', kompakt: 'py-12 sm:py-16 lg:py-20', buehne: 'py-20 sm:py-28 lg:py-36' }[variant];
+const bgc = { base: '', tint: 'bg-primary/5', dark: 'bg-primary text-on-primary', none: '' }[bg];
+---
+<section id={id} class:list={['relative', pad, bgc, cls]}>
+  {Astro.slots.has('bleed') && <slot name="bleed" />}
+  <div class="container relative">
+    <slot />
+  </div>
+</section>

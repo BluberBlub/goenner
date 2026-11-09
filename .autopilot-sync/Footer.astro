@@ -1,0 +1,225 @@
+---
+// @LOCKED v7 – Footer, datengetrieben aus site-data.json. Auf ALLEN Seiten identisch.
+// v3 (Learnings Alge + Opitz): großes Logo mit Firmenname darunter, keine Spalten-
+// Überschriften, Rechtliches in der Linkliste, keine toten #-Links (Menüpunkte mit
+// Untermenü ohne eigene Seite werden durch ihre Unterseiten ersetzt), Active-State,
+// Schriftfarbe automatisch (text-on-primary), E-Mail bricht sauber am @ um.
+// v4 (Joos, Spöri, Weber): Impressum · Datenschutz nebeneinander in einer Zeile unter der E-Mail
+//     (mit Abstand), größeres Logo, Telefon-Links mit +49, Radius aus design.radius,
+//     "Webdesign: niko-endres.de" im Copyright (abschaltbar: meta.webdesign = false).
+// v5 (Schwabenpflege): Schrift mindestens /80 auf der Fläche (Lighthouse-Kontrast), bei externen Inhalten
+//     (site-data externeInhalte) ein Link "Cookie-Einstellungen": Widerruf so einfach wie die Einwilligung.
+// v6 (Schwabenpflege + Schneider: großes Logo macht Spalte 1 hoch, die Nachbarspalten hängen schief):
+//     meta.footerLayout = "logo-oben": Logo über volle Breite mit Linie darunter, darunter drei Spalten
+//     (Beschreibung | Navigation | Kontakt), oben bündig. Ohne Angabe bleibt alles wie bisher.
+// v7.1: in den Linkspalten ist nur der genaueste Treffer aktiv.
+// v7 (Waldsee Golf, Niko: "von der Nav bis zum Footer perfekt", große Seite mit vielen Unterseiten):
+//     optionaler SITEMAP-FOOTER über site-data.json "footer":
+//       { "leitsatz": "Bis bald auf dem Hofgut.", "spalten": [{ "titel": "Golf", "links": [{ "label", "href" }] }],
+//         "rechtliches": [{ "label": "AGB", "href": "/agb/" }] }
+//     Oben Logo und Leitsatz, darunter Kontakt + bis zu vier Linkspalten mit Titeln, unten eine Zeile mit
+//     Copyright, Impressum, Datenschutz (+ rechtliches) und Webdesign. Ohne "footer.spalten" alles wie v6.
+//
+// Logo auf der dunklen Fläche:
+//   meta.logoFooter      = eigene helle Logo-Version (beste Lösung, wird 1:1 gezeigt)
+//   meta.logoFooterStil  = "weiss"    Logo als einfarbige Fläche (Standard; nur für Logos mit
+//                                      transparentem Hintergrund, sonst entsteht ein weißer Kasten)
+//                        | "platte"   Logo auf heller Platte (passt immer, auch bei JPG/bunt)
+//                        | "original" Logo unverändert
+//   meta.logoMitName     = true       Logo enthält den Namen schon (Wortmarke) -> kein Text darunter
+import siteData from '../content/site-data.json';
+const m = siteData.meta || {};
+const firma = m.firmenname || '';
+const beschreibung = m.kurzbeschreibung || '';
+const slogan = m.slogan || '';
+const logo = m.logoFooter || m.logo || '';
+// JPG hat nie Transparenz -> als Fläche wäre es ein weißer Kasten, daher dort Platte.
+const stil = m.logoFooter ? 'original' : (m.logoFooterStil || (/\.jpe?g$/i.test(logo) ? 'platte' : 'weiss'));
+const logoOben = m.footerLayout === 'logo-oben';
+const nameZeigen = !logo || (m.logoMitName !== true && m.showLogoText !== false);
+// Aktive Seite in der Akzentfarbe (Opitz), wenn sie auf der Footer-Fläche trägt, sonst unterstrichen
+const lum = (hex) => { const x = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex || ''); if (!x) return 0; const [r, g, b] = [x[1], x[2], x[3]].map(v => { const c = parseInt(v, 16) / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const kontrast = (a, b) => { const [h, d] = [lum(a), lum(b)].sort((p, q) => q - p); return (h + 0.05) / (d + 0.05); };
+const fa = siteData.design?.farben || {};
+const aktivKlassen = kontrast(fa.accent || '#D4A853', fa.primary || '#1A5C4A') >= 3
+  ? 'aria-[current=page]:text-accent aria-[current=page]:font-semibold'
+  : 'aria-[current=page]:text-on-primary aria-[current=page]:font-semibold aria-[current=page]:underline aria-[current=page]:decoration-accent aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4';
+const k = siteData.kontakt || {};
+const jahr = new Date().getFullYear();
+
+// Links: Menüpunkte mit Untermenü, aber ohne eigene Seite ("#"), durch ihre Unterseiten ersetzen.
+const echt = (h) => typeof h === 'string' && h.trim() !== '' && !h.trim().startsWith('#');
+const links = [];
+for (const i of siteData.navigation || []) {
+  if (echt(i.href)) links.push({ label: i.label, href: i.href });
+  else for (const c of i.children || []) if (echt(c.href)) links.push({ label: c.label, href: c.href });
+}
+// Rechtliches steht als eigene Zeile unter der E-Mail, nicht in der Linkliste
+const rechtliches = [{ label: 'Impressum', href: '/impressum/' }, { label: 'Datenschutz', href: '/datenschutz/' }];
+const ohneSlash = (h) => h.replace(/\/$/, '');
+for (let i = links.length - 1; i >= 0; i--) if (rechtliches.some(r => ohneSlash(r.href) === ohneSlash(links[i].href))) links.splice(i, 1);
+const webdesign = m.webdesign !== false;
+const extern = Array.isArray(siteData.externeInhalte) && siteData.externeInhalte.length > 0;
+const pfad = Astro.url.pathname.replace(/\/$/, '') || '/';
+const aktiv = (href) => { const h = href.replace(/\/$/, '') || '/'; return h === '/' ? pfad === '/' : pfad === h || pfad.startsWith(h + '/'); };
+
+const routeZiel = [k.strasse, `${k.plz || ''} ${k.ort || ''}`.trim(), firma].filter(Boolean).join(', ');
+const routeUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(routeZiel)}`;
+const telHref = (t) => { let s = String(t).replace(/\(0\)/g, '').replace(/[^\d+]/g, ''); if (s.startsWith('00')) s = '+' + s.slice(2); else if (s.startsWith('0')) s = ({ AT: '+43', CH: '+41' }[siteData.kontakt?.land] || '+49') + s.slice(1); return `tel:${s}`; };
+const [mailName, mailDomain] = String(k.email || '').split('@');
+// v7: Sitemap-Footer
+const f = siteData.footer || {};
+const spalten = Array.isArray(f.spalten) ? f.spalten.filter(s => s?.links?.length).slice(0, 4) : [];
+const rechtlichAlle = [...rechtliches, ...(Array.isArray(f.rechtliches) ? f.rechtliches : [])];
+// v7.1: in den Spalten leuchtet nur der genaueste Treffer (/hotel/arrangements/x markiert nicht auch /hotel/)
+const alleSpaltenLinks = spalten.flatMap(s => s.links.map(l => l.href));
+const aktivGenau = (href) => aktiv(href) && !alleSpaltenLinks.some(h => h !== href && aktiv(h) && h.replace(/\/$/, '').length > href.replace(/\/$/, '').length);
+---
+{spalten.length > 0 ? (
+<footer class="bg-primary text-on-primary">
+  <div class="container pt-16 lg:pt-20 pb-12">
+    <div class="grid gap-8 lg:grid-cols-12 lg:items-end border-b border-on-primary/15 pb-12">
+      {logo && (
+        <a href="/" class="lg:col-span-4 inline-block" aria-label={`${firma}, zur Startseite`}>
+          {stil === 'platte' ? (
+            <span class="inline-flex items-center bg-white rounded-[var(--radius-karte,1.5rem)] px-5 py-4 shadow-sm">
+              <img src={logo} alt={firma} class="h-16 lg:h-20 w-auto max-w-[16rem] object-contain" width="160" height="80" loading="lazy" />
+            </span>
+          ) : (
+            <img src={logo} alt={firma} data-footer-logo={stil} class="h-28 lg:h-36 w-auto max-w-[18rem] object-contain" width="160" height="128" loading="lazy"
+                 style={stil === 'weiss' ? 'filter: brightness(0) invert(var(--on-primary-invert, 1))' : undefined} />
+          )}
+        </a>
+      )}
+      <div class="lg:col-span-8 lg:text-right">
+        {f.leitsatz && <p class="font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.15]" set:html={f.leitsatz} />}
+        {beschreibung && <p class="mt-4 text-on-primary/80 max-w-xl lg:ml-auto">{beschreibung}</p>}
+      </div>
+    </div>
+
+    <div class="grid gap-12 pt-12 lg:grid-cols-12">
+      <div class="lg:col-span-3">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">Kontakt</p>
+        <ul class="mt-5 space-y-3 text-on-primary/80">
+          <li class="font-medium text-on-primary">{firma}</li>
+          {k.strasse && (
+            <li>{k.strasse}{k.ort && <><br />{`${k.plz || ''} ${k.ort}`.trim()}</>}
+              {k.ort && <><br /><a href={routeUrl} target="_blank" rel="noopener" class="text-sm underline underline-offset-2 hover:text-on-primary">Route planen</a></>}
+            </li>
+          )}
+          {k.telefon && <li><a href={telHref(k.telefon)} class="hover:text-on-primary whitespace-nowrap">{k.telefon}</a></li>}
+          {k.email && <li><a href={`mailto:${k.email}`} class="hover:text-on-primary break-words min-w-0">{mailName}@<wbr />{mailDomain}</a></li>}
+        </ul>
+      </div>
+      <nav aria-label="Footer-Navigation" class="lg:col-span-9 grid gap-x-6 gap-y-10" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr))">
+        {spalten.map(s => (
+          <div>
+            {s.titel && <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">{s.titel}</p>}
+            <ul class="mt-5 space-y-2.5">
+              {s.links.map(l => (
+                <li><a href={l.href} aria-current={aktivGenau(l.href) ? 'page' : undefined}
+                       target={/^https?:/.test(l.href) ? '_blank' : undefined} rel={/^https?:/.test(l.href) ? 'noopener' : undefined}
+                       class:list={['text-on-primary/80 hover:text-on-primary transition-colors', aktivKlassen]}>{l.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+  </div>
+  <div class="border-t border-on-primary/15">
+    <div class="container py-6 flex flex-col gap-3 text-sm text-on-primary/80 md:flex-row md:items-center md:justify-between">
+      <p>{`© ${jahr} ${firma}`}</p>
+      <p class="flex flex-wrap gap-x-5 gap-y-2">
+        {rechtlichAlle.map(r => (
+          <a href={r.href} aria-current={aktiv(r.href) ? 'page' : undefined} class:list={['text-on-primary/80 hover:text-on-primary transition-colors', aktivKlassen]}>{r.label}</a>
+        ))}
+        {extern && <button type="button" data-cookie-einstellungen class="text-on-primary/80 hover:text-on-primary underline-offset-2 hover:underline">Cookie-Einstellungen</button>}
+      </p>
+      {webdesign && <p>Webdesign: <a href="https://niko-endres.de" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-on-primary">niko-endres.de</a></p>}
+    </div>
+  </div>
+</footer>
+) : (
+<footer class="bg-primary text-on-primary">
+  <div class="container py-14 lg:py-16">
+    <div class:list={['grid gap-10 md:grid-cols-2 text-center md:text-left', logoOben ? 'lg:grid-cols-3' : 'lg:grid-cols-4']}>
+      <div class:list={[logoOben ? 'contents' : 'lg:col-span-2 flex flex-col items-center md:items-start']}>
+        {logo && (
+          <a href="/" class:list={[logoOben ? 'col-span-full block border-b border-on-primary/15 pb-8' : 'inline-block mb-5']} aria-label={`${firma}, zur Startseite`}>
+            {stil === 'platte' ? (
+              <span class="inline-flex items-center bg-white rounded-[var(--radius-karte,1.5rem)] px-5 py-4 shadow-sm">
+                <img src={logo} alt={firma} class="h-16 lg:h-20 w-auto max-w-[16rem] object-contain" width="160" height="80" loading="lazy" />
+              </span>
+            ) : (
+              <img src={logo} alt={firma} data-footer-logo={stil}
+                   class:list={['w-auto object-contain', logoOben ? 'mx-auto md:mx-0 h-20 lg:h-24 max-w-[min(100%,30rem)]' : 'h-24 lg:h-32 max-w-[18rem]']} width="160" height="128" loading="lazy"
+                   style={stil === 'weiss' ? 'filter: brightness(0) invert(var(--on-primary-invert, 1))' : undefined} />
+            )}
+          </a>
+        )}
+        <div class:list={[logoOben ? 'flex flex-col items-center md:items-start' : 'contents']}>
+          {nameZeigen && <p class="font-display font-bold text-xl">{firma}</p>}
+          {beschreibung && <p class="mt-2 text-on-primary/80 max-w-md">{beschreibung}</p>}
+          {slogan && <p class="mt-2 font-semibold text-on-primary/90">{slogan}</p>}
+        </div>
+      </div>
+
+      <nav aria-label="Footer-Navigation">
+        <ul class="space-y-2">
+          {links.map(l => (
+            <li>
+              <a href={l.href} aria-current={aktiv(l.href) ? 'page' : undefined}
+                 class:list={['text-on-primary/80 hover:text-on-primary transition-colors', aktivKlassen]}>
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div>
+        <ul class="space-y-2 text-on-primary/80">
+          <li class="font-medium text-on-primary">{firma}</li>
+          {k.strasse && (
+            <li class="flex items-start justify-center md:justify-start gap-2">
+              <svg class="hidden md:block w-4 h-4 mt-1 shrink-0 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <span>
+                {k.strasse}{k.ort && <><br />{`${k.plz || ''} ${k.ort}`.trim()}</>}
+                {k.ort && (
+                  <><br /><a href={routeUrl} target="_blank" rel="noopener"
+                     class="text-sm underline underline-offset-2 hover:text-on-primary">Route planen</a></>
+                )}
+              </span>
+            </li>
+          )}
+          {k.telefon && (
+            <li class="flex items-center justify-center md:justify-start gap-2">
+              <svg class="hidden md:block w-4 h-4 shrink-0 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2 17 17 0 0 1-12-12 2 2 0 0 1 2-2h2l1.5 4-2 1a13 13 0 0 0 5.5 5.5l1-2 4 1.5z"/></svg>
+              <a href={telHref(k.telefon)} class="hover:text-on-primary whitespace-nowrap">{k.telefon}</a>
+            </li>
+          )}
+          {k.email && (
+            <li class="flex items-center justify-center md:justify-start gap-2">
+              <svg class="hidden md:block w-4 h-4 shrink-0 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>
+              <a href={`mailto:${k.email}`} class="hover:text-on-primary break-words min-w-0">{mailName}@<wbr />{mailDomain}</a>
+            </li>
+          )}
+          <li class="pt-4 text-sm">
+            {rechtliches.map((r, i) => (
+              <>{i > 0 && <span class="mx-2 opacity-50" aria-hidden="true">·</span>}<a href={r.href} aria-current={aktiv(r.href) ? 'page' : undefined}
+                 class:list={['text-on-primary/80 hover:text-on-primary transition-colors', aktivKlassen]}>{r.label}</a></>
+            ))}
+            {extern && <><span class="mx-2 opacity-50" aria-hidden="true">·</span><button type="button" data-cookie-einstellungen class="text-on-primary/80 hover:text-on-primary underline-offset-2 hover:underline">Cookie-Einstellungen</button></>}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-on-primary/15">
+    <div class="container py-5 text-center text-sm text-on-primary/80">
+      <p>© {jahr} {firma}{webdesign && <><span class="hidden sm:inline mx-2 opacity-50" aria-hidden="true">·</span><span class="block sm:inline">Webdesign: <a href="https://niko-endres.de" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-on-primary">niko-endres.de</a></span></>}</p>
+    </div>
+  </div>
+</footer>
+)}

@@ -1,0 +1,32 @@
+---
+// @LOCKED v5 – Demo-Hinweisleiste unten. Aktivierung: meta.demo = true in site-data.json, beim Go-Live false.
+// v5 (Joos: "muss endgültig gefixt werden", Opitz): IMMER sichtbar, auf jeder Seite, ab dem ersten
+//     Bildschirm. Früher erschien sie erst nach dem Hero und fehlte so oben und auf Seiten ohne Hero.
+//     Der Footer reicht unter die Leiste (Weber: "Footer muss immer bündig unten sein, kein Streifen").
+//     Die Hero-Höhe zieht die Leiste ab (--hero-h im BaseLayout), der Hero bleibt also ganz sichtbar.
+import siteData from '../content/site-data.json';
+const demo = siteData.meta?.demo === true;
+---
+{demo && (
+  <>
+    <div id="demo-bar" role="note" data-sichtbar="true"
+         class="fixed bottom-0 inset-x-0 z-[60] bg-[#1d1d1f] text-white/85 flex items-center justify-center
+                gap-x-2 px-4 text-center flex-wrap h-11 lg:h-10 print:hidden">
+      <span class="text-[11px] sm:text-xs leading-tight">
+        Dies ist eine unverbindliche Demo und nicht die offizielle Seite dieser Firma.
+      </span>
+      <a href="https://www.niko-endres.de" target="_blank" rel="noopener"
+         class="text-[11px] sm:text-xs font-medium text-[#7FC4A6] underline underline-offset-2 hover:text-white whitespace-nowrap">
+        Interesse an einem eigenen Redesign? www.niko-endres.de
+      </a>
+    </div>
+    <style is:global>
+      :root { --demo-bar-h: 44px; }
+      @media (min-width: 1024px) { :root { --demo-bar-h: 40px; } }
+      @media print { :root { --demo-bar-h: 0px; } }
+      body { padding-bottom: var(--demo-bar-h); }
+      /* Footer läuft unter der Leiste weiter: kein heller Streifen unter dem Footer */
+      body > footer { margin-bottom: calc(-1 * var(--demo-bar-h)); padding-bottom: var(--demo-bar-h); }
+    </style>
+  </>
+)}

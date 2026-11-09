@@ -1,0 +1,75 @@
+---
+// @LOCKED v2 – Kontakt-Karte (Alge-Learning): beginnt IMMER mit Firmenname und
+// Ansprechpartner. Wirkt persönlich statt anonym. Für Kontaktseite und Kontakt-
+// Sektionen der Startseite. Datengetrieben aus site-data.json:
+//   meta.firmenname, meta.inhaber ("René Alge"), meta.inhaberRolle (Standard "Inhaber"),
+//   kontakt.strasse/plz/ort/telefon/mobil/email,
+//   kontakt.oeffnungszeiten: "Mo–Fr 8–17 Uhr" | ["Mo–Do 8–16 Uhr", "Fr 8–12 Uhr"]
+//                            | [{ "tage": "Mo–Do", "zeiten": "8–16 Uhr" }, …]
+// Props: variante = "karte" (Standard, eigene Fläche) | "offen" (ohne Rahmen, erbt Farben)
+//        ohneZeiten = true: Öffnungszeiten ausblenden, wenn sie auf der Seite schon stehen
+//        (Spöri: "nie doppelt", z. B. neben der Komponente Oeffnungszeiten)
+// v2: Radius aus design.radius, Telefon-Links mit +49.
+import siteData from '../content/site-data.json';
+interface Props { variante?: 'karte' | 'offen'; class?: string; ohneZeiten?: boolean; }
+const { variante = 'karte', class: cls = '', ohneZeiten = false } = Astro.props;
+const m = siteData.meta || {};
+const k = siteData.kontakt || {};
+const firma = m.firmenname || '';
+const inhaber = m.inhaber || '';
+const rolle = m.inhaberRolle || 'Inhaber';
+const telHref = (t) => { let s = String(t).replace(/\(0\)/g, '').replace(/[^\d+]/g, ''); if (s.startsWith('00')) s = '+' + s.slice(2); else if (s.startsWith('0')) s = ({ AT: '+43', CH: '+41' }[siteData.kontakt?.land] || '+49') + s.slice(1); return `tel:${s}`; };
+const routeZiel = [k.strasse, `${k.plz || ''} ${k.ort || ''}`.trim(), firma].filter(Boolean).join(', ');
+const routeUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(routeZiel)}`;
+const [mailName, mailDomain] = String(k.email || '').split('@');
+const zeiten = (() => {
+  const z = k.oeffnungszeiten;
+  if (!z || ohneZeiten) return [];
+  if (typeof z === 'string') return [z];
+  if (Array.isArray(z)) return z.map(e => typeof e === 'string' ? e : [e.tage, e.zeiten].filter(Boolean).join(' ')).filter(Boolean);
+  return [];
+})();
+const huelle = variante === 'karte'
+  ? 'rounded-[var(--radius-karte,1.5rem)] bg-background text-text border border-black/10 shadow-xl p-7 sm:p-9'
+  : '';
+const icon = variante === 'karte' ? 'text-primary' : 'opacity-80';
+---
+<div class:list={[huelle, cls]} data-kontaktkarte>
+  <p class="font-display text-2xl sm:text-3xl font-bold leading-tight">{firma}</p>
+  {inhaber && <p class="mt-1 opacity-75">{inhaber} · {rolle}</p>}
+  <ul class="mt-6 space-y-4">
+    {k.strasse && (
+      <li class="flex gap-3">
+        <svg class:list={['w-5 h-5 mt-0.5 shrink-0', icon]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <div>
+          {k.strasse}{k.ort && <><br />{`${k.plz || ''} ${k.ort}`.trim()}</>}
+          {k.ort && <><br /><a href={routeUrl} target="_blank" rel="noopener" class="text-sm font-semibold underline underline-offset-4 decoration-accent decoration-2">Route planen</a></>}
+        </div>
+      </li>
+    )}
+    {k.telefon && (
+      <li class="flex gap-3 items-center">
+        <svg class:list={['w-5 h-5 shrink-0', icon]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2 17 17 0 0 1-12-12 2 2 0 0 1 2-2h2l1.5 4-2 1a13 13 0 0 0 5.5 5.5l1-2 4 1.5z"/></svg>
+        <a href={telHref(k.telefon)} class="font-semibold whitespace-nowrap hover:underline underline-offset-4">{k.telefon}</a>
+      </li>
+    )}
+    {k.mobil && (
+      <li class="flex gap-3 items-center">
+        <svg class:list={['w-5 h-5 shrink-0', icon]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+        <a href={telHref(k.mobil)} class="font-semibold whitespace-nowrap hover:underline underline-offset-4">{k.mobil}</a>
+      </li>
+    )}
+    {k.email && (
+      <li class="flex gap-3 items-center">
+        <svg class:list={['w-5 h-5 shrink-0', icon]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>
+        <a href={`mailto:${k.email}`} class="font-semibold break-words min-w-0 hover:underline underline-offset-4">{mailName}@<wbr />{mailDomain}</a>
+      </li>
+    )}
+    {zeiten.length > 0 && (
+      <li class="flex gap-3">
+        <svg class:list={['w-5 h-5 mt-0.5 shrink-0', icon]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div>{zeiten.map((z, i) => <>{i > 0 && <br />}{z}</>)}</div>
+      </li>
+    )}
+  </ul>
+</div>

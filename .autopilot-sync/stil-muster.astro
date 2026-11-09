@@ -1,0 +1,258 @@
+---
+// @LOCKED v2 – STIL-MUSTER (Style Tile). Wird in Phase 1b gebaut und angeschaut,
+// BEVOR Seiten entstehen. Zeigt die komplette visuelle Sprache auf einer Seite.
+// Nicht in der Navigation, noindex. Nach Freigabe kann sie bleiben oder weg.
+// v2: zeigt die automatische Schriftfarbe auf Farbflächen (mit Kontrastwert und
+//     Alternative) und die drei Footer-Logo-Varianten zur Auswahl.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteData from '../content/site-data.json';
+const f = siteData.design?.farben || {};
+const fonts = siteData.design?.fonts || {};
+const m = siteData.meta || {};
+const leitidee = siteData.design?.leitidee || '(keine Leitidee in site-data.json)';
+const heroBild = siteData.bildZuordnung?.['hero-startseite'] || '/images/hero.jpg';
+const logo = m.logo || '/images/logo.svg';
+const farben = [
+  ['primary', f.primary], ['secondary', f.secondary], ['accent', f.accent],
+  ['background', f.background], ['text', f.text]
+];
+// Optional: design.varianten = [{name, farben{...}, radius: 'none'|'lg'|'3xl'}, ...]
+// -> kompakter A/B/C-Vergleich VOR dem Hauptmuster. Nach der Wahl: gewählte
+//    Variante nach design.farben übernehmen und varianten entfernen.
+const varianten = siteData.design?.varianten || [];
+const radiusKlasse = (r) => r === 'none' ? 'rounded-none' : r === 'lg' ? 'rounded-lg' : 'rounded-3xl';
+const spalten = varianten.length >= 3 ? 'lg:grid-cols-3' : varianten.length === 2 ? 'lg:grid-cols-2' : '';
+
+// Gleiche Regel wie im BaseLayout: Weiß ab Kontrast 2.2, sonst dunkel.
+const lum = (hex) => {
+  const mm = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex || '');
+  if (!mm) return 0;
+  const [r, g, b] = [mm[1], mm[2], mm[3]].map(x => { const v = parseInt(x, 16) / 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const kontrast = (a, b) => { const [h, d] = [lum(a), lum(b)].sort((x, y) => y - x); return (h + 0.05) / (d + 0.05); };
+const dunkel = kontrast(f.text || '#1F2937', '#ffffff') >= 7 ? (f.text || '#1F2937') : '#111111';
+const textAuf = siteData.design?.textAuf || {};
+const auto = (hex) => kontrast('#ffffff', hex) >= 2.2 ? '#ffffff' : dunkel;
+const flaechen = ['primary', 'secondary', 'accent'].filter(k => f[k]).map(k => {
+  const gesetzt = textAuf[k] === 'weiss' ? '#ffffff' : textAuf[k] === 'dunkel' ? dunkel : auto(f[k]);
+  const alternative = gesetzt === '#ffffff' ? dunkel : '#ffffff';
+  return {
+    k, hex: f[k], gesetzt, alternative,
+    kGesetzt: kontrast(gesetzt, f[k]).toFixed(1),
+    kAlternative: kontrast(alternative, f[k]).toFixed(1),
+    quelle: textAuf[k] ? `design.textAuf.${k} = "${textAuf[k]}"` : 'automatisch',
+    wert: alternative === '#ffffff' ? 'weiss' : 'dunkel'
+  };
+});
+const footerStil = m.logoFooter ? 'eigene Datei (meta.logoFooter)' : (m.logoFooterStil || 'weiss');
+const bewertung = (v) => v >= 4.5 ? 'sehr gut lesbar' : v >= 3 ? 'gut für Buttons und große Schrift' : v >= 2 ? 'grenzwertig, nur große fette Schrift' : 'unlesbar';
+---
+<BaseLayout title="Stil-Muster" description="Interne Vorschau der visuellen Sprache">
+  <meta slot="head" name="robots" content="noindex,nofollow" />
+
+  <section class="py-16">
+    <div class="container">
+      <p class="text-sm uppercase tracking-widest opacity-60 mb-2">Stil-Muster</p>
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">{m.firmenname}</h1>
+      <p class="max-w-2xl opacity-80"><strong>Leitidee:</strong> {leitidee}</p>
+    </div>
+  </section>
+
+  {varianten.length > 0 && (
+    <section class="py-10 border-b border-black/10">
+      <div class="container">
+        <h2 class="text-2xl font-bold mb-2">Varianten-Wahl</h2>
+        <p class="text-sm opacity-70 mb-8">Welche Formsprache trägt die Leitidee? Eine wählen, sie wird dann als vollständiges Muster unten übernommen.</p>
+        <div class:list={['grid gap-8', spalten]}>
+          {varianten.map((v, i) => (
+            <div class="border border-black/10 rounded-xl p-6">
+              <p class="font-bold mb-4">Variante {String.fromCharCode(65 + i)} · {v.name}</p>
+              <div class="flex gap-2 mb-5">
+                {['primary','secondary','accent','background'].map(key => (
+                  <div class="h-10 flex-1 border border-black/10" style={`background:${v.farben?.[key] || '#ddd'}`}></div>
+                ))}
+              </div>
+              <p class="font-display text-2xl font-bold mb-4" style={`color:${v.farben?.primary}`}>Headline-Probe</p>
+              <div class="flex items-center gap-3 mb-5">
+                <span class={`px-5 py-2.5 text-sm font-semibold ${radiusKlasse(v.radius)}`} style={`background:${v.farben?.primary}; color:${auto(v.farben?.primary)}`}>Button</span>
+                <span class={`px-4 py-2 text-sm border-2 ${radiusKlasse(v.radius)}`} style={`border-color:${v.farben?.primary}; color:${v.farben?.primary}`}>Sekundär</span>
+              </div>
+              <div class={`p-5 ${radiusKlasse(v.radius)}`} style={`background:${v.farben?.primary}; color:${auto(v.farben?.primary)}`}>
+                <p class="font-display font-bold mb-1">Farbfläche</p>
+                <p class="text-sm opacity-90">Wirkt die Farbe satt und großflächig?</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- LOGO -->
+  <section class="py-10 border-b border-black/10">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6">Logo</h2>
+      <div class="flex flex-wrap gap-6 items-center">
+        <div class="bg-white border border-black/10 rounded-xl p-6 flex items-center justify-center min-w-56 min-h-28">
+          <img src={logo} alt="Logo hell" class="max-h-16 w-auto" />
+        </div>
+        <div class="bg-primary rounded-xl p-6 flex items-center justify-center min-w-56 min-h-28">
+          <img src={logo} alt="Logo dunkel" class="max-h-16 w-auto" />
+        </div>
+        <p class="text-sm opacity-70 max-w-xs">Steht das Original-Logo des Kunden? Auf beiden Untergründen lesbar?
+          Wenn hier ein Platzhalter erscheint: MARKE.md und original-bilder/_LOGO.* prüfen.
+          Enthält das Logo den Firmennamen schon? Dann meta.logoMitName = true.</p>
+      </div>
+
+      <h3 class="text-lg font-bold mt-10 mb-2">Footer-Logo (aktuell: {footerStil})</h3>
+      <p class="text-sm opacity-70 mb-5 max-w-2xl">Eine Variante wählen und als meta.logoFooterStil eintragen.
+        "weiss" nur, wenn das Logo einen transparenten Hintergrund hat (sonst entsteht ein weißer Kasten).
+        Beste Lösung bleibt eine eigene helle Logo-Datei als meta.logoFooter.</p>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="bg-primary rounded-xl p-6 flex flex-col items-center gap-3">
+          <img src={logo} alt="" class="h-20 w-auto max-w-full object-contain" style="filter: brightness(0) invert(var(--on-primary-invert, 1))" />
+          <span class="text-xs text-on-primary/70">weiss</span>
+        </div>
+        <div class="bg-primary rounded-xl p-6 flex flex-col items-center gap-3">
+          <span class="inline-flex bg-white rounded-2xl px-5 py-4"><img src={logo} alt="" class="h-14 w-auto max-w-full object-contain" /></span>
+          <span class="text-xs text-on-primary/70">platte</span>
+        </div>
+        <div class="bg-primary rounded-xl p-6 flex flex-col items-center gap-3">
+          <img src={logo} alt="" class="h-20 w-auto max-w-full object-contain" />
+          <span class="text-xs text-on-primary/70">original</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FARBEN -->
+  <section class="py-10">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6">Farben</h2>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        {farben.map(([name, hex]) => (
+          <div>
+            <div class="h-28 rounded-xl border border-black/10" style={`background:${hex}`}></div>
+            <p class="mt-2 text-sm font-medium">{name}</p>
+            <p class="text-xs opacity-60">{hex}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHRIFT AUF FARBFLÄCHEN -->
+  <section class="py-10">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-2">Schrift auf Farbflächen</h2>
+      <p class="text-sm opacity-70 mb-6 max-w-2xl">Wird automatisch nach Kontrast gewählt. Gefällt die Alternative besser,
+        den angegebenen Eintrag in site-data.json setzen. Unter 2.0 ist die Alternative gesperrt (unlesbar).</p>
+      <div class="grid gap-4 md:grid-cols-3">
+        {flaechen.map(x => (
+          <div class="rounded-2xl border border-black/10 p-5">
+            <p class="text-sm font-semibold mb-3">{x.k} · {x.quelle}</p>
+            <div class="flex flex-wrap gap-3 items-center">
+              <span class="px-5 py-2.5 rounded-full font-semibold" style={`background:${x.hex}; color:${x.gesetzt}`}>Jetzt anfragen</span>
+              <span class="text-xs opacity-70">{x.kGesetzt} : 1, {bewertung(+x.kGesetzt)}</span>
+            </div>
+            {+x.kAlternative >= 2 && (
+              <div class="flex flex-wrap gap-3 items-center mt-3 opacity-80">
+                <span class="px-5 py-2.5 rounded-full font-semibold" style={`background:${x.hex}; color:${x.alternative}`}>Jetzt anfragen</span>
+                <span class="text-xs opacity-70">Alternative {x.kAlternative} : 1 · design.textAuf.{x.k} = "{x.wert}"</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAFIE -->
+  <section class="py-10">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6">Typografie</h2>
+      <p class="text-xs opacity-60 mb-4">Display: {fonts.display} · Body: {fonts.body}</p>
+      <div class="space-y-4">
+        <p class="font-display font-bold" style="font-size:clamp(3rem,8vw,5.5rem); line-height:.95; letter-spacing:-.03em">Große Headline</p>
+        <h3 class="font-display text-3xl lg:text-4xl font-bold">Sektions-Überschrift H2</h3>
+        <h4 class="font-display text-xl font-semibold">Unterüberschrift H3</h4>
+        <p class="max-w-2xl">Fließtext. Hier steht ein typischer Absatz, wie er auf der
+          Website vorkommt. Er zeigt Zeilenlänge, Zeilenabstand und Lesbarkeit
+          in der gewählten Schrift bei normaler Textmenge.</p>
+        <p class="text-sm opacity-70">Kleiner Text / Bildunterschrift</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section class="py-10">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6">Interaktion</h2>
+      <div class="flex flex-wrap gap-4 items-center">
+        <a href="/kontakt/" class="bg-primary text-on-primary font-semibold px-6 py-3 rounded-full">Primär-Button</a>
+        <a href="/kontakt/" class="bg-accent text-on-accent font-semibold px-6 py-3 rounded-full">Akzent-Button</a>
+        <a href="/kontakt/" class="border-2 border-primary text-primary font-semibold px-6 py-3 rounded-full">Sekundär</a>
+        <a href="/kontakt/" class="underline underline-offset-4">Textlink</a>
+        <span class="bg-accent/20 text-sm px-3 py-1 rounded-full">Badge</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KARTE + BILD -->
+  <section class="py-10">
+    <div class="container">
+      <h2 class="text-2xl font-bold mb-6">Karte & Bild</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-background border border-black/10 rounded-2xl p-8 shadow-lg">
+          <h3 class="font-display text-xl font-bold mb-3">Beispiel-Karte</h3>
+          <p class="opacity-80">So sehen Inhaltskarten aus: Rundung, Schatten, Innenabstand
+            und Textrhythmus in Kombination.</p>
+        </div>
+        <img src={heroBild} alt="" class="w-full h-64 object-cover rounded-2xl" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FARBFLÄCHE -->
+  <section class="py-20 bg-primary text-on-primary">
+    <div class="container">
+      <p class="text-sm uppercase tracking-widest opacity-70 mb-3">Vollflächige Sektion</p>
+      <h2 class="font-display text-3xl lg:text-5xl font-bold mb-4">So wirkt die Markenfarbe satt</h2>
+      <p class="max-w-xl opacity-90">Text auf der Markenfarbe: Hier wird sichtbar, ob der
+        Kontrast trägt und ob die Farbe großflächig funktioniert.</p>
+    </div>
+  </section>
+
+  <!-- HERO-PROBE: zwei Bildbehandlungen mit dem ECHTEN Hero-Foto zur Wahl (Schwabenpflege: 6 Hero-Anläufe,
+       weil die Bildbehandlung erst spät feststand). Niko wählt A oder B, dann erst Seitenbau. -->
+  <section class="relative min-h-[60vh] flex items-end overflow-hidden">
+    <img src={heroBild} alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position:55% 45%" />
+    <div class="absolute inset-0 bg-black/45"></div>
+    <div class="container relative z-10 text-white py-16">
+      <p class="text-sm uppercase tracking-widest text-accent mb-3">Hero A: Vollbild mit Abdunklung</p>
+      <h2 class="font-display font-bold" style="font-size:clamp(2.5rem,7vw,4.5rem); line-height:1.15; text-shadow:0 2px 16px rgba(0,0,0,.5)">
+        Headline über Bild
+      </h2>
+    </div>
+  </section>
+  <section class="relative min-h-[60vh] flex items-center overflow-hidden bg-background">
+    <div class="absolute inset-y-0 right-0 w-full md:w-[62%]">
+      <img src={heroBild} alt="" class="absolute inset-0 w-full h-full object-cover" style="object-position:55% 45%" />
+      <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-background via-background/70 md:via-background/30 to-transparent"></div>
+    </div>
+    <div class="container relative z-10 py-16">
+      <p class="text-sm uppercase tracking-widest text-primary mb-3">Hero B: Foto rechts mit weichem Verlauf</p>
+      <h2 class="font-display font-bold text-primary max-w-xl" style="font-size:clamp(2.5rem,7vw,4.5rem); line-height:1.15">
+        Headline neben dem Bild
+      </h2>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container">
+      <p class="opacity-70 text-sm">Ende Stil-Muster. Passt die Anmutung zur Leitidee?
+        Erst nach Freigabe werden die Seiten gebaut.</p>
+    </div>
+  </section>
+</BaseLayout>

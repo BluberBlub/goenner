@@ -1,0 +1,39 @@
+﻿{
+  "meta": {
+    "kundenname": "",
+    "branche": "",
+    "ort": "",
+    "url_alt": ""
+  },
+  "kontakt": {
+    "telefon": "",
+    "email": "",
+    "adresse": "",
+    "oeffnungszeiten": ""
+  },
+  "design": {
+    "farben": {
+      "primary": "#000000",
+      "secondary": "#ffffff",
+      "background": "#f9f9f9",
+      "text": "#1a1a1a",
+      "accent": "#0066cc"
+    },
+    "font": "Inter",
+    "borderRadius": "8px"
+  },
+  "seiten": ["startseite", "leistungen", "ueber-uns", "kontakt"],
+  "texte": {
+    "slogan": "",
+    "hero_headline": "",
+    "hero_subline": ""
+  },
+  "bilder": {
+    "logo": "/images/logo.svg",
+    "hero": "/images/hero.jpg"
+  },
+  "seo": {
+    "hauptkeyword": "",
+    "lokalkeyword": ""
+  }
+}

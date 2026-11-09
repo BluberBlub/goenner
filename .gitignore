@@ -1,0 +1,67 @@
+# === DEPENDENCIES & BUILD ===
+node_modules/
+dist/
+.astro/
+
+# === SECRETS ===
+.env
+.env.local
+.env.production
+deploy-config.json
+gemini-config.json
+mail-config.json
+github-config.json
+
+# === AUTOPILOT INTERNE DATEIEN (gehören NICHT ins Kunden-Repo) ===
+CLAUDE.md
+KUNDE.md
+progress.json
+VERBESSERUNGEN.md
+PROJEKTBERICHT.md
+_lessons-learned.md
+.autopilot-prompt.txt
+visual-qa-report.json
+lighthouse-report.json
+*-config.json
+
+# === LOGS ===
+*.log
+npm-debug.log*
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === EDITOR ===
+.vscode/
+.idea/
+*.swp
+
+# === BACKUPS ===
+*.bak
+*.backup
+qa-images-report.json
+
+.qa-screenshots/
+qa-visual-report.json
+ORIGINAL-INHALTE.json
+qa-relaunch-report.json
+original-bilder/
+MARKE.md
+# Autopilot (automatisch ergänzt)
+KIT-ZUSAMMENFUEHREN.md
+node_modules
+dist
+public/.env.php
+.qa-status.json
+qa-*-report.json
+.claude/
+.kit-freigabe
+KIT-AENDERUNGEN.md
+deploy.js.alt
+.qa-cache/
+.qa-lauf.json
+
+.inhalt/
+.qa-screenshots/
