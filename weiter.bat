@@ -75,14 +75,12 @@ if exist "%ROOT%\_template\src\components" (
 echo.
 where claude >nul 2>&1
 if errorlevel 1 ( echo   FEHLER: claude nicht gefunden. & pause & exit /b )
-set "PROMPT=Lies zuerst CLAUDE.md, progress.json und AUFGABEN.md. Setze die Arbeit nahtlos fort - Regel-Datei der aktuellen Phase aus _regeln/ erneut lesen. Gibt es KIT-ZUSAMMENFUEHREN.md, das ZUERST erledigen (neue Kit-Fassung plus eigene Aenderungen, nichts Eigenes weglassen). Eigene Aenderungen an Kit-Dateien nie zurueckbauen. QA immer mit npm run qa (ein Befehl, eigener Server)."
-rem ---- Sitzung: letzte Sitzung DIESES Ordners fortsetzen, sonst frisch starten ----
-rem Frueher: --resume "Name". Das hing im Auswahlfenster, wenn keine Sitzung so hiess
-rem (Ordner verschoben, Sitzung aelter als 30 Tage, Projekt vor Einfuehrung der Namen).
-rem Der Projektstand liegt ohnehin in progress.json, CLAUDE.md und AUFGABEN.md.
-powershell -NoProfile -Command "$d = Join-Path $env:USERPROFILE ('.claude\projects\' + ((Get-Location).Path -replace '[^A-Za-z0-9]','-')); if ((Test-Path $d) -and (Get-ChildItem $d -Filter *.jsonl -ErrorAction SilentlyContinue)) { exit 0 } else { exit 1 }"
+set "PROMPT=Lies zuerst CLAUDE.md, progress.json und AUFGABEN.md. Setze die Arbeit nahtlos fort - Regel-Datei der aktuellen Phase aus _regeln/ erneut lesen. Gibt es KIT-ZUSAMMENFUEHREN.md, das ZUERST erledigen (neue Kit-Fassung plus eigene Aenderungen, nichts Eigenes weglassen). Eigene Aenderungen an Kit-Dateien nie zurueckbauen. Rueckmeldungen an Niko hoechstens 5 Zeilen (CLAUDE.md). QA immer mit npm run qa (ein Befehl, eigener Server)."
+rem ---- Sitzung: nur kleine, frische Sitzungen fortsetzen, sonst frisch starten ----
+rem 09.11.2026: --continue setzte immer dieselbe Sitzung fort (Opitz: 404k Kontext, 41 Mio. Tokens).
+rem Der Projektstand liegt in progress.json, CLAUDE.md und AUFGABEN.md, frisch starten verliert nichts.
+node stand.js --sitzung
 if errorlevel 1 (
-  echo   Keine fruehere Sitzung fuer diesen Ordner gefunden: starte frisch mit dem Projektstand aus den Dateien.
   cmd /k claude -n "%PROJEKT%" --remote-control "%PROJEKT%" --dangerously-skip-permissions --model opus "%PROMPT%"
 ) else (
   cmd /k claude --continue --remote-control "%PROJEKT%" --dangerously-skip-permissions --model opus "%PROMPT%"

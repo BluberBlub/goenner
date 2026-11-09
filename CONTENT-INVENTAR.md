@@ -8,175 +8,175 @@ Vergessen ist kein Status. Prüfung: node qa-relaunch.js
 
 | Original-Seite | Überschriften | Bilder | Status |
 |---|---|---|---|
-| / | 1 | 2 | offen |
-| /Start | 1 | 2 | offen |
-| /Politik | 0 | 2 | offen |
-| /Therapeuten | 1 | 2 | offen |
-| /Therapeuten/Team | 1 | 14 | offen |
-| /Therapeuten/Qualifikationen | 1 | 2 | offen |
-| /Therapeuten/Mitgliedschaften | 4 | 2 | offen |
-| /Behandlung | 1 | 2 | offen |
-| /Behandlung/Therapiekonzept | 1 | 2 | offen |
-| /Behandlung/Schwerpunkte | 3 | 2 | offen |
-| /Behandlung/Prozedere | 4 | 2 | offen |
-| /Behandlung/Kosten | 5 | 2 | offen |
-| /Stellenangebote | 1 | 2 | offen |
-| /AOK-und-BKK | 1 | 2 | offen |
-| /Supervision-Lehre | 2 | 4 | offen |
-| /Selbstzahler | 1 | 2 | offen |
-| /Praxisraeume | 1 | 7 | offen |
-| /Praxisraeume/Kunst-im-Wartezimmer | 1 | 6 | offen |
-| /Kontakt | 1 | 2 | offen |
-| /Kontakt/Kontakt-Anmeldung | 1 | 2 | offen |
-| /Kontakt/So-finden-Sie-uns | 1 | 2 | offen |
-| /Impressum-Datenschutz | 1 | 2 | offen |
-| /Impressum-Datenschutz/Impressum | 1 | 2 | offen |
-| /Impressum-Datenschutz/Datenschutz | 1 | 2 | offen |
+| / | 1 | 2 | übernommen |
+| /Start | 1 | 2 | übernommen |
+| /Politik | 0 | 2 | übernommen |
+| /Therapeuten | 1 | 2 | übernommen |
+| /Therapeuten/Team | 1 | 14 | übernommen |
+| /Therapeuten/Qualifikationen | 1 | 2 | übernommen |
+| /Therapeuten/Mitgliedschaften | 4 | 2 | übernommen |
+| /Behandlung | 1 | 2 | übernommen |
+| /Behandlung/Therapiekonzept | 1 | 2 | übernommen |
+| /Behandlung/Schwerpunkte | 3 | 2 | übernommen |
+| /Behandlung/Prozedere | 4 | 2 | übernommen |
+| /Behandlung/Kosten | 5 | 2 | übernommen |
+| /Stellenangebote | 1 | 2 | übernommen |
+| /AOK-und-BKK | 1 | 2 | übernommen |
+| /Supervision-Lehre | 2 | 4 | übernommen |
+| /Selbstzahler | 1 | 2 | übernommen |
+| /Praxisraeume | 1 | 7 | übernommen |
+| /Praxisraeume/Kunst-im-Wartezimmer | 1 | 6 | übernommen |
+| /Kontakt | 1 | 2 | übernommen |
+| /Kontakt/Kontakt-Anmeldung | 1 | 2 | übernommen |
+| /Kontakt/So-finden-Sie-uns | 1 | 2 | übernommen |
+| /Impressum-Datenschutz | 1 | 2 | übernommen |
+| /Impressum-Datenschutz/Impressum | 1 | 2 | übernommen |
+| /Impressum-Datenschutz/Datenschutz | 1 | 2 | übernommen |
 
 ## Wichtige Fakten (32) – müssen ALLE auf der neuen Seite auftauchen
 
-- [ ] 0751-97719730
-- [ ] 2027
-- [ ] 88212 Ravensburg
-- [ ] 9771973-0
-- [ ] praxis@drgoenner.de
-- [ ] 2010-2013
-- [ ] 2010-2011
-- [ ] 2008-2009
-- [ ] 2003-2008
-- [ ] 2010
-- [ ] 2013
-- [ ] 2011
-- [ ] 2008
-- [ ] 2009
-- [ ] 2003
-- [ ] 13.00-14.00
-- [ ] 0751-9771973-0
-- [ ] 07541-3739489
-- [ ] 8.30-8.55
-- [ ] 0751 - 9771973-0
-- [ ] 0751 - 9771973-1
-- [ ] 062505868
-- [ ] 626949800
-- [ ] 626957600
-- [ ] 0711-674470-0
-- [ ] 0711-674470-15
-- [ ] 70174 Stuttgart
-- [ ] 07 11/61 55 41-0
-- [ ] poststelle@lfdi.bwl
-- [ ] 2002
-- [ ] 2018
-- [ ] 70173 Stuttgart
+- [x] 0751-97719730 übernommen
+- [x] 2027 übernommen
+- [x] 88212 Ravensburg übernommen
+- [x] 9771973-0 übernommen
+- [x] praxis@drgoenner.de übernommen
+- [x] 2010-2013 übernommen
+- [x] 2010-2011 übernommen
+- [x] 2008-2009 übernommen
+- [x] 2003-2008 übernommen
+- [x] 2010 übernommen
+- [x] 2013 übernommen
+- [x] 2011 übernommen
+- [x] 2008 übernommen
+- [x] 2009 übernommen
+- [x] 2003 übernommen
+- [x] 13.00-14.00 übernommen als 13:00–14:00 Uhr
+- [x] 0751-9771973-0 übernommen
+- [x] 07541-3739489 übernommen
+- [x] 8.30-8.55 BEWUSST WEGGELASSEN (Grund: umformatiert zu 08:30–08:55 Uhr nach Uhrzeit-Stilregel, Kontaktseite)
+- [x] 0751 - 9771973-0 übernommen
+- [x] 0751 - 9771973-1 übernommen
+- [x] 062505868 übernommen
+- [x] 626949800 übernommen
+- [x] 626957600 übernommen
+- [x] 0711-674470-0 übernommen
+- [x] 0711-674470-15 übernommen
+- [x] 70174 Stuttgart übernommen
+- [x] 07 11/61 55 41-0 übernommen
+- [x] poststelle@lfdi.bwl übernommen
+- [x] 2002 übernommen
+- [x] 2018 übernommen
+- [x] 70173 Stuttgart übernommen
 
 ## Überschriften/Inhalte je Seite
 
 ### /
-- [ ] Praxis für Psychotherapie, angewandte Psychologie und Supervision
+- [x] Praxis für Psychotherapie, angewandte Psychologie und Supervision übernommen
 
 ### /Start
-- [ ] Praxis für Psychotherapie, angewandte Psychologie und Supervision
+- [x] Praxis für Psychotherapie, angewandte Psychologie und Supervision übernommen
 
 ### /Politik
 
 ### /Therapeuten
-- [ ] Therapieteam Qualifikationen Mitgliedschaften
+- [x] Therapieteam Qualifikationen Mitgliedschaften übernommen
 
 ### /Therapeuten/Team
-- [ ] UNSER THERAPIETEAM
+- [x] UNSER THERAPIETEAM übernommen
 
 ### /Therapeuten/Qualifikationen
-- [ ] Unsere Qualifikationen
+- [x] Unsere Qualifikationen übernommen
 
 ### /Therapeuten/Mitgliedschaften
-- [ ] MITGLIEDSCHAFTEN
-- [ ] Landespsychotherapeutenkammer Baden-Württemberg (LPK BW)
-- [ ] Kassenärztliche Vereinigung Baden-Württemberg (KV BW)
-- [ ] Freie Liste der Psychotherapeuten
+- [x] MITGLIEDSCHAFTEN übernommen
+- [x] Landespsychotherapeutenkammer Baden-Württemberg (LPK BW) übernommen
+- [x] Kassenärztliche Vereinigung Baden-Württemberg (KV BW) übernommen
+- [x] Freie Liste der Psychotherapeuten übernommen
 
 ### /Behandlung
-- [ ] Therapiekonzept
+- [x] Therapiekonzept übernommen
 
 ### /Behandlung/Therapiekonzept
-- [ ] THERAPIEKONZEPT
+- [x] THERAPIEKONZEPT übernommen
 
 ### /Behandlung/Schwerpunkte
-- [ ] WER WIRD IN UNSERER PRAXIS BEHANDELT?
-- [ ] BEHANDLUNGS- UND ARBEITSSCHWERPUNKTE
-- [ ] WER WIRD IN UNSERER PRAXIS NICHT BEHANDELT? (KONTRAINDIKATIONEN)
+- [x] WER WIRD IN UNSERER PRAXIS BEHANDELT? übernommen
+- [x] BEHANDLUNGS- UND ARBEITSSCHWERPUNKTE übernommen
+- [x] WER WIRD IN UNSERER PRAXIS NICHT BEHANDELT? (KONTRAINDIKATIONEN) übernommen
 
 ### /Behandlung/Prozedere
-- [ ] PROZEDERE
-- [ ] Sprechstunde und Probesitzungen
-- [ ] Antragstellung und Therapiebeginn
-- [ ] Therapiedauer
+- [x] PROZEDERE übernommen
+- [x] Sprechstunde und Probesitzungen übernommen
+- [x] Antragstellung und Therapiebeginn übernommen
+- [x] Therapiedauer übernommen
 
 ### /Behandlung/Kosten
-- [ ] KOSTEN & KOSTENÜBERNAHME
-- [ ] Gesetzliche Krankenversicherung
-- [ ] Private Krankenversicherung/ Beihilfe
-- [ ] Ausfallhonorar
-- [ ] Selbstzahler
+- [x] KOSTEN & KOSTENÜBERNAHME übernommen
+- [x] Gesetzliche Krankenversicherung übernommen
+- [x] Private Krankenversicherung/ Beihilfe übernommen
+- [x] Ausfallhonorar übernommen
+- [x] Selbstzahler übernommen
 
 ### /Stellenangebote
-- [ ] Psychologische(r) Psychotherapeut(in) in Festanstellung (w,m,d)
+- [x] Psychologische(r) Psychotherapeut(in) in Festanstellung (w,m,d) übernommen
 
 ### /AOK-und-BKK
-- [ ] Facharztvertrag der AOK BW und BKK-Selektivvertrag
+- [x] Facharztvertrag der AOK BW und BKK-Selektivvertrag übernommen
 
 ### /Supervision-Lehre
-- [ ] SUPERVISION UND LEHRE
-- [ ] Kooperierende Ausbildungsinstitute
+- [x] SUPERVISION UND LEHRE übernommen
+- [x] Kooperierende Ausbildungsinstitute übernommen
 
 ### /Selbstzahler
-- [ ] Selbstzahler-Leistungen
+- [x] Selbstzahler-Leistungen übernommen
 
 ### /Praxisraeume
-- [ ] Therapieraum 1
+- [x] Therapieraum 1 übernommen
 
 ### /Praxisraeume/Kunst-im-Wartezimmer
-- [ ] Kunst im Wartezimmer
+- [x] Kunst im Wartezimmer übernommen
 
 ### /Kontakt
-- [ ] Kontakt & Anmeldung
+- [x] Kontakt & Anmeldung übernommen
 
 ### /Kontakt/Kontakt-Anmeldung
-- [ ] Kontakt und Anmeldung
+- [x] Kontakt und Anmeldung übernommen
 
 ### /Kontakt/So-finden-Sie-uns
-- [ ] SO FINDEN SIE UNS
+- [x] SO FINDEN SIE UNS übernommen
 
 ### /Impressum-Datenschutz
-- [ ] Impressum
+- [x] Impressum übernommen
 
 ### /Impressum-Datenschutz/Impressum
-- [ ] IMPRESSUM
+- [x] IMPRESSUM übernommen
 
 ### /Impressum-Datenschutz/Datenschutz
-- [ ] Datenschutzerklärung nach den Vorgaben der Datenschutzgrundverordnung (DSGVO)
+- [x] Datenschutzerklärung nach den Vorgaben der Datenschutzgrundverordnung (DSGVO) übernommen
 
 
 ## Original-Bilder (23)
 
-- [ ] picture-2600.jpg
-- [ ] picture-1600.jpg
-- [ ] picture-1600-2.jpg
-- [ ] picture-1600-3.jpg
-- [ ] picture-1600-4.jpg
-- [ ] picture-1600-5.jpg
-- [ ] picture-1600-6.jpg
-- [ ] picture-1600-7.jpg
-- [ ] picture-1600-8.jpg
-- [ ] picture-1600-9.jpg
-- [ ] picture-1600-10.jpg
-- [ ] picture-1600-11.jpg
-- [ ] big_57563965_0_180-270.jpg
-- [ ] big_57626630_0_180-273.jpg
-- [ ] picture-1600-12.jpg
-- [ ] picture-1600-13.jpg
-- [ ] picture-1600-14.jpg
-- [ ] picture-1600-15.jpg
-- [ ] picture-1600-16.jpg
-- [ ] picture-1600-17.jpg
-- [ ] picture-1600-18.jpg
-- [ ] picture-1600-19.jpg
-- [ ] picture-1600-20.jpg
+- [x] picture-2600.jpg BEWUSST WEGGELASSEN (Grund: Baukasten-Hintergrund, kein Praxisfoto)
+- [x] picture-1600.jpg übernommen
+- [x] picture-1600-2.jpg übernommen
+- [x] picture-1600-3.jpg übernommen
+- [x] picture-1600-4.jpg übernommen
+- [x] picture-1600-5.jpg übernommen
+- [x] picture-1600-6.jpg übernommen
+- [x] picture-1600-7.jpg übernommen
+- [x] picture-1600-8.jpg übernommen
+- [x] picture-1600-9.jpg übernommen
+- [x] picture-1600-10.jpg übernommen
+- [x] picture-1600-11.jpg übernommen
+- [x] big_57563965_0_180-270.jpg übernommen
+- [x] big_57626630_0_180-273.jpg übernommen
+- [x] picture-1600-12.jpg übernommen
+- [x] picture-1600-13.jpg übernommen
+- [x] picture-1600-14.jpg übernommen
+- [x] picture-1600-15.jpg übernommen
+- [x] picture-1600-16.jpg übernommen
+- [x] picture-1600-17.jpg übernommen
+- [x] picture-1600-18.jpg übernommen
+- [x] picture-1600-19.jpg übernommen
+- [x] picture-1600-20.jpg übernommen

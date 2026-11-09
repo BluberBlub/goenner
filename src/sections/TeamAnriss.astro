@@ -31,7 +31,7 @@ const alle = [...approbiert, ...inAusbildung];
         <li data-reveal>
           <a href={`/team/#${p.slug}`} class="group block" aria-label={`${p.name}, ${p.titel}`}>
             <Portrait person={p} sizes="(min-width: 1024px) 140px, 30vw" />
-            <p class="mt-2 text-[0.8125rem] leading-snug text-text/80 group-hover:text-primary">{p.name}</p>
+            <p class="mt-2 text-[0.75rem] leading-snug sm:text-[0.8125rem] text-text/80 group-hover:text-primary">{p.name}</p>
           </a>
         </li>
       ))}

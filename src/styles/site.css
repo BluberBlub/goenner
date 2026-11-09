@@ -51,7 +51,7 @@
   }
 }
 @keyframes lichten {
-  from { filter: blur(7px); opacity: .28; transform: translateY(10px) scale(.97); background: rgb(255 255 255 / .2); }
+  from { filter: blur(3px); opacity: .5; transform: translateY(8px) scale(.98); }
   to { filter: blur(0); opacity: 1; transform: none; }
 }
 
@@ -103,3 +103,6 @@
 .rechtstext p, .rechtstext ul { margin-top: .75rem; }
 .rechtstext ul { list-style: disc; padding-left: 1.25rem; }
 .rechtstext a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+
+/* Rasterspalten dürfen schrumpfen (sonst drückt ein langes Wort die Spalte über den Rand) */
+.grid > * { min-width: 0; }

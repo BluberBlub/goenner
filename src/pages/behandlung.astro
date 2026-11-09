@@ -83,8 +83,8 @@ const grenzen = [
       {schwerpunkte.map((s, i) => (
         <li class="border-t border-primary/15 py-6" data-reveal>
           <span class="etikett text-primary/70">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="mt-2 text-[1.35rem] leading-snug">{s.titel}</h3>
-          <p class="mt-2 leading-relaxed text-text/75">{s.text}</p>
+          <h3 class="mt-2 text-[1.35rem] leading-snug">{s.kurz}</h3>
+          <p class="mt-2 leading-relaxed text-text/75"><strong class="font-semibold text-text">{s.titel}:</strong> {s.text}</p>
         </li>
       ))}
     </ol>

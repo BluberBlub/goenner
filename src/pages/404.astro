@@ -1,0 +1,20 @@
+---
+import Seite from '../layouts/Seite.astro';
+---
+<Seite title="Seite nicht gefunden | Praxis Dr. Gönner" description="Diese Seite gibt es nicht oder nicht mehr. Hier geht es weiter zur Behandlung, zum Team und zur Anmeldung in unserer Praxis in Ravensburg.">
+  <section data-hero class="relative flex min-h-[var(--hero-h)] px-3 pb-3 pt-2 sm:px-4">
+    <div class="nebel nebel-karte flex flex-1 items-center">
+      <div class="container py-16 text-center">
+        <p class="etikett text-primary">Fehler 404</p>
+        <h1 class="mx-auto mt-5 max-w-3xl text-[2.5rem] leading-[1.15] sm:text-6xl">Hier liegt noch <em>Nebel</em>.</h1>
+        <p class="mx-auto mt-6 max-w-xl text-lg text-text/80">Die Seite, die Sie suchen, gibt es nicht oder nicht mehr. Diese Wege führen weiter:</p>
+        <ul class="mx-auto mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
+          <li><a class="knopf knopf-voll w-full" href="/">Zur Startseite</a></li>
+          <li><a class="knopf knopf-rand w-full" href="/behandlung/">Behandlung</a></li>
+          <li><a class="knopf knopf-rand w-full" href="/team/">Team</a></li>
+          <li><a class="knopf knopf-rand w-full" href="/kontakt/">Kontakt</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Seite>

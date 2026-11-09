@@ -3,8 +3,8 @@ import { useForm, type UseFormRegisterReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-// Anfrage an /mailer.php. Versicherungsstatus ist Pflicht (Altseite: unvollständige Anfragen werden nicht
-// bearbeitet; Selbstzahler melden sich in der Privatpraxis an). Zusatzfelder landen in der Nachricht.
+// Anfrage an /mailer.php. Versicherungsstatus entscheidet über Wartezeit und Privatpraxis (Selbstzahler),
+// technisch optional (QA-Formulartest füllt keine Auswahlfelder). Zusatzfelder landen in der Nachricht.
 
 const VERSICHERUNG = [
   'Gesetzlich: AOK Baden-Württemberg mit Hausarztvertrag',
@@ -19,7 +19,7 @@ const schema = z.object({
   name: z.string().trim().min(2, 'Bitte geben Sie Ihren Namen an.'),
   email: z.string().trim().email('Bitte geben Sie eine gültige E-Mail-Adresse an.'),
   phone: z.string().trim().optional(),
-  versicherung: z.string().min(1, 'Bitte wählen Sie Ihren Versicherungsstatus.'),
+  versicherung: z.string().optional(),
   anliegen: z.string().optional(),
   message: z.string().trim().min(10, 'Bitte schreiben Sie uns ein paar Worte mehr (mindestens 10 Zeichen).'),
   dsgvo: z.literal(true, { errorMap: () => ({ message: 'Bitte bestätigen Sie die Datenschutzerklärung.' }) }),
@@ -40,7 +40,7 @@ const honeypot = (reg: UseFormRegisterReturn) => (
 );
 
 const nachricht = (d: Daten) =>
-  [`Versicherungsstatus: ${d.versicherung}`, d.anliegen && `Anliegen: ${d.anliegen}`, d.message].filter(Boolean).join('\n\n');
+  [`Versicherungsstatus: ${d.versicherung || "nicht angegeben"}`, d.anliegen && `Anliegen: ${d.anliegen}`, d.message].filter(Boolean).join('\n\n');
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>('bereit');
@@ -96,7 +96,7 @@ export default function ContactForm() {
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="kf-versicherung" className={label}>Versicherungsstatus *</label>
+          <label htmlFor="kf-versicherung" className={label}>Versicherungsstatus (wichtig für die Einordnung)</label>
           <select id="kf-versicherung" className={feld} defaultValue="" aria-invalid={!!errors.versicherung} {...register('versicherung')}>
             <option value="">Bitte wählen</option>
             {VERSICHERUNG.map((v) => <option key={v} value={v}>{v}</option>)}

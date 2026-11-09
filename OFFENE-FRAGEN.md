@@ -9,3 +9,5 @@
 - Telefonische Sprechzeit (Do 13:00–14:00 Uhr) und Kooperations-Zeiten Praxis Hadenfeldt (Mo, Mi, Do 08:30–08:55 Uhr) noch aktuell?
 - Fax 0751 9771973-1 noch in Betrieb?
 - Hinweis: Die Altseite nennt "fon 0751-97719730" auf der Startseite und "0751-9771973-0" sonst; gleiche Nummer, einheitlich geschrieben.
+- Krisenhinweis (112, Telefonseelsorge 0800 111 0 111) auf Behandlung und Kontakt neu ergänzt: so in Ordnung?
+- Impressum: Gesetzesangaben aktualisiert (DDG statt TMG, PsychThG-Titel neu). Bitte gegenprüfen.

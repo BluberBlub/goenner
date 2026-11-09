@@ -4,7 +4,7 @@
 // Steht sofort da (keine Einblendung im ersten Bildschirm).
 import Foto from '../components/Foto.astro';
 ---
-<section data-hero class="relative flex min-h-[var(--hero-h)] flex-col px-3 pb-3 pt-2 sm:px-4 sm:pb-4">
+<section data-hero class="relative flex min-h-[var(--hero-h)] flex-col px-3 pb-3 pt-2 sm:px-4 sm:pb-4 lg:h-[var(--hero-h)]">
   <div class="nebel nebel-karte relative flex flex-1 flex-col overflow-hidden">
     <svg class="hoehenlinien hidden text-primary sm:block" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" aria-hidden="true">
       <g stroke="currentColor" stroke-width="1.2">
@@ -22,7 +22,7 @@ import Foto from '../components/Foto.astro';
         Psychotherapie in Ravensburg
         <span class="h-px w-8 bg-accent" aria-hidden="true"></span>
       </p>
-      <h1 class="mt-6 max-w-4xl text-[2.6rem] leading-[1.15] text-text sm:text-6xl lg:text-[5rem]">
+      <h1 class="mt-6 max-w-4xl text-[2.6rem] leading-[1.15] text-text sm:text-6xl lg:text-[4.4rem]">
         Was Sie belastet, darf einen <em>Namen</em> bekommen.
       </h1>
       <p class="lead mt-6 max-w-2xl text-lg leading-relaxed text-text/80 sm:text-xl">
@@ -37,10 +37,10 @@ import Foto from '../components/Foto.astro';
       </div>
     </div>
 
-    <div class="container relative z-10 mt-10 flex flex-1 items-end lg:mt-12">
+    <div class="container relative z-10 mt-10 flex min-h-[12rem] flex-1 lg:mt-10">
       <div class="relative w-full overflow-hidden rounded-t-karte">
         <Foto name="therapieraum-sessel" eager sizes="(min-width: 1280px) 1200px, 100vw" pos="50% 58%"
-              class="block h-[34svh] min-h-[12rem] w-full sm:h-[30svh] lg:h-[32svh]" />
+              class="absolute inset-0 block h-full w-full" />
         <p class="absolute bottom-3 left-3 rounded-knopf bg-background/90 px-3 py-1.5 text-sm text-text/80 backdrop-blur sm:bottom-4 sm:left-4">
           Therapieraum in der Karlstraße 8
         </p>

@@ -9,11 +9,11 @@ import Portrait from '../components/Portrait.astro';
 import { approbiert, inAusbildung, type Person } from '../data/team';
 
 const mitgliedschaften = [
-  { t: 'Landespsychotherapeutenkammer Baden-Württemberg (LPK BW)', a: 'Körperschaft des öffentlichen Rechts. Sie vertritt die Psychologischen Psychotherapeuten und Kinder- und Jugendlichenpsychotherapeuten in Baden-Württemberg als Interessenvertretung, Selbstverwaltung und Berufsaufsicht. Voraussetzung für die Mitgliedschaft ist die Approbation.' },
-  { t: 'Kassenärztliche Vereinigung Baden-Württemberg (KV BW)', a: 'Ihr gehören alle Ärzte und Psychotherapeuten an, die zur ambulanten Behandlung gesetzlich Versicherter zugelassen oder ermächtigt sind. Körperschaft des öffentlichen Rechts unter der Rechtsaufsicht des Landesgesundheitsministeriums.' },
-  { t: 'Freie Liste der Psychotherapeuten', a: 'Verbands- und verfahrensübergreifender Zusammenschluss engagierter Psychotherapeutinnen und Psychotherapeuten in Baden-Württemberg, der psychotherapeutische Interessen, vor allem der Niedergelassenen, mit einer besseren Versorgung psychisch erkrankter Menschen verbindet.' },
-  { t: 'Deutsche Psychotherapeutenvereinigung (DPtV)', a: 'Mit über 9.000 Mitgliedern der größte Berufsverband für Psychologische Psychotherapeuten und Kinder- und Jugendlichenpsychotherapeuten in Deutschland. Sie setzt sich für die Belange des Berufsstands und eine bessere psychotherapeutische Versorgung ein.' },
-  { t: 'Arbeitsgemeinschaft für VerhaltensModifikation (AVM)', a: 'Für die AVM-Ausbildungszentren in Ulm und Bamberg ist unsere Praxis als Lehrpraxis anerkannt.' },
+  { t: 'Psychotherapeutenkammer', a: 'Landespsychotherapeutenkammer Baden-Württemberg (LPK BW): Körperschaft des öffentlichen Rechts. Sie vertritt die Psychologischen Psychotherapeuten und Kinder- und Jugendlichenpsychotherapeuten in Baden-Württemberg als Interessenvertretung, Selbstverwaltung und Berufsaufsicht. Voraussetzung für die Mitgliedschaft ist die Approbation.' },
+  { t: 'Kassenärztliche Vereinigung', a: 'Kassenärztliche Vereinigung Baden-Württemberg (KV BW): Ihr gehören alle Ärzte und Psychotherapeuten an, die zur ambulanten Behandlung gesetzlich Versicherter zugelassen oder ermächtigt sind. Körperschaft des öffentlichen Rechts unter der Rechtsaufsicht des Landesgesundheitsministeriums.' },
+  { t: 'Freie Liste', a: 'Freie Liste der Psychotherapeuten: Verbands- und verfahrensübergreifender Zusammenschluss engagierter Psychotherapeutinnen und Psychotherapeuten in Baden-Württemberg, der psychotherapeutische Interessen, vor allem der Niedergelassenen, mit einer besseren Versorgung psychisch erkrankter Menschen verbindet.' },
+  { t: 'DPtV', a: 'Deutsche Psychotherapeutenvereinigung (DPtV): Mit über 9.000 Mitgliedern der größte Berufsverband für Psychologische Psychotherapeuten und Kinder- und Jugendlichenpsychotherapeuten in Deutschland. Sie setzt sich für die Belange des Berufsstands und eine bessere psychotherapeutische Versorgung ein.' },
+  { t: 'AVM', a: 'Arbeitsgemeinschaft für VerhaltensModifikation (AVM): Für die AVM-Ausbildungszentren in Ulm und Bamberg ist unsere Praxis als Lehrpraxis anerkannt.' },
 ];
 const gruppen: { titel: string; text: string; leute: Person[] }[] = [
   { titel: 'Psychologische Psychotherapeutinnen und Psychotherapeuten', text: 'Approbiert, mit Fachkunde in Verhaltenstherapie.', leute: approbiert },
@@ -51,14 +51,14 @@ const gruppen: { titel: string; text: string; leute: Person[] }[] = [
       <SektionsKopf eyebrow={gi === 0 ? 'Approbiert' : 'In psychotherapeutischer Ausbildung'} titel={g.titel} text={g.text} groesse="mittel" />
       <div class="grid gap-6 md:grid-cols-2 lg:gap-8">
         {g.leute.map((p) => (
-          <article id={p.slug} class="nebel-karte grid scroll-mt-28 grid-cols-[6.5rem_1fr] gap-5 bg-background p-5 sm:grid-cols-[9rem_1fr] sm:gap-7 sm:p-7" data-reveal>
-            <Portrait person={p} sizes="150px" />
+          <article id={p.slug} class="nebel-karte grid scroll-mt-28 grid-cols-1 gap-5 bg-background p-6 sm:p-7 lg:grid-cols-[8rem_1fr] lg:gap-7" data-reveal>
+            <Portrait person={p} sizes="150px" class="w-28 lg:w-auto" />
             <div class="min-w-0">
               <h3 class="text-[1.55rem] leading-snug">{p.name}</h3>
               <p class="mt-1 text-sm font-semibold text-primary">{p.titel}{p.frei && ', freie Mitarbeit'}</p>
-              <p class="mt-1 text-sm leading-relaxed text-text/75">{p.rolle}</p>
+              {gi === 0 && <p class="mt-1 text-sm leading-relaxed text-text/75">{p.rolle.replace(/ (\S+)$/, ' $1')}</p>}
               {p.fachkunde && (
-                <p class="mt-4 text-sm leading-relaxed"><span class="etikett text-primary/80">Fachkunde</span><br />{p.fachkunde.join(', ')}</p>
+                <p class="mt-4 text-sm leading-relaxed"><span class="etikett text-primary">Fachkunde</span><br />{p.fachkunde.join(', ')}</p>
               )}
               <ul class="inhalt-liste mt-4 text-sm leading-relaxed text-text/80">
                 {p.werdegang.map((w) => <li>{w}</li>)}

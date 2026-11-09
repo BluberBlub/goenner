@@ -13,13 +13,13 @@ const goenner = approbiert.find((p) => p.slug === 'goenner')!;
 const moehrle = approbiert.find((p) => p.slug === 'moehrle')!;
 const personen = [
   {
-    p: goenner, name: 'Dr. Dipl.-Psych. Sascha Gönner',
+    p: goenner, name: 'Dr. Sascha Gönner',
     text: 'Supervisor, Dozent, Selbsterfahrungsleiter und Prüfer in der staatlichen Ausbildung von Psychotherapeutinnen und Psychotherapeuten gemäß Psychotherapeutengesetz (PsychThG) und Ausbildungs- und Prüfungsverordnung für Psychologische Psychotherapeuten (PsychTh-APrV), anerkannt durch das Regierungspräsidium Stuttgart. Supervisor in der Facharztweiterbildung für das ZfP Südwürttemberg. Anerkannt als Lehrpraxisinhaber für verschiedene Institute.',
     schwerpunkte: ['Angst- und Zwangsstörungen', 'Emotionszentrierte Therapie mit Imagination, inneren Anteilen und Stuhldialogen', 'Konfrontations- und Expositionsbehandlung (EMR)', 'Bedingungs- und Verhaltensanalyse, hypothetische Störungsmodelle'],
     institute: lehreGoenner,
   },
   {
-    p: moehrle, name: 'Dipl.-Psych. Christoph Möhrle',
+    p: moehrle, name: 'Christoph Möhrle',
     text: 'Supervisor und Dozent in der staatlichen Ausbildung von Psychotherapeutinnen und Psychotherapeuten gemäß Psychotherapeutengesetz (PsychThG) und Ausbildungs- und Prüfungsverordnung für Psychologische Psychotherapeuten (PsychTh-APrV), anerkannt durch das Regierungspräsidium Stuttgart.',
     schwerpunkte: ['Suizidalität und Krisenintervention', 'Störungen des Sozialverhaltens', 'Zwangsstörungen'],
     institute: lehreMoehrle,
@@ -55,11 +55,11 @@ const rollen = (r: string[]) => r.map((k) => rollenName[k]).join(', ');
     <Section variant="standard" bg={i === 0 ? 'base' : 'tint'}>
       <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
         <div class="lg:col-span-5">
-          <div class="grid grid-cols-[7rem_1fr] items-end gap-5 sm:grid-cols-[9rem_1fr]">
+          <div class="grid grid-cols-[5rem_1fr] items-end gap-5 sm:grid-cols-[9rem_1fr]">
             <Portrait person={x.p} sizes="150px" />
             <div>
               <p class="etikett text-primary">{i === 0 ? 'Praxisinhaber' : 'Freie Mitarbeit'}</p>
-              <h2 class="mt-2 text-[1.9rem] leading-tight sm:text-[2.3rem]">{x.name}</h2>
+              <h2 class="mt-2 text-[1.6rem] leading-tight sm:text-[2.3rem]">{x.name}</h2>
             </div>
           </div>
           <p class="mt-6 leading-relaxed text-text/85">{x.text}</p>
@@ -80,7 +80,7 @@ const rollen = (r: string[]) => r.map((k) => rollenName[k]).join(', ');
           </ul>
           {i === 0 && (
             <>
-              <p class="etikett mt-10 text-text/60">Frühere Tätigkeiten</p>
+              <p class="etikett mt-10 text-text/80">Frühere Tätigkeiten</p>
               <ul class="fakten mt-3 text-text/75">
                 {lehreGoennerFrueher.map((inst) => (
                   <li class="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-6">

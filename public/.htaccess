@@ -1,82 +1,52 @@
-# Niko Endres Website Autopilot - Apache Konfiguration (v2, Spöri + Joos)
-# Wird automatisch in /public/ kopiert und landet so im dist/-Build
-
-# 404-Fehlerseite (sonst zeigt Apache hässliche Standard-Fehler)
+# Praxis Dr. Gönner – Apache-Konfiguration
 ErrorDocument 404 /404.html
 Options -Indexes
 
-# HTTPS erzwingen - NUR wenn TLS stabil (manuell getestet, Ladezeit < 3 Sek)
-# Falls TLS haengt: diesen Block auskommentieren/entfernen
+# HTTPS erzwingen erst nach TLS-Test (phase5-deploy.md)
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# Alte URLs der bisherigen Website auf die neuen Seiten (Relaunch, SEO)
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteCond %{HTTPS} off
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteRule ^Start/?$ / [R=301,L,NC]
+  RewriteRule ^Politik/?$ /versorgung-in-not/ [R=301,L,NC]
+  RewriteRule ^Therapeuten/Qualifikationen/?$ /team/ [R=301,L,NC]
+  RewriteRule ^Therapeuten/Mitgliedschaften/?$ /team/#mitgliedschaften [R=301,L,NC,NE]
+  RewriteRule ^Therapeuten(/Team)?/?$ /team/ [R=301,L,NC]
+  RewriteRule ^Behandlung/(Therapiekonzept|Schwerpunkte)/?$ /behandlung/ [R=301,L,NC]
+  RewriteRule ^Behandlung/(Prozedere|Kosten)/?$ /ablauf-und-kosten/ [R=301,L,NC]
+  RewriteRule ^Behandlung/?$ /behandlung/ [R=301,L]
+  RewriteRule ^Stellenangebote/?$ /stellenangebote/ [R=301,L]
+  RewriteRule ^AOK-und-BKK/?$ /aok-und-bkk/ [R=301,L]
+  RewriteRule ^Supervision-Lehre/?$ /supervision-und-lehre/ [R=301,L,NC]
+  RewriteRule ^Selbstzahler/?$ /ablauf-und-kosten/#selbstzahler [R=301,L,NC,NE]
+  RewriteRule ^Praxisraeume/Kunst-im-Wartezimmer/?$ /praxis/#kunst [R=301,L,NC,NE]
+  RewriteRule ^Praxisraeume/?$ /praxis/ [R=301,L,NC]
+  RewriteRule ^Kontakt/So-finden-Sie-uns/?$ /praxis/#anfahrt [R=301,L,NC,NE]
+  RewriteRule ^Kontakt(/Kontakt-Anmeldung)?/?$ /kontakt/ [R=301,L]
+  RewriteRule ^Impressum-Datenschutz/Datenschutz/?$ /datenschutz/ [R=301,L,NC]
+  RewriteRule ^Impressum-Datenschutz(/Impressum)?/?$ /impressum/ [R=301,L,NC]
 </IfModule>
 
-# HSTS - erstmal mit kurzer max-age=300 (5 Min) starten
-# Erst nach 24h stabilem HTTPS auf max-age=31536000 hochsetzen
-# Header set Strict-Transport-Security "max-age=300; includeSubDomains"
-
-# Moderne Formate: ältere Apache-Versionen kennen AVIF/WOFF2 nicht und liefern sonst falsche Typen
-<IfModule mod_mime.c>
-  AddType image/avif .avif
-  AddType image/webp .webp
-  AddType font/woff2 .woff2
-  AddType application/manifest+json .webmanifest
-  AddType text/plain .txt
-</IfModule>
-
-# Kompression (Brotli, wenn vorhanden, sonst Gzip). Auch JavaScript (Joos: bis 161 KB pro Seite unkomprimiert)
-<IfModule mod_brotli.c>
-  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css text/javascript text/markdown
-  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/x-javascript application/json application/ld+json application/xml application/manifest+json image/svg+xml image/x-icon
-</IfModule>
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript text/markdown
-  AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json application/ld+json application/xml application/manifest+json
-  AddOutputFilterByType DEFLATE image/svg+xml image/x-icon image/vnd.microsoft.icon
-</IfModule>
-
-# Browser-Caching
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/html "access plus 0 seconds"
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType text/javascript "access plus 1 month"
-  ExpiresByType image/jpeg "access plus 6 months"
-  ExpiresByType image/png "access plus 6 months"
-  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType image/avif "access plus 6 months"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
   ExpiresByType image/svg+xml "access plus 6 months"
-  ExpiresByType image/x-icon "access plus 6 months"
-  ExpiresByType application/pdf "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 
-# Cache immutable fuer gehashte Astro-Assets (verhindert unnoetige Revalidierung)
-<IfModule mod_headers.c>
-  <FilesMatch "\.(css|js)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
-  </FilesMatch>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/xml image/svg+xml application/json
 </IfModule>
 
-# HTML immer frisch prüfen lassen, damit Änderungen sofort sichtbar sind (Joos: alter Stand 1 Stunde im Cache)
-<IfModule mod_headers.c>
-  <FilesMatch "\.html$">
-    Header set Cache-Control "no-cache, must-revalidate"
-  </FilesMatch>
-</IfModule>
-
-# Security Headers
-<IfModule mod_headers.c>
-  Header set X-Content-Type-Options "nosniff"
-  Header set X-Frame-Options "SAMEORIGIN"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
-</IfModule>
-
-# Zugangsdaten des Mailers nie ausliefern
-<FilesMatch "^\.env\.php">
+<Files ".env.php">
   Require all denied
-</FilesMatch>
+</Files>

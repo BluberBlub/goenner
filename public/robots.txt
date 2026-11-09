@@ -1,0 +1,11 @@
+User-agent: facebookexternalhit
+User-agent: WhatsApp
+User-agent: Twitterbot
+User-agent: LinkedInBot
+User-agent: Slackbot
+Allow: /
+
+User-agent: *
+Disallow: /
+
+Sitemap: https://goenner.niko-endres.de/sitemap-index.xml

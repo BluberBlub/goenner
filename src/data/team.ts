@@ -14,7 +14,7 @@ export interface Person {
 
 export const approbiert: Person[] = [
   {
-    slug: 'goenner', name: 'Dr. Sascha Gönner', titel: 'Diplom-Psychologe', rolle: 'Psychologischer Psychotherapeut, Verhaltenstherapeut, Praxisinhaber',
+    slug: 'goenner', name: 'Dr. Sascha Gönner', titel: 'Diplom-Psychologe', rolle: 'Psychologischer Psychotherapeut, Verhaltenstherapeut und Inhaber der Praxis',
     fachkunde: ['Verhaltenstherapie (Erwachsene)', 'Psychotherapie in Gruppen', 'Psychotherapie bei Kindern und Jugendlichen'],
     werdegang: [
       'Früher Leitender Psychologe der Poliklinischen Institutsambulanz für Psychotherapie der Johannes Gutenberg-Universität Mainz und Ausbildungsleiter des SZVT Zentrum für Psychotherapie Stuttgart',
