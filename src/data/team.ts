@@ -14,7 +14,7 @@ export interface Person {
 
 export const approbiert: Person[] = [
   {
-    slug: 'goenner', name: 'Dr. Sascha Gönner', titel: 'Diplom-Psychologe', rolle: 'Psychologischer Psychotherapeut, Verhaltenstherapeut und Inhaber der Praxis',
+    slug: 'goenner', name: 'Dr. Sascha Gönner', titel: 'Diplom-Psychologe', rolle: 'Psychologischer Psychotherapeut, Verhaltenstherapeut und Inhaber der Praxis',
     fachkunde: ['Verhaltenstherapie (Erwachsene)', 'Psychotherapie in Gruppen', 'Psychotherapie bei Kindern und Jugendlichen'],
     werdegang: [
       'Früher Leitender Psychologe der Poliklinischen Institutsambulanz für Psychotherapie der Johannes Gutenberg-Universität Mainz und Ausbildungsleiter des SZVT Zentrum für Psychotherapie Stuttgart',
@@ -50,7 +50,7 @@ export const approbiert: Person[] = [
     werdegang: ['Psychologiestudium an der Johannes Gutenberg-Universität Mainz', 'Psychotherapieausbildung am Institut für Kognitive Verhaltenstherapie (IKVT) Wiesbaden', 'Wissenschaftliche Mitarbeiterin an der Universitätsmedizin Mainz'],
   },
   {
-    slug: 'schreier', name: 'Dr. Andrea Schreier', titel: 'Diplom-Psychologin', rolle: 'Psychologische Psychotherapeutin, Verhaltenstherapeutin',
+    slug: 'schreier', name: 'Dr. Andrea Schreier', titel: 'Diplom-Psychologin', rolle: 'Psychologische Psychotherapeutin, Verhaltenstherapeutin',
     fachkunde: ['Verhaltenstherapie (Erwachsene)', 'Übende Techniken'],
     werdegang: ['Psychologiestudium an der Eberhard Karls Universität Tübingen', 'Psychotherapieausbildung am IFT München'],
     foto: { w: 180, h: 240, varianten: false },

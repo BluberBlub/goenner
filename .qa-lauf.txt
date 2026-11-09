@@ -1,10 +1,10 @@
 
 > niko-website-template@1.0.0 qa
-> node qa-alle.js --nur=overflow,craft
+> node qa-alle.js --schluss
 
 
 ══════════════ QA-GESAMTLAUF ══════════════
-  2 Gates (nur: overflow, craft)
+  12 Gates
 
   [1/3] Build …
         ok
@@ -12,7 +12,56 @@
         ok
   [3/3] Gates …
 
-  ── Gate 1/2: qa-overflow (bisher 7 s) ──
+  ── Gate 1/12: qa-checks (bisher 7 s) ──
+
+══════ QA-CHECKS ══════
+  ⚠  <img> evtl. ohne width/height (CLS): src\components\BaseLayout.astro
+  ⚠  <img> evtl. ohne width/height (CLS): src\components\stil-muster.astro
+  ⚠  <img> evtl. ohne width/height (CLS): src\layouts\BaseLayout.astro
+  ⚠  <img> evtl. ohne width/height (CLS): src\pages\stil-muster.astro
+  ⚠  Bild schwer: public/images/therapieraum-gruppe.jpg (470 KB) – WebP prüfen
+  ⚠  Bild schwer: public/images/wartezimmer-kunst.jpg (457 KB) – WebP prüfen
+
+  0 Fehler, 6 Warnungen
+
+
+  ── Gate 2/12: qa-copy (bisher 7 s) ──
+
+══════ QA-COPY (Text-Gate) ══════
+  14 Seiten
+
+  H1: "Was Sie belastet, darf einen Namen bekommen."
+  ✔  H1 hat Substanz
+  ✔  1 konkrete Angaben auf der Startseite
+
+  0 Fehler, 0 Hinweise
+
+
+  ── Gate 3/12: qa-relaunch (bisher 8 s) ──
+
+══════ QA-RELAUNCH (Inhalts-Vollständigkeit) ══════
+  Original: https://www.ravensburg-psychotherapie.de
+
+  Überschriften übernommen: 100%  (35/35)
+  Inhaltsblöcke übernommen: 99%  (134/135)
+  Fakten gefunden: 32/32
+
+  Original-Bilder übernommen: 9/24
+
+  ✔ Inhalte vollständig übernommen
+
+
+  ── Gate 4/12: qa-seo (bisher 8 s) ──
+
+══════ QA-SEO (SEO, GEO, Bilder) ══════
+  ⚠  /team/: Beschreibung 179 Zeichen (ideal 120–160)
+  ⚠  Staging: noindex aktiv – beim Go-Live meta.staging auf false und robots.txt freigeben
+  ⚠  8 Bilddatei(en) über 350 KB: images\kunst-spiegel.jpg, images\team\baumeister.jpg, images\team\fuelster.jpg, images\team\kaltenbrunner.jpg
+
+  12 Seiten, 68 Bilder geprüft · 0 Fehler, 3 Hinweise
+
+
+  ── Gate 5/12: qa-overflow (bisher 8 s) ──
   Stichprobe: 13 von 13 Seiten (je Template 1 Vertreter; --alle für Vollprüfung)
 
 ══════ QA-OVERFLOW ══════
@@ -22,7 +71,21 @@
   0 Overflow-Fehler
 
 
-  ── Gate 2/2: qa-craft (bisher 1:01 min) ──
+  ── Gate 6/12: qa-contact-form (bisher 1:02 min) ──
+
+══════ QA-CONTACT-FORM ══════
+
+  ✔  Leer-Submit zeigt 4 Fehlermeldung(en)
+  ✔  Invalide E-Mail blockiert Submit
+  ✔  Fehlende DSGVO-Checkbox blockiert Submit
+  ✔  Endpoint korrekt: /mailer.php
+  ✔  Erfolgsmeldung sichtbar
+  ✔  Honeypot-Feld vorhanden
+
+  0 Fehler
+
+
+  ── Gate 7/12: qa-craft (bisher 1:10 min) ──
   Stichprobe: 13 von 13 Seiten (je Template 1 Vertreter; --alle für Vollprüfung)
 
 ══════ QA-CRAFT (Handwerks-Gate) ══════
@@ -36,18 +99,92 @@
   ·  Seite /team/ ist auf dem Handy 14.000 px lang – Kartengruppen als Wisch-Reihe (class="wisch") statt gestapelt (Schwabenpflege)
   ·  Schwacher Kontrast: #3d652b auf #88af42 (2.67:1, Ziel 4.5) z. B. "Psycho­therapie in Ravensburg" auf /, /kontakt/
   ·  Schwacher Kontrast: #edf3e3 auf #88af42 (2.24:1, Ziel 4.5) z. B. "Psycho­therapeutische VersorgunginNot" auf /
-  ·  Schwacher Kontrast: #757d71 auf #f7f9f4 (4.03:1, Ziel 4.5) z. B. "Frühere Tätigkeiten" auf /supervision-und-lehre/
-  ·  Schwacher Kontrast: #628353 auf #f7f9f4 (4.07:1, Ziel 4.5) z. B. "Fachkunde" auf /team/
   ✔  Radius einheitlich (22px, 10px)
   ✔  Footer auf allen 13 Seiten identisch (Text, Links, Struktur, Farben)
   ✔  Keine Handwerksfehler gefunden
 
-  0 Fehler, 9 Hinweise
+  0 Fehler, 7 Hinweise
+
+
+  ── Gate 8/12: qa-wow (bisher 3:07 min) ──
+
+══════ QA-WOW (Mut-Gate) ══════
+
+  ✔  Signature Moment dokumentiert
+  ✔  Typo selbstbewusst: 70px (4.1× Body)
+  ✔  Bewegung vorhanden (1 Keyframes, 1 scroll-driven)
+  ✔  Sektions-Varianz ok (5/10 Muster)
+  ·  Komposition (nur Hinweis, bewusst entscheiden): keine Überlappung über Sektionsgrenzen
+  ·  Komposition (nur Hinweis, bewusst entscheiden): nur symmetrische Raster (alles 50/50 oder 3× gleich)
+     ⚠ NICHT blind beheben – nur ändern wenn es das Design wirklich besser macht.
+
+  0 Mut-Mängel, 2 Hinweise
+
+
+  ── Gate 9/12: qa-speed (bisher 3:09 min) ──
+
+══════ QA-SPEED (Lighthouse Mobile) ══════
+  3 Seiten: /, /ablauf-und-kosten/, /kontakt/  (Staging: noindex wird nicht abgezogen)
+
+  /                            Performance  99 · Barrierefreiheit 100 · Best Practices 100 · SEO 100   (LCP 2.1 s, CLS 0)
+  /ablauf-und-kosten/          Performance  99 · Barrierefreiheit 100 · Best Practices 100 · SEO 100   (LCP 2.1 s, CLS 0)
+  /kontakt/                    Performance  96 · Barrierefreiheit 100 · Best Practices 100 · SEO 100   (LCP 2.3 s, CLS 0.09)
+  / (Desktop)                  Performance 100   (CLS 0.002)
+  ✔  PageSpeed im Ziel (/ 99, /ablauf-und-kosten/ 99, /kontakt/ 96, / (Desktop) 100)
+
+  0 Fehler, 0 Hinweise  (Details: qa-speed-report.json)
+
+
+  ── Gate 10/12: qa-images (bisher 3:43 min) ──
+
+══════ QA-IMAGES (Bild-Gate) ══════
+  Branche: Psychotherapie, Verhaltenstherapie, Supervision | 21 Bilder | Modell: gemini-3.5-flash
+
+  ✔  kunst-ausstellung-zollmann.jpg [kunst-im-wartezimmer-ausstellung]: Ein Mann und eine Frau stehen neben einem Gemälde und orangefarbenen Hockern.
+
+  0 unpassende Bilder, 0 Warnungen
+
+  ⚠  qa-images übersprungen: Gemini-Tageskontingent erschöpft (1 neu geprüft, Ergebnisse im Cache).
+     Der nächste Lauf prüft nur noch die fehlenden Bilder. Dauerhaft: bezahlter Key in ../../gemini-config.json.
+
+
+  ── Gate 11/12: qa-visual (bisher 3:51 min) ──
+
+══════ QA-VISUAL (Art-Director-Blick) ══════
+  4 Seiten × 2 Breiten · Modell: gemini-3.5-flash
+
+
+  0 sichtbare Fehler, 0 Hinweise
+  Screenshots: .qa-screenshots/  ·  Report: qa-visual-report.json
+
+  ⚠  qa-visual übersprungen: Gemini-Tageskontingent erschöpft. Screenshots liegen trotzdem vor (selbst ansehen).
+     Dauerhaft: bezahlter Key in ../../gemini-config.json.
+
+
+  ── Gate 12/12: qa-slop (bisher 4:00 min) ──
+
+══════ QA-SLOP (Impeccable Anti-Slop) ══════
+  Scanne src/ auf KI-Design-Klischees (nicht-blockierend)...
+
+  ✔  Keine eigenen Slop-Muster gefunden.
+
+  (qa-slop übersprungen – Impeccable nicht ausführbar:
+   [   {     "antipattern": "overused-font",     "name": "Overused font",     "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose )
 
 
 ══════════════ QA-ERGEBNIS ══════════════
+  ✔  qa-checks         bestanden                   0 s
+  ✔  qa-copy           bestanden                   0 s
+  ✔  qa-relaunch       bestanden                   0 s
+  ✔  qa-seo            bestanden                   0 s
   ✔  qa-overflow       bestanden                  54 s
-  ✔  qa-craft          bestanden                 116 s
+  ✔  qa-contact-form   bestanden                   7 s
+  ✔  qa-craft          bestanden                 117 s
+  ✔  qa-wow            bestanden                   2 s
+  ✔  qa-speed          bestanden                  34 s
+  ·  qa-images         übersprungen (Key/Kontingent/Überlast)    8 s
+  ·  qa-visual         übersprungen (Key/Kontingent/Überlast)    9 s
+  ✔  qa-slop           bestanden                   1 s
 
-  ✔  ALLE GATES GRÜN (Teillauf – für Deploy/Marker zählt nur der Komplettlauf: npm run qa)
+  ✔  ALLE GATES GRÜN
 
