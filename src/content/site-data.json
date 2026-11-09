@@ -1,39 +1,205 @@
-﻿{
+{
   "meta": {
-    "kundenname": "",
-    "branche": "",
-    "ort": "",
-    "url_alt": ""
+    "firmenname": "Praxis Dr. Sascha Gönner",
+    "firmennameLang": "Praxis für Psychotherapie und Verhaltenstherapie Dr. Sascha Gönner",
+    "kundenname": "Praxis für Psychotherapie Dr. Sascha Gönner",
+    "kurzbeschreibung": "Verhaltenstherapie für Erwachsene mitten in Ravensburg: Einzel- und Gruppentherapie, Supervision und staatlich anerkannte Lehrpraxis in der Karlstraße 8.",
+    "branche": "Psychotherapie, Verhaltenstherapie, Supervision",
+    "ort": "Ravensburg",
+    "region": "Ravensburg und Oberschwaben",
+    "inhaber": "Dr. Sascha Gönner",
+    "inhaberRolle": "Praxisinhaber, Psychologischer Psychotherapeut",
+    "logo": "/images/logo.svg",
+    "logoFooter": "/images/logo-hell.svg",
+    "logoMitName": true,
+    "logoHoehe": [
+      40,
+      46
+    ],
+    "siteUrl": "https://goenner.niko-endres.de",
+    "originalUrl": "https://www.ravensburg-psychotherapie.de/",
+    "url_alt": "https://www.ravensburg-psychotherapie.de/",
+    "navCta": "kontakt",
+    "staging": true,
+    "demo": true,
+    "mailPflichtangaben": "Psychologischer Psychotherapeut, Mitglied der Landespsychotherapeutenkammer Baden-Württemberg"
   },
   "kontakt": {
-    "telefon": "",
-    "email": "",
-    "adresse": "",
-    "oeffnungszeiten": ""
+    "telefon": "0751 9771973-0",
+    "fax": "0751 9771973-1",
+    "email": "praxis@drgoenner.de",
+    "strasse": "Karlstraße 8",
+    "plz": "88212",
+    "ort": "Ravensburg",
+    "land": "DE",
+    "adresse": "Karlstraße 8, 88212 Ravensburg",
+    "oeffnungszeiten": [
+      {
+        "tage": "Telefonische Sprechzeit: Do",
+        "zeiten": "13:00–14:00 Uhr"
+      }
+    ]
   },
   "design": {
+    "leitidee": "Wie Morgennebel über dem Schussental, der sich langsam lichtet: Was eben noch diffus war, bekommt Kontur.",
+    "bewegung": "Aufklaren statt Auftreten. Weiche Blenden, Unschärfe wird zu Schärfe, nichts springt.",
+    "farbwelt": "Waldgrün der bisherigen Praxisseite als Halt, Blattgrün als erstes Licht, Flächen wie Nebel: Weiß mit grünem Hauch.",
+    "formsprache": "Große weich gerundete Flächen wie Nebelbänke, feine Haarlinien als Wegmarken, Schwarz-Weiß-Portraits.",
+    "rhythmus": "Atmend: viel Luft und große leichte Serif, dazwischen dichte, sachliche Informationsblöcke.",
+    "referenz": "Octave Mental Health (findoctave.com), mit den Hausfarben der Altseite",
     "farben": {
-      "primary": "#000000",
-      "secondary": "#ffffff",
-      "background": "#f9f9f9",
-      "text": "#1a1a1a",
-      "accent": "#0066cc"
+      "primary": "#3D652B",
+      "secondary": "#233B19",
+      "accent": "#88AF42",
+      "background": "#F7F9F4",
+      "text": "#1E2A19"
     },
-    "font": "Inter",
-    "borderRadius": "8px"
+    "textAuf": {
+      "accent": "dunkel"
+    },
+    "fonts": {
+      "display": "'Newsreader', 'Newsreader Ersatz', Georgia, serif",
+      "body": "'Instrument Sans', 'Instrument Sans Ersatz', system-ui, -apple-system, 'Segoe UI', sans-serif"
+    },
+    "fontPreload": [
+      "/fonts/newsreader-latin-300-normal.woff2",
+      "/fonts/newsreader-latin-300-italic.woff2",
+      "/fonts/instrument-sans-latin-400-normal.woff2"
+    ],
+    "radius": {
+      "knopf": "10px",
+      "karte": "22px"
+    },
+    "aktivFarbe": "primary"
   },
-  "seiten": ["startseite", "leistungen", "ueber-uns", "kontakt"],
-  "texte": {
-    "slogan": "",
-    "hero_headline": "",
-    "hero_subline": ""
+  "navigation": [
+    {
+      "label": "Startseite",
+      "href": "/"
+    },
+    {
+      "label": "Behandlung",
+      "href": "/behandlung/",
+      "children": [
+        {
+          "label": "Therapie und Schwerpunkte",
+          "href": "/behandlung/"
+        },
+        {
+          "label": "Ablauf und Kosten",
+          "href": "/ablauf-und-kosten/"
+        },
+        {
+          "label": "AOK- und BKK-Verträge",
+          "href": "/aok-und-bkk/"
+        }
+      ]
+    },
+    {
+      "label": "Team",
+      "href": "/team/"
+    },
+    {
+      "label": "Praxis",
+      "href": "/praxis/"
+    },
+    {
+      "label": "Fachliches",
+      "children": [
+        {
+          "label": "Supervision und Lehre",
+          "href": "/supervision-und-lehre/"
+        },
+        {
+          "label": "Stellenangebote",
+          "href": "/stellenangebote/"
+        },
+        {
+          "label": "Versorgung in Not",
+          "href": "/versorgung-in-not/"
+        }
+      ]
+    },
+    {
+      "label": "Kontakt",
+      "href": "/kontakt/"
+    }
+  ],
+  "sticky": {
+    "zeile": "Anmeldung über das Formular",
+    "titel": "Therapieplatz anfragen",
+    "icon": "kalender",
+    "href": "/kontakt/"
   },
-  "bilder": {
-    "logo": "/images/logo.svg",
-    "hero": "/images/hero.jpg"
+  "tonalitaet": {
+    "anrede": "sie",
+    "perspektive": "wir",
+    "stil": "ruhig, klar, fachlich genau, ehrlich auch bei Grenzen, ohne Floskeln und ohne Heilsversprechen"
+  },
+  "externeInhalte": [],
+  "umbruch": {
+    "trennstellen": [
+      "Psycho|therapie",
+      "Psycho|therapeut",
+      "Psycho|therapeutin",
+      "Psycho|therapeuten",
+      "Psycho|therapeutinnen",
+      "Verhaltens|therapie",
+      "Verhaltens|therapeut",
+      "Verhaltens|therapeutin",
+      "Gruppen|therapie",
+      "Gruppen|psycho|therapie",
+      "Einzel|therapie",
+      "Kranken|kasse",
+      "Kranken|kassen",
+      "Kranken|versicherung",
+      "Kosten|übernahme",
+      "Ausfall|honorar",
+      "Selektiv|vertrag",
+      "Selektiv|verträge",
+      "Facharzt|vertrag",
+      "Hausarzt|vertrag",
+      "Betriebs|kranken|kassen",
+      "Probe|sitzungen",
+      "Sprechstunden|termin",
+      "Therapie|platz",
+      "Therapie|plätze",
+      "Behandlungs|schwerpunkte",
+      "Selbstzahler|leistungen",
+      "Ausbildungs|institute",
+      "Ausbildungs|zentrum",
+      "Landes|psycho|therapeuten|kammer",
+      "Kassen|ärztliche",
+      "Zwangs|störungen",
+      "Angst|störungen",
+      "Ess|störungen",
+      "Schlaf|störungen",
+      "Impuls|kontroll|störungen",
+      "Selbsterfahrungs|leiter",
+      "Lehr|praxis",
+      "Datenschutz|erklärung",
+      "Psycho|therapeuten|gesetz",
+      "Diplom-|Psychologin",
+      "Diplom-|Psychologe"
+    ]
   },
   "seo": {
-    "hauptkeyword": "",
-    "lokalkeyword": ""
+    "hauptkeyword": "Psychotherapie Ravensburg",
+    "lokalkeyword": "Verhaltenstherapie Ravensburg",
+    "weitere": [
+      "Psychotherapeut Ravensburg",
+      "Gruppentherapie Ravensburg",
+      "AOK Facharztvertrag Psychotherapie Ravensburg",
+      "Supervision Verhaltenstherapie Ravensburg",
+      "Lehrpraxis Verhaltenstherapie"
+    ]
+  },
+  "bildZuordnung": {
+    "hero-startseite": "/images/therapieraum-sessel.jpg",
+    "behandlung": "/images/therapieraum-gruppe.jpg",
+    "ablauf-kosten": "/images/therapieraum-tisch.jpg",
+    "team": "/images/praxis-flur.jpg",
+    "praxis": "/images/wartezimmer-kunst.jpg",
+    "kunst": "/images/kunst-ausstellung-zollmann.jpg"
   }
 }
