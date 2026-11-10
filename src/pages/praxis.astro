@@ -10,10 +10,10 @@ import Foto from '../components/Foto.astro';
 import type { BildName } from '../data/bilder';
 
 const raeume: { name: BildName; klasse: string; pos?: string }[] = [
-  { name: 'therapieraum-gruppe', klasse: 'lg:col-span-7 aspect-[4/3]' },
-  { name: 'therapieraum-tisch', klasse: 'lg:col-span-5 aspect-[4/3] lg:aspect-auto', pos: '50% 60%' },
-  { name: 'praxis-wartebereich-panorama', klasse: 'lg:col-span-5 aspect-[4/3] lg:aspect-auto' },
-  { name: 'praxis-flur', klasse: 'lg:col-span-7 aspect-[4/3]' },
+  { name: 'therapieraum-gruppe', klasse: 'col-span-2 aspect-[4/3] lg:col-span-7' },
+  { name: 'therapieraum-tisch', klasse: 'aspect-square lg:col-span-5 lg:aspect-auto', pos: '50% 60%' },
+  { name: 'praxis-wartebereich-panorama', klasse: 'aspect-square lg:col-span-5 lg:aspect-auto' },
+  { name: 'praxis-flur', klasse: 'col-span-2 aspect-[16/10] lg:col-span-7 lg:aspect-[4/3]' },
 ];
 ---
 <Seite
@@ -42,7 +42,7 @@ const raeume: { name: BildName; klasse: string; pos?: string }[] = [
 
   <Section variant="standard" bg="base">
     <SektionsKopf eyebrow="Ein erster Eindruck" titel="Unsere Behandlungsräume." />
-    <div class="grid gap-4 lg:grid-cols-12 lg:gap-6">
+    <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-12 lg:gap-6">
       {raeume.map((r) => (
         <div class:list={['overflow-hidden rounded-karte', r.klasse]} data-reveal>
           <Foto name={r.name} sizes="(min-width: 1024px) 60vw, 100vw" pos={r.pos} class="block h-full w-full" />

@@ -5,32 +5,32 @@
 // Alles im Hero steht sofort da (Kit-Regel), nur das Akzentwort stellt sich einmal scharf.
 import Foto from '../components/Foto.astro';
 ---
-<section data-hero class="relative grid min-h-[var(--hero-h)] bg-primary text-on-primary lg:h-[var(--hero-h)] lg:grid-cols-2">
-  <div class="relative z-10 flex flex-col justify-center px-6 py-12 sm:px-12 lg:py-10 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
+<section data-hero class="relative grid min-h-[var(--hero-h)] grid-rows-[auto_1fr] bg-primary text-on-primary lg:h-[var(--hero-h)] lg:grid-cols-2 lg:grid-rows-1">
+  <div class="relative z-10 order-2 flex flex-col justify-center px-6 pb-10 pt-8 sm:px-12 sm:py-12 lg:order-none lg:py-10 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
     <p class="etikett flex items-center gap-3 text-on-primary/80">
       <span class="w-8 border-t border-accent" aria-hidden="true"></span>
       Verhaltenstherapie in Ravensburg
     </p>
-    <h1 class="hero-titel mt-7 text-[2.6rem] leading-[1.15] sm:text-[3.6rem] lg:text-[clamp(3.2rem,4.4vw,4.8rem)]">
+    <h1 class="hero-titel mt-5 text-[2.35rem] min-[380px]:text-[2.6rem] lg:mt-7 leading-[1.15] sm:text-[3.6rem] lg:text-[clamp(3.2rem,4.4vw,4.8rem)]">
       Was Sie belastet, darf einen Namen bekommen.
     </h1>
-    <p class="lead hero-lead mt-8 max-w-[34rem] text-lg leading-[1.65] text-on-primary/85 sm:text-[1.3rem]">
+    <p class="lead hero-lead mt-5 max-w-[34rem] text-[1.05rem] lg:mt-8 lg:text-lg leading-[1.65] text-on-primary/85 sm:text-[1.3rem]">
       Einzel- und Gruppentherapie für Erwachsene mitten in Ravensburg, mit einem Team aus vierzehn Psychologinnen und Psychologen.
     </p>
-    <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+    <div class="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-9">
       <a href="/kontakt/" class="knopf knopf-hell">
         Therapieplatz anfragen
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a href="#wegweiser" class="knopf knopf-rand-hell">Wie schnell geht es bei mir?</a>
     </div>
-    <p class="mt-10 flex max-w-[34rem] items-center gap-3 border-t border-on-primary/15 pt-6 text-sm text-on-primary/80">
+    <p class="mt-7 flex max-w-[34rem] items-center gap-3 border-t border-on-primary/15 pt-5 lg:mt-10 lg:pt-6 text-sm text-on-primary/80">
       <span class="relative flex h-2.5 w-2.5" aria-hidden="true"><span class="absolute inset-0 animate-ping rounded-full bg-accent/60 motion-reduce:hidden"></span><span class="relative h-2.5 w-2.5 rounded-full bg-accent"></span></span>
       Telefonische Sprechzeit donnerstags 13:00–14:00 Uhr
     </p>
   </div>
 
-  <div class="relative min-h-[22rem] lg:min-h-0">
+  <div class="relative order-1 h-[26svh] min-h-[11rem] lg:order-none lg:h-auto lg:min-h-0">
     <Foto name="zweig-im-licht" eager sizes="(min-width: 1024px) 50vw, 100vw" pos="58% 50%"
           class="absolute inset-0 block h-full w-full" />
   </div>

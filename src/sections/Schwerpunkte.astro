@@ -23,12 +23,35 @@ const nr = (i: number) => String(i + 1).padStart(2, '0');
         dunkel
         eyebrow="Behandlungsschwerpunkte"
         titel="Zwölf Themen, mit denen Menschen zu uns kommen."
-        text="Wir behandeln Erwachsene mit dem gesamten Spektrum psychischer Erkrankungen, bei denen eine ambulante Psychotherapie angezeigt ist. Tippen Sie ein Thema an: Daneben steht, was dazugehört."
+        text="Wir behandeln Erwachsene mit dem gesamten Spektrum psychischer Erkrankungen, bei denen eine ambulante Psychotherapie angezeigt ist. Wählen Sie ein Thema, um mehr darüber zu erfahren."
       />
     </div>
   </div>
 
-  <div class="themen mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12 lg:gap-8" data-themen>
+  <!-- Mobil: jedes Thema klappt direkt an Ort und Stelle auf (keine Tafel weit unterhalb) -->
+  <div class="themen-mobil mt-8 border-t border-white/15 lg:hidden">
+    {schwerpunkte.map((s, i) => (
+      <details class="group border-b border-white/15">
+        <summary class="flex cursor-pointer list-none items-center gap-3 py-4 [&::-webkit-details-marker]:hidden">
+          <span class="w-6 shrink-0 text-[.72rem] font-semibold tracking-[.1em] text-accent">{nr(i)}</span>
+          <span class="flex-1 font-display text-[1.45rem] leading-snug">{s.kurz}</span>
+          <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/25 transition-transform group-open:rotate-45" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </summary>
+        <div class="pb-5 pl-9 pr-2">
+          <p class="font-display text-lg leading-snug text-on-secondary">{s.titel}</p>
+          <p class="mt-2 leading-relaxed text-on-secondary/85">{s.text}</p>
+        </div>
+      </details>
+    ))}
+    <div class="mt-8 flex flex-col gap-3">
+      <a href="/behandlung/therapie-und-schwerpunkte/#schwerpunkte" class="knopf knopf-hell">Therapie und Schwerpunkte</a>
+      <a href="/behandlung/therapie-und-schwerpunkte/#gruppen" class="knopf knopf-rand-hell">Offene Gruppe für Zwänge</a>
+    </div>
+  </div>
+
+  <div class="themen mt-10 hidden gap-10 lg:mt-14 lg:grid lg:grid-cols-12 lg:gap-8" data-themen>
     <ul class="lichten flex flex-wrap items-baseline gap-x-5 gap-y-2 lg:col-span-7 lg:gap-x-7" aria-label="Unsere Behandlungsschwerpunkte">
       {schwerpunkte.map((s, i) => (
         <li style={`--i:${i}`}>

@@ -19,8 +19,8 @@ const variante = (p: string, ext: string) => {
 const avif = variante(image, 'avif');
 const webp = variante(image, 'webp');
 ---
-<section data-hero class="seiten-hero relative grid min-h-[var(--hero-h)] grid-rows-[auto_minmax(16rem,1fr)] bg-primary text-on-primary lg:grid-cols-2 lg:grid-rows-1">
-  <div class="relative z-10 flex flex-col justify-end px-6 pb-10 pt-12 sm:px-12 sm:pb-14 lg:justify-center lg:py-12 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
+<section data-hero class="seiten-hero relative grid min-h-[var(--hero-h)] grid-rows-[auto_1fr] bg-primary text-on-primary lg:grid-cols-2 lg:grid-rows-1">
+  <div class="relative z-10 order-2 flex flex-col justify-center px-6 pb-10 pt-8 sm:px-12 sm:pb-14 sm:pt-12 lg:order-none lg:justify-center lg:py-12 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
     {pfad.length > 0 && (
       <nav aria-label="Brotkrumen" class="mb-6 text-sm text-on-primary/85">
         <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -42,7 +42,7 @@ const webp = variante(image, 'webp');
     <h1 class="hero-titel text-[2.2rem] leading-[1.15] min-[380px]:text-[2.5rem] sm:text-[3.4rem] lg:text-[clamp(3rem,4.2vw,4.4rem)]" set:html={title} />
     {subtitle && <p data-lead class="mt-6 max-w-xl text-lg leading-relaxed text-on-primary/85 sm:text-xl" set:html={subtitle} />}
   </div>
-  <div class="hero-bild relative overflow-hidden bg-secondary">
+  <div class="hero-bild relative order-1 h-[26svh] min-h-[11rem] overflow-hidden bg-secondary lg:order-none lg:h-auto">
     <picture>
       {avif && <source type="image/avif" srcset={avif} sizes="(min-width: 1024px) 50vw, 100vw" />}
       {webp && <source type="image/webp" srcset={webp} sizes="(min-width: 1024px) 50vw, 100vw" />}

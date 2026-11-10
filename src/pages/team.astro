@@ -51,16 +51,18 @@ const gruppen: { titel: string; text: string; leute: Person[] }[] = [
       <SektionsKopf eyebrow={gi === 0 ? 'Approbiert' : 'In psychotherapeutischer Ausbildung'} titel={g.titel} text={g.text} groesse="mittel" />
       <div class="grid gap-6 md:grid-cols-2 lg:gap-8">
         {g.leute.map((p) => (
-          <article id={p.slug} class="nebel-karte grid scroll-mt-28 grid-cols-1 gap-5 bg-background p-6 sm:p-7 lg:grid-cols-[8rem_1fr] lg:gap-7" data-reveal>
-            <Portrait person={p} sizes="150px" class="w-28 lg:w-auto" />
-            <div class="min-w-0">
-              <h3 class="text-[1.55rem] leading-snug">{p.name}</h3>
+          <article id={p.slug} class="nebel-karte grid scroll-mt-28 grid-cols-[4.5rem_1fr] gap-4 bg-background p-5 sm:grid-cols-[6rem_1fr] sm:gap-5 sm:p-7 lg:grid-cols-[8rem_1fr] lg:content-start lg:gap-x-7 lg:gap-y-4" data-reveal>
+            <Portrait person={p} sizes="150px" class="w-full self-start lg:row-span-2" />
+            <div class="min-w-0 self-center lg:self-start">
+              <h3 class="text-[1.35rem] leading-snug sm:text-[1.55rem]">{p.name}</h3>
               <p class="mt-1 text-sm font-semibold text-primary">{p.titel}{p.frei && ', freie Mitarbeit'}</p>
-              {gi === 0 && <p class="mt-1 text-sm leading-relaxed text-text/75">{p.rolle.replace(/ (\S+)$/, ' $1')}</p>}
+              {gi === 0 && <p class="mt-1 text-sm leading-relaxed text-text/75">{p.rolle}</p>}
+            </div>
+            <div class="col-span-2 min-w-0 lg:col-span-1 lg:col-start-2">
               {p.fachkunde && (
-                <p class="mt-4 text-sm leading-relaxed"><span class="etikett text-primary">Fachkunde</span><br />{p.fachkunde.join(', ')}</p>
+                <p class="text-sm leading-relaxed"><span class="etikett text-primary">Fachkunde</span><br />{p.fachkunde.join(', ')}</p>
               )}
-              <ul class="inhalt-liste mt-4 text-sm leading-relaxed text-text/80">
+              <ul class="inhalt-liste mt-4 first:mt-0 text-sm leading-relaxed text-text/80">
                 {p.werdegang.map((w) => <li>{w}</li>)}
               </ul>
               {p.links && (

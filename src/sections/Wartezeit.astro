@@ -56,15 +56,15 @@ const wege = [
 
     <div class="grid gap-6 lg:col-span-7 lg:col-start-6" aria-live="polite">
       {wege.map((w) => (
-        <article class="antwort nebel-karte relative flex flex-col overflow-hidden p-8 sm:p-10 lg:p-12" data-weg={w.id} data-stufe={w.stufe}>
+        <article class="antwort nebel-karte relative flex flex-col overflow-hidden p-6 sm:p-10 lg:p-12" data-weg={w.id} data-stufe={w.stufe}>
           <p class="etikett text-primary">{w.etikett}</p>
-          <h3 class="mt-4 text-[1.9rem] leading-[1.18] sm:text-[2.6rem]" set:html={w.titel} />
+          <h3 class="mt-3 text-[1.65rem] leading-[1.18] sm:mt-4 sm:text-[2.6rem]" set:html={w.titel} />
           <div class="sicht mt-6" aria-hidden="true">
             <span>Sicht auf einen Therapieplatz</span>
             <span class="sicht-balken"><i></i><i></i><i></i></span>
           </div>
-          <p class="mt-6 text-lg leading-relaxed text-text/80">{w.text}</p>
-          <div class="mt-auto pt-8"><a href={w.link.href} class="knopf knopf-rand">{w.link.text} <Fragment set:html={pfeil} /></a></div>
+          <p class="mt-5 leading-relaxed text-text/80 sm:mt-6 sm:text-lg">{w.text}</p>
+          <div class="mt-auto pt-6 sm:pt-8"><a href={w.link.href} class="knopf knopf-rand w-full sm:w-auto">{w.link.text} <Fragment set:html={pfeil} /></a></div>
         </article>
       ))}
     </div>

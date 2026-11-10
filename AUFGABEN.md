@@ -50,4 +50,4 @@
 - [x] "texte im hero sind noch nicht sonderlich ansprechend formatiert. das darf besser werden" (2026-11-10) → Titel ausgeglichen (balance), Einleitung ein ruhiger Satz, Sprechzeit mit Haarlinie abgesetzt, Unterseiten text-wrap pretty
 - [x] "Ihr nächster Schritt cta bei 3 sollte der strich enden und nicht weiterfahren" (2026-11-10) → Linie wird von Kreis 1 bis Kreis 3 gemessen und endet dort
 - [x] "Jugendstilvilla - das interessiert niemanden" (2026-11-10) → überall entfernt (Start, Praxis, Stellen, Meta)
-- [ ] "mobil ist die seite super unterirdisch. bitte komplett optimieren für mobil. darüber werden die meisten patienten kommen" (2026-11-10)
+- [x] "mobil ist die seite super unterirdisch. bitte komplett optimieren für mobil. darüber werden die meisten patienten kommen" (2026-11-10) → Hero Bild oben, Themen als Akkordeon, Team als Wischreihe, Team-Karten kompakt, Kontakt Formular vor Karte, Praxis-Galerie 2er-Raster, Wartezeit kompakt

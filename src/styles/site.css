@@ -276,3 +276,11 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
    kein einzelnes kurzes Wort in der letzten Zeile; Einleitung mit ruhigem Flatterrand. */
 .hero-titel { text-wrap: balance; letter-spacing: -0.012em; }
 .hero-lead, .seiten-hero [data-lead] { text-wrap: pretty; }
+
+/* Mobil (Niko 10.11. (4): "mobil unterirdisch, die meisten Patienten kommen mobil") */
+@media (max-width: 639px) {
+  .team-band > li { flex: 0 0 7.5rem; scroll-snap-align: start; }
+  .team-band { scrollbar-width: none; }
+  .team-band::-webkit-scrollbar { display: none; }
+  .ist-interaktiv .sicht { flex-direction: column; align-items: flex-start; gap: .5rem; font-size: .72rem; }
+}

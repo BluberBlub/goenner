@@ -39,11 +39,12 @@ import KarteLaden from '../components/KarteLaden.astro';
 
   <Section variant="standard" bg="base" id="formular" class="scroll-mt-20">
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-5">
-        <SektionsKopf eyebrow="Anmeldung" titel="Ihre Anfrage." text="Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten." groesse="mittel" />
-        <KarteLaden titel="Karte: Praxis Dr. Gönner, Karlstraße 8, Ravensburg" class="mt-8 lg:sticky lg:top-28" />
+      <!-- Mobil: Kopf, Formular, dann erst die Karte (contents löst die Spalte auf) -->
+      <div class="contents lg:col-span-5 lg:block">
+        <SektionsKopf eyebrow="Anmeldung" titel="Ihre Anfrage." text="Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten." groesse="mittel" class="order-1 !mb-0 lg:order-none" />
+        <KarteLaden titel="Karte: Praxis Dr. Gönner, Karlstraße 8, Ravensburg" class="order-3 lg:order-none lg:mt-8 lg:sticky lg:top-28" />
       </div>
-      <div class="lg:col-span-7 lg:col-start-6">
+      <div class="order-2 lg:order-none lg:col-span-7 lg:col-start-6">
         <div class="rounded-karte border border-primary/15 bg-white p-6 sm:p-10">
           <ContactForm client:visible={{ rootMargin: '2500px' }} />
         </div>
