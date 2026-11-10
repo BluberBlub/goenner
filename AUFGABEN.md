@@ -44,6 +44,6 @@
 - [x] "hero bild startseite und behandlung sind identisch, sollte nicht sein." (2026-11-10) → Start: Zweig, Behandlung: Gruppenraum
 - [x] "aus team wird über uns" (2026-11-10) → Navigation, Footer, 404, Team-Seite (URL /team/ bleibt)
 - [x] "sticky contact ist noch etwas unsichtbar" (2026-11-10) → Waldgrün mit Limettenkreis und deutlichem Schatten
-- [ ] "https://github.com/BluberBlub/goenner git push" (2026-11-10)
+- [x] "https://github.com/BluberBlub/goenner git push" (2026-11-10) → origin = BluberBlub/goenner, master → main gepusht
 - [x] "footer Karlstraße 8. steht allein in einer eigenen zeile. das muss nicht sein." (2026-11-10) → Kurzbeschreibung ohne Adresse (steht in der Kontaktspalte)
 
