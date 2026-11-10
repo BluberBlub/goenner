@@ -1,10 +1,10 @@
 ---
-import Seite from '../layouts/Seite.astro';
-import PageHero from '../components/PageHero.astro';
-import Section from '../components/Section.astro';
-import SektionsKopf from '../components/SektionsKopf.astro';
-import Cta from '../components/Cta.astro';
-import SeitenIntro from '../sections/SeitenIntro.astro';
+import Seite from '../../layouts/Seite.astro';
+import SeitenHero from '../../sections/SeitenHero.astro';
+import Section from '../../components/Section.astro';
+import SektionsKopf from '../../components/SektionsKopf.astro';
+import Abschluss from '../../sections/Abschluss.astro';
+import SeitenIntro from '../../sections/SeitenIntro.astro';
 ---
 <Seite
   title="Psychotherapie in Not: unsere Position | Praxis Dr. Gönner"
@@ -12,7 +12,8 @@ import SeitenIntro from '../sections/SeitenIntro.astro';
   lcpBild="/images/kunst-frida.jpg"
   lcpVarianten
 >
-  <PageHero
+  <SeitenHero
+    pfad={[{ label: 'Fachliches', href: '/fachliches/' }]}
     eyebrow="Versorgung in Not"
     title="Psychotherapie in Not."
     subtitle="Unsere Position zu den Einschnitten in der ambulanten Psychotherapie."
@@ -48,10 +49,10 @@ import SeitenIntro from '../sections/SeitenIntro.astro';
       </aside>
     </div>
   </Section>
-  <Cta
+  <Abschluss
     titel="Sie suchen trotzdem einen Therapieplatz?"
     text="Mit dem AOK-Hausarztvertrag oder dem BKK-Selektivvertrag bekommen Sie bei uns innerhalb von zwei Wochen ein Vorgespräch."
     buttonText="Mehr zu den Verträgen"
-    buttonHref="/aok-und-bkk/"
+    buttonHref="/behandlung/aok-und-bkk/"
   />
 </Seite>

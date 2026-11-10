@@ -1,11 +1,11 @@
 ---
-import Seite from '../layouts/Seite.astro';
-import PageHero from '../components/PageHero.astro';
-import Section from '../components/Section.astro';
-import SektionsKopf from '../components/SektionsKopf.astro';
-import Cta from '../components/Cta.astro';
-import SeitenIntro from '../sections/SeitenIntro.astro';
-import Weg from '../sections/Weg.astro';
+import Seite from '../../layouts/Seite.astro';
+import SeitenHero from '../../sections/SeitenHero.astro';
+import Section from '../../components/Section.astro';
+import SektionsKopf from '../../components/SektionsKopf.astro';
+import Abschluss from '../../sections/Abschluss.astro';
+import SeitenIntro from '../../sections/SeitenIntro.astro';
+import Weg from '../../sections/Weg.astro';
 
 const selbstzahler = [
   'Stressbewältigungstraining',
@@ -26,7 +26,8 @@ const pfeil = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   lcpBild="/images/wartezimmer-kunst.jpg"
   lcpVarianten
 >
-  <PageHero
+  <SeitenHero
+    pfad={[{ label: 'Behandlung', href: '/behandlung/' }]}
     eyebrow="Ablauf und Kosten"
     title="Schritt für Schritt, und transparent."
     subtitle="Vom ersten Termin bis zur Kostenübernahme durch Ihre Krankenkasse."
@@ -94,7 +95,7 @@ const pfeil = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
         <p class="etikett text-primary">Gesetzliche Krankenversicherung</p>
         <h3 class="mt-3 text-[1.6rem] leading-snug">Die Krankenkasse trägt alle Kosten.</h3>
         <p class="mt-4 leading-relaxed text-text/80">Zum ersten Sprechstundentermin bringen Sie Ihre Versichertenkarte und, falls vorhanden, Arzt- oder Klinikberichte mit. AOK-Versicherte im Hausarzt- oder Facharztprogramm brauchen zusätzlich eine Überweisung ihres Hausarztes. Kosten entstehen nur, wenn Termine nicht fristgerecht abgesagt werden.</p>
-        <a href="/aok-und-bkk/" class="link-pfeil mt-6">AOK-Facharztvertrag und BKK-Selektivvertrag <Fragment set:html={pfeil} /></a>
+        <a href="/behandlung/aok-und-bkk/" class="link-pfeil mt-6">AOK-Facharztvertrag und BKK-Selektivvertrag <Fragment set:html={pfeil} /></a>
       </article>
       <article class="nebel-karte bg-background p-8 sm:p-10 lg:col-span-5" data-reveal>
         <p class="etikett text-primary">Private Krankenversicherung und Beihilfe</p>
@@ -118,7 +119,7 @@ const pfeil = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     </div>
   </Section>
 
-  <Cta
+  <Abschluss
     titel="Noch Fragen zu Ablauf oder Kosten?"
     text="Schreiben Sie uns über das Kontaktformular. Telefonisch erreichen Sie uns donnerstags von 13:00 bis 14:00 Uhr."
     buttonText="Zum Kontaktformular"

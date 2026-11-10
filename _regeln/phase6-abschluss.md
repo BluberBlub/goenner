@@ -45,3 +45,59 @@ aus dem Gedächtnis rekonstruiert werden: Du hast diese Änderungen nie gesehen.
 `node abschluss.js --marke` setzt den Vergleichspunkt (nur nach grünem `npm run qa`). Ohne diesen Marker kann
 der Abschluss später nicht sauber ermitteln, was von Hand geändert wurde.
 Dieser Schritt ist Pflicht.
+
+
+<!-- verschoben aus CLAUDE.md am 09.11.2026 (CLAUDE.md läuft bei jedem Schritt mit) -->
+## ⬤ ABSCHLUSS: MARKER SETZEN UND LEARNINGS SICHERN
+
+Am Ende von Phase 3 (Autopilot fertig): `node abschluss.js --marke`
+Damit ist der Vergleichspunkt gesetzt, bevor Niko manuell weiterarbeitet.
+
+Wenn Niko später "fertig" sagt: `node abschluss.js` ausführen, dann
+_regeln/phase6-abschluss.md lesen und VERBESSERUNGEN.md aus den BELEGTEN
+Diffs schreiben – nicht aus dem Gedächtnis. Die manuelle Nacharbeit in der
+externen IDE ist die wichtigste Lernquelle und darf nicht verloren gehen.
+
+
+## PHASE 6 - VERBESSERUNGEN.md (on-demand, vom Nutzer ausgelöst)
+
+Sagt Niko "fertig", "abgeschlossen" o. ä. (auch in einer fortgesetzten Session):
+`node abschluss.js`, dann _regeln/phase6-abschluss.md lesen und VERBESSERUNGEN.md
+aus den BELEGTEN Diffs schreiben. Chat-Anweisungen aus AUFGABEN.md gehören dazu.
+Kein Build, kein Deploy nötig. Kurz bestätigen, dass die Datei bereitliegt.
+
+
+## ARBEITSZEIT IM PROJEKTBERICHT
+### Im PROJEKTBERICHT.md am Ende:
+```
+## Arbeitszeit
+- Reine Claude-Arbeitszeit: 8 Stunden und 55 Minuten
+- Pausen/Wartezeiten: nicht enthalten
+- Aufschlüsselung:
+  - Phase 1 (Research): 21 Minuten
+  - Phase 1b (Stil-Muster): 8 Minuten
+  - Phase 2 (Build): 1 Stunde und 5 Minuten
+  - Phase 2c (Design-Review): 8 Minuten
+  - Phase 3 (QA): 7 Stunden und 39 Minuten
+  - Phase 5 (Deploy): 10 Minuten
+  - Phase 6 (Abschluss): 4 Minuten
+```
+Zeiten IMMER in Stunden und Minuten ausschreiben (Niko): "4 Stunden und 16 Minuten",
+unter einer Stunde nur Minuten. Keine Dezimalstunden ("8.9 Stunden"), keine Minutensummen ("535 Minuten").
+
+
+### progress.json Format:
+```json
+{
+  "phase": 3,
+  "status": "in_arbeit",
+  "phaseStartzeit": "2026-05-22T14:30:00Z",
+  "phaseEndzeit": null,
+  "phaseDauerMinuten": null,
+  "gesamtMinutenBisher": 67,
+  "phasen": {
+    "1": {"dauerMinuten": 22, "abgeschlossen": "2026-05-22T13:50:00Z"},
+    "2": {"dauerMinuten": 45, "abgeschlossen": "2026-05-22T14:30:00Z"}
+  }
+}
+```

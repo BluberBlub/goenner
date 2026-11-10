@@ -107,3 +107,8 @@ projekteigenen deploy.js von "/name" auf "/demo/name" ändern.
 
 deploy.js bricht ab, wenn REMOTE_PATH ein Sammelordner ist (/, /demo, /kunden) –
 sonst würde ein Deployment die Nachbarprojekte löschen.
+
+
+<!-- verschoben aus CLAUDE.md am 09.11.2026 (CLAUDE.md läuft bei jedem Schritt mit) -->
+## PROJEKTREGEL (aus CLAUDE.md)
+- **HTTPS/HSTS:** nie blind erzwingen – erst TLS-Stabilität testen (phase5-deploy.md).

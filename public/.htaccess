@@ -13,23 +13,25 @@ Options -Indexes
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteRule ^Start/?$ / [R=301,L,NC]
-  RewriteRule ^Politik/?$ /versorgung-in-not/ [R=301,L,NC]
+  RewriteRule ^Politik/?$ /fachliches/versorgung-in-not/ [R=301,L,NC]
   RewriteRule ^Therapeuten/Qualifikationen/?$ /team/ [R=301,L,NC]
   RewriteRule ^Therapeuten/Mitgliedschaften/?$ /team/#mitgliedschaften [R=301,L,NC,NE]
   RewriteRule ^Therapeuten(/Team)?/?$ /team/ [R=301,L,NC]
-  RewriteRule ^Behandlung/(Therapiekonzept|Schwerpunkte)/?$ /behandlung/ [R=301,L,NC]
-  RewriteRule ^Behandlung/(Prozedere|Kosten)/?$ /ablauf-und-kosten/ [R=301,L,NC]
+  RewriteRule ^Behandlung/(Therapiekonzept|Schwerpunkte)/?$ /behandlung/therapie-und-schwerpunkte/ [R=301,L,NC]
+  RewriteRule ^Behandlung/(Prozedere|Kosten)/?$ /behandlung/ablauf-und-kosten/ [R=301,L,NC]
   RewriteRule ^Behandlung/?$ /behandlung/ [R=301,L]
-  RewriteRule ^Stellenangebote/?$ /stellenangebote/ [R=301,L]
-  RewriteRule ^AOK-und-BKK/?$ /aok-und-bkk/ [R=301,L]
-  RewriteRule ^Supervision-Lehre/?$ /supervision-und-lehre/ [R=301,L,NC]
-  RewriteRule ^Selbstzahler/?$ /ablauf-und-kosten/#selbstzahler [R=301,L,NC,NE]
+  RewriteRule ^Stellenangebote/?$ /fachliches/stellenangebote/ [R=301,L]
+  RewriteRule ^AOK-und-BKK/?$ /behandlung/aok-und-bkk/ [R=301,L]
+  RewriteRule ^Supervision-Lehre/?$ /fachliches/supervision-und-lehre/ [R=301,L,NC]
+  RewriteRule ^Selbstzahler/?$ /behandlung/ablauf-und-kosten/#selbstzahler [R=301,L,NC,NE]
   RewriteRule ^Praxisraeume/Kunst-im-Wartezimmer/?$ /praxis/#kunst [R=301,L,NC,NE]
   RewriteRule ^Praxisraeume/?$ /praxis/ [R=301,L,NC]
   RewriteRule ^Kontakt/So-finden-Sie-uns/?$ /praxis/#anfahrt [R=301,L,NC,NE]
   RewriteRule ^Kontakt(/Kontakt-Anmeldung)?/?$ /kontakt/ [R=301,L]
   RewriteRule ^Impressum-Datenschutz/Datenschutz/?$ /datenschutz/ [R=301,L,NC]
   RewriteRule ^Impressum-Datenschutz(/Impressum)?/?$ /impressum/ [R=301,L,NC]
+  RewriteRule ^(ablauf-und-kosten|aok-und-bkk)/?$ /behandlung/$1/ [R=301,L]
+  RewriteRule ^(supervision-und-lehre|versorgung-in-not|stellenangebote)/?$ /fachliches/$1/ [R=301,L]
 </IfModule>
 
 <IfModule mod_expires.c>

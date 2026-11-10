@@ -1,4 +1,4 @@
-// QA-ALLE v3 – EIN Befehl für die komplette Phase 3:  npm run qa
+// QA-ALLE v4 – EIN Befehl für die komplette Phase 3:  npm run qa
 //  1. Build (rimraf dist && astro build)
 //  2. eigener Preview-Server auf einem FREIEN Port (kein Konflikt mit anderen Projekten/IDE)
 //  3. alle Gates nacheinander, Ergebnis je Gate
@@ -15,8 +15,17 @@
 // v3 (Schwabenpflege): Reste abgebrochener Läufe werden beim Start beendet (unter Windows liefen
 //     Kindprozesse weiter und machten Folgeläufe ungültig), Fortschritt je Gate mit Laufzeit,
 //     KI-Gates mit erschöpftem Gemini-Tageskontingent zählen als übersprungen.
+// v4 (Niko 05.11.2026: "QA frisst zu viele Tokens und dauert zu lange"):
+//  1. Kompakte Ausgabe: je Gate eine Zeile + nur die Fehler (✖). Volle Ausgabe in .qa-berichte/qa-<gate>.log.
+//     --laut zeigt alles wie früher.
+//  2. Unverändertes überspringen: Ein Gate, dessen Eingaben (Skript, Quellen, gebaute Seiten) seit seinem
+//     letzten grünen Lauf gleich sind, läuft nicht erneut. craft und overflow prüfen nur geänderte Seiten,
+//     solange CSS/JS/Bilder gleich sind. --alles-neu prüft alles.
+//  3. KI-Gates (images, visual) nur im Schlusslauf: npm run qa -- --schluss (vor Marker, Ende Phase 3,
+//     oder wenn Niko es sagt). Normale Läufe zählen als komplett für Deploy, aber nicht für den Marker.
+//  4. Statische Gates laufen parallel, Browser-Gates nacheinander (Lighthouse braucht Ruhe).
 import { spawn, spawnSync } from 'child_process';
-import { existsSync, readFileSync, writeFileSync, readdirSync, statSync, unlinkSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, readdirSync, statSync, unlinkSync, mkdirSync } from 'fs';
 import { join, basename, relative } from 'path';
 import { createHash } from 'crypto';
 import net from 'net';
@@ -50,7 +59,10 @@ if (direkt) await hauptlauf();
 async function hauptlauf() {
   const argNur = (process.argv.find(a => a.startsWith('--nur=')) || '').split('=')[1];
   const nur = argNur ? argNur.split(',').map(s => s.trim().replace(/^qa-/, '').replace(/\.js$/, '')) : null;
-  const ohneKi = process.argv.includes('--ohne-ki');
+  const schluss = process.argv.includes('--schluss') || process.argv.includes('--mit-ki');
+  const ohneKi = process.argv.includes('--ohne-ki') || (!schluss && !(argNur && /images|visual/.test(argNur)));
+  const laut = process.argv.includes('--laut');
+  const allesNeu = process.argv.includes('--alles-neu');
   const ohneBuild = process.argv.includes('--ohne-build');
   // Git Bash (MSYS) macht aus "/stil-muster" einen Windows-Pfad ("C:/Program Files/Git/stil-muster")
   let seite = (process.argv.find(a => a.startsWith('--seite=')) || '').split('=')[1];
@@ -73,7 +85,8 @@ async function hauptlauf() {
   ].filter(g => existsSync(`qa-${g.name}.js`))
    .filter(g => !nur || nur.includes(g.name))
    .filter(g => !(ohneKi && g.ki));
-  const komplett = !nur && !ohneKi && !seite;
+  const komplett = !nur && !seite;          // alle Nicht-KI-Gates (zählt für Deploy)
+  const kiGelaufen = !nur && !seite && !ohneKi;   // Schlusslauf (zählt für den Marker)
 
   // Reste eines abgebrochenen Laufs beenden (Server, Gates), dann eigene Prozesse merken
   const LAUF = '.qa-lauf.json';
@@ -107,7 +120,7 @@ async function hauptlauf() {
   const dauer = (ms) => { const s = Math.round(ms / 1000); return s >= 60 ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')} min` : `${s} s`; };
 
   console.log('\n══════════════ QA-GESAMTLAUF ══════════════');
-  console.log(`  ${GATES.length} Gates${nur ? ` (nur: ${nur.join(', ')})` : ''}${ohneKi ? ' · ohne KI-Gates' : ''}\n`);
+  console.log(`  ${GATES.length} Gates${nur ? ` (nur: ${nur.join(', ')})` : ''}${ohneKi ? ' · ohne KI-Gates (Schlusslauf: --schluss)' : ' · mit KI-Gates'}\n`);
 
   // 1. Build
   if (!ohneBuild) {
@@ -151,33 +164,109 @@ async function hauptlauf() {
   // 3. Gates
   console.log('  [3/3] Gates …');
   const ergebnisse = {};
-  for (const [i, g] of GATES.entries()) {
+  mkdirSync('.qa-berichte', { recursive: true });
+  mkdirSync('.qa-cache', { recursive: true });
+  const CACHE = '.qa-cache/gates.json';
+  let cache = {};
+  try { cache = JSON.parse(readFileSync(CACHE, 'utf-8')); } catch {}
+  const distStand = distFingerabdruck();
+  const srcStand = projektStand();
+  const SEITEN_GATES = ['craft', 'overflow'];
+  // Projektdateien außerhalb von src, die Gates lesen (Inventar, Brief, Aufgaben)
+  const extra = ['CONTENT-INVENTAR.md', 'ORIGINAL-INHALTE.json', 'BILDER-INVENTAR.md', 'DESIGN-BRIEF.md', '../../gemini-config.json'].map(dateiHash).join('');
+  // Quellen zählen nur für Gates, die src/ lesen; alle anderen hängen an den gebauten Seiten
+  const LIEST_SRC = ['checks', 'slop'];
+  const schluessel = (g) => ({ skript: dateiHash(`qa-${g.name}.js`), src: (LIEST_SRC.includes(g.name) ? srcStand : '') + extra, geteilt: distStand.geteilt });
+  const seitenVon = (g) => g.name === 'speed' ? { '/': distStand.seiten['/'] } : distStand.seiten;
+
+  const fuehreAus = (g, env = {}) => new Promise((fertig) => {
+    try { unlinkSync(`.qa-berichte/qa-${g.name}-seiten.json`); } catch {}
     const t0 = Date.now();
-    console.log(`\n  ── Gate ${i + 1}/${GATES.length}: qa-${g.name} (bisher ${dauer(t0 - lauf0)}) ──`);
     const args = [`qa-${g.name}.js`, ...(g.url ? [url] : []), ...(g.name === 'visual' && seite ? [seite] : [])];
-    const code = await new Promise((fertig) => {
-      const p = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'] });
-      merke(p.pid);
-      let puffer = '';
-      p.stdout.on('data', d => { process.stdout.write(d); puffer += d; });
-      p.stderr.on('data', d => { process.stderr.write(d); puffer += d; });
-      // Zeitlimit pro Gate: ein hängender Dienst (z. B. Gemini) darf den Gesamtlauf nicht endlos blockieren
-      const limitMin = g.ki || g.name === 'craft' ? 25 : 12;
-      const wecker = setTimeout(() => {
-        const m = `\n  ✖  qa-${g.name}: nach ${limitMin} Min abgebrochen (Zeitüberschreitung). Einzeln wiederholen: node qa-${g.name}.js\n`;
-        process.stdout.write(m); puffer += m; try { p.kill(); } catch {}
-      }, limitMin * 60000);
-      p.on('close', (c) => {
-        clearTimeout(wecker);
-        if (c === null) c = 1;
-        ergebnisse[g.name] = { exit: c, fehler: (puffer.match(/✖/g) || []).length };
-        if (c === 0 && /übersprungen/i.test(puffer) && g.ki) ergebnisse[g.name].uebersprungen = true;
-        fertig(c);
-      });
+    const p = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, ...env } });
+    merke(p.pid);
+    let puffer = '';
+    p.stdout.on('data', d => { if (laut) process.stdout.write(d); puffer += d; });
+    p.stderr.on('data', d => { if (laut) process.stderr.write(d); puffer += d; });
+    const limitMin = g.ki || g.name === 'craft' ? 25 : 12;
+    const wecker = setTimeout(() => {
+      puffer += `\n  ✖  qa-${g.name}: nach ${limitMin} Min abgebrochen (Zeitüberschreitung). Einzeln wiederholen: node qa-${g.name}.js\n`;
+      try { p.kill(); } catch {}
+    }, limitMin * 60000);
+    p.on('close', (c) => {
+      clearTimeout(wecker);
+      if (c === null) c = 1;
+      try { writeFileSync(`.qa-berichte/qa-${g.name}.log`, puffer); } catch {}
+      const e = { exit: c, fehler: (puffer.match(/✖/g) || []).length, hinweise: (puffer.match(/^\s*[·⚠]\s/gm) || []).length, sekunden: Math.round((Date.now() - t0) / 1000) };
+      if (c === 0 && /übersprungen/i.test(puffer) && g.ki) e.uebersprungen = true;
+      if (g.info) e.info = true;
+      // Fehlerzeilen plus ihre eingerückten Unterpunkte (z. B. die fehlenden Themen bei qa-relaunch)
+      const alle = puffer.split('\n'), zeilen = [];
+      alle.forEach((z, i) => { if (/✖/.test(z)) { zeilen.push(z.trim()); for (let j = i + 1; j < alle.length && j <= i + 5 && /^\s+[·•-]\s/.test(alle[j]); j++) zeilen.push('  ' + alle[j].trim()); } });
+      e.mehr = Math.max(0, zeilen.length - 15);
+      e.zeilen = zeilen.slice(0, 15);
+      e.log = puffer;
+      fertig(e);
     });
-    ergebnisse[g.name].sekunden = Math.round((Date.now() - t0) / 1000);
-    if (g.info) ergebnisse[g.name].info = true;
-  }
+  });
+
+  const melde = (g, e) => {
+    const z = e.uebersprungen ? '·' : e.unveraendert ? '✔' : e.exit === 0 ? '✔' : e.info ? '·' : '✖';
+    const t = e.unveraendert ? 'unverändert grün (übersprungen)' : e.uebersprungen ? 'übersprungen (Key/Kontingent/Überlast)'
+      : e.exit === 0 ? `bestanden${e.seitenTeil ? ` (${e.seitenTeil})` : ''}${e.hinweise ? `, ${e.hinweise} Hinweise` : ''}` : e.exit === 2 ? 'Abbruch (Server/Setup)' : `${e.fehler || '?'} Fehler`;
+    console.log(`  ${z}  qa-${g.name.padEnd(13)} ${t}${e.sekunden !== undefined ? `  ${e.sekunden} s` : ''}`);
+    if (!laut && e.exit !== 0 && !e.info) { e.zeilen.forEach(l => console.log(`       ${l.slice(0, 220)}`)); console.log(`       ${e.mehr ? `… ${e.mehr} weitere, ` : ''}Details: .qa-berichte/qa-${g.name}.log`); }
+  };
+
+  const vorbereiten = (g) => {
+    const k = schluessel(g), alt = cache[g.name];
+    if (allesNeu || !alt || alt.skript !== k.skript || alt.src !== k.src || alt.geteilt !== k.geteilt) return { env: {} };
+    if (SEITEN_GATES.includes(g.name)) {
+      // nur Seiten, die seit dem letzten Lauf geändert wurden oder dort rot waren (Stichprobe bleibt Stichprobe)
+      const offen = Object.keys(distStand.seiten).filter(s => (alt.gesehen || {})[s] !== distStand.seiten[s] || (alt.rot || []).includes(s));
+      if (!offen.length) return { skip: true };
+      return { env: { QA_SEITEN: offen.join(',') }, teil: `${offen.length} von ${Object.keys(distStand.seiten).length} Seiten`, offen };
+    }
+    if (alt.gruen && JSON.stringify(alt.gruen) === JSON.stringify(seitenVon(g))) return { skip: true };
+    return { env: {} };
+  };
+  const nachher = (g, e, v) => {
+    if (e.uebersprungen || e.info) return;
+    if (SEITEN_GATES.includes(g.name)) {
+      // grüne Seiten merken, rote (im Bericht genannt) nicht
+      const k = schluessel(g);
+      let geprueft = v.offen || Object.keys(distStand.seiten);
+      try { geprueft = JSON.parse(readFileSync(`.qa-berichte/qa-${g.name}-seiten.json`, 'utf-8')); } catch {}   // Stichprobe: nur wirklich Geprüftes
+      const PFAD = /(?:^|[\s(,:"])(\/(?:[\w\-äöüß.%]+\/)*)(?=[\s,:)@"…]|$)/g;
+      const fehlerZeilen = (e.log || '').split('\n').filter(z => /✖/.test(z) && !/Gate\(s\) rot/.test(z));
+      const rot = new Set(), ohnePfad = [];
+      for (const z of fehlerZeilen) { const m = [...z.matchAll(PFAD)].map(x => x[1]); m.forEach(x => rot.add(x)); if (!m.length) ohnePfad.push(z); }
+      if (e.exit !== 0 && (!rot.size || ohnePfad.length)) { delete cache[g.name]; return; }   // Fehler ohne Seitenangabe: nächstes Mal alles
+      const altRot = (v.offen && cache[g.name]?.rot) || [];
+      const neuRot = [...new Set([...altRot.filter(s => !geprueft.includes(s)), ...rot])];
+      cache[g.name] = { ...k, gesehen: distStand.seiten, rot: neuRot };
+      return;
+    }
+    if (e.exit === 0) cache[g.name] = { ...schluessel(g), gruen: seitenVon(g) };
+    else delete cache[g.name];
+  };
+  const lauf = async (g) => {
+    const v = vorbereiten(g);
+    if (v.skip) return { exit: 0, fehler: 0, unveraendert: true, zeilen: [] };
+    const e = await fuehreAus(g, v.env);
+    if (v.teil) e.seitenTeil = v.teil;
+    nachher(g, e, v);
+    delete e.log;
+    return e;
+  };
+
+  // statisch parallel, Browser nacheinander, KI nacheinander
+  const statisch = GATES.filter(g => !g.url && !g.ki), browser = GATES.filter(g => g.url && !g.ki), ki = GATES.filter(g => g.ki);
+  const st = await Promise.all(statisch.map(lauf));
+  statisch.forEach((g, i) => { ergebnisse[g.name] = st[i]; melde(g, st[i]); });
+  for (const g of [...browser, ...ki]) { ergebnisse[g.name] = await lauf(g); melde(g, ergebnisse[g.name]); }
+  try { writeFileSync(CACHE, JSON.stringify(cache)); } catch {}
+  for (const e of Object.values(ergebnisse)) { delete e.zeilen; delete e.mehr; delete e.log; }
   try { preview?.kill(); } catch {}
 
   // Wurde während des Laufs etwas geändert, prüft das Ergebnis einen Stand, den es nicht mehr gibt (Spöri)
@@ -191,19 +280,14 @@ async function hauptlauf() {
 
   // Zusammenfassung
   const rot = Object.entries(ergebnisse).filter(([n, e]) => e.exit !== 0 && !GATES.find(g => g.name === n)?.info);
-  console.log('\n══════════════ QA-ERGEBNIS ══════════════');
-  for (const [n, e] of Object.entries(ergebnisse)) {
-    const zeichen = e.uebersprungen ? '·' : e.exit === 0 ? '✔' : e.info ? '·' : '✖';
-    const text = e.uebersprungen ? 'übersprungen (Key/Kontingent/Überlast)' : e.exit === 0 ? 'bestanden' : e.exit === 2 ? 'Abbruch (Server/Setup)' : `${e.fehler || '?'} Fehler`;
-    console.log(`  ${zeichen}  qa-${n.padEnd(14)} ${text.padEnd(24)} ${String(e.sekunden).padStart(4)} s`);
-  }
+  console.log(`\n══════════════ QA-ERGEBNIS (${dauer(Date.now() - lauf0)}) ══════════════`);
   const bestanden = rot.length === 0;
-  schreibeStatus({ bestanden, komplett, build: true, gates: ergebnisse });
+  schreibeStatus({ bestanden, komplett, ki: kiGelaufen, build: true, gates: ergebnisse });
   if (bestanden) {
-    console.log(`\n  ✔  ALLE GATES GRÜN${komplett ? '' : ' (Teillauf – für Deploy/Marker zählt nur der Komplettlauf: npm run qa)'}\n`);
+    console.log(`  ✔  ALLE GATES GRÜN${!komplett ? ' (Teillauf – für Deploy zählt nur npm run qa)' : kiGelaufen ? ' (Schlusslauf)' : ' (ohne KI-Gates – für den Marker: npm run qa -- --schluss)'}\n`);
     process.exit(0);
   }
-  console.log(`\n  ✖  ${rot.length} Gate(s) rot: ${rot.map(([n]) => 'qa-' + n).join(', ')}`);
+  console.log(`  ✖  ${rot.length} Gate(s) rot: ${rot.map(([n]) => 'qa-' + n).join(', ')}`);
   console.log('     Fehler beheben, dann erneut: npm run qa');
   console.log(`     Schneller Nachtest einzelner Gates: npm run qa -- --nur=${rot.map(([n]) => n).join(',')}\n`);
   process.exit(1);
@@ -234,4 +318,25 @@ async function warteAufServer(url, maxMs) {
     await new Promise(r => setTimeout(r, 300));
   }
   return false;
+}
+
+function dateiHash(p) { try { return createHash('sha1').update(readFileSync(p)).digest('hex').slice(0, 16); } catch { return ''; } }
+
+// Gebaute Seiten einzeln, alles Geteilte (CSS, JS, Bilder, Schriften, Konfiguration) zusammen
+function distFingerabdruck() {
+  const seiten = {}, geteilt = createHash('sha1');
+  const lauf = (dir, prefix) => {
+    if (!existsSync(dir)) return;
+    for (const e of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) { lauf(p, `${prefix}/${e.name}`); continue; }
+      if (e.name === 'index.html') { seiten[prefix === '' ? '/' : prefix + '/'] = dateiHash(p); continue; }
+      if (prefix === '' && /^(llms\.txt|robots\.txt|sitemap.*\.xml|mailer-daten\.json)$/.test(e.name)) continue;   // ändern sich mit jedem Titel, ohne Wirkung auf die Darstellung
+      const st = statSync(p);
+      geteilt.update(`${prefix}/${e.name}`);
+      geteilt.update(st.size < 2 * 1024 * 1024 ? readFileSync(p) : String(st.size));
+    }
+  };
+  lauf('dist', '');
+  return { seiten, geteilt: geteilt.digest('hex').slice(0, 16) };
 }

@@ -1,0 +1,66 @@
+---
+// Abschluss jeder Seite (Niko 10.11.: "CTA ist noch recht langweilig").
+// Leitidee: der Weg zeichnet sich im Nebel ab. Links die Einladung, rechts drei Wegmarken
+// (Formular, Telefon, Adresse), verbunden durch einen Pfad, der sich beim Hineinscrollen zeichnet.
+// Botschaft des Effekts: Der erste Schritt ist klar markiert, man muss ihn nur gehen.
+// Props wie Kit-Cta (titel, text, buttonText, buttonHref) plus eigene Wegmarken (wege).
+import Section from '../components/Section.astro';
+import siteData from '../content/site-data.json';
+
+type Weg = { titel: string; text: string; href?: string; link?: string };
+interface Props { titel: string; text?: string; buttonText?: string; buttonHref?: string; etikett?: string; wege?: Weg[]; telefonZeigen?: boolean }
+const k = siteData.kontakt;
+const route = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${k.strasse}, ${k.plz} ${k.ort}`)}`;
+const standard: Weg[] = [
+  { titel: 'Formular ausfüllen', text: 'Mit Ihrem Versicherungsstatus. Wir melden uns, sobald wir ein Vorgespräch anbieten können.', href: '/kontakt/', link: 'Zum Formular' },
+  { titel: 'Donnerstags anrufen', text: 'Telefonische Sprechzeit 13:00–14:00 Uhr unter 0751 9771973-0.', href: 'tel:+4975197719730', link: 'Jetzt anrufen' },
+  { titel: 'Karlstraße 8', text: 'Hochparterre der Jugendstilvilla, fünf Gehminuten vom Bahnhof.', href: route, link: 'Route planen' },
+];
+const { titel, text, buttonText = 'Therapieplatz anfragen', buttonHref = '/kontakt/', etikett = 'Ihr nächster Schritt', wege = standard } = Astro.props;
+const extern = (h?: string) => !!h && /^https?:/.test(h);
+---
+<Section variant="kompakt" bg="none" class="!pb-16 sm:!pb-20 lg:!pb-24">
+  <div class="abschluss nebel nebel-karte relative isolate overflow-hidden px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+    <svg class="hoehenlinien -z-10 text-primary !opacity-[.12]" viewBox="0 0 1200 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <g stroke="currentColor" stroke-width="1.1">
+        <path d="M-20 80C200 50 380 120 620 90S1000 30 1220 70" />
+        <path d="M-20 120C210 90 390 160 630 130S1010 70 1220 110" />
+        <path d="M-20 160C220 130 400 200 640 170S1020 110 1220 150" />
+        <path d="M-20 520C200 490 380 560 620 530S1000 470 1220 510" />
+      </g>
+    </svg>
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-10">
+      <div class="lg:col-span-6">
+        <p class="etikett flex items-center gap-3 text-primary"><span class="h-px w-8 bg-accent" aria-hidden="true"></span>{etikett}</p>
+        <h2 class="mt-6 text-[2.2rem] leading-[1.15] text-text sm:text-5xl lg:text-[3.6rem]" set:html={titel} />
+        {text && <p class="mt-6 max-w-lg text-lg leading-relaxed text-text/80" set:html={text} />}
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href={buttonHref} class="knopf knopf-voll">
+            {buttonText}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+      <ol class="abschluss-weg relative lg:col-span-5 lg:col-start-8">
+        <svg class="abschluss-pfad absolute left-[1.15rem] top-6 bottom-6 w-3 text-accent" viewBox="0 0 12 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
+          <path d="M6 0 C10 20 2 30 6 50 S10 80 6 100" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1" vector-effect="non-scaling-stroke" />
+        </svg>
+        {wege.map((w, i) => (
+          <li class="relative grid grid-cols-[2.5rem_1fr] gap-5 py-5">
+            <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full border border-primary/25 bg-background font-display text-lg text-primary">{i + 1}</span>
+            <div>
+              <p class="font-display text-[1.45rem] leading-snug text-text">{w.titel}</p>
+              <p class="mt-1.5 leading-relaxed text-text/75" set:html={w.text} />
+              {w.href && w.link && (
+                <a href={w.href} target={extern(w.href) ? '_blank' : undefined} rel={extern(w.href) ? 'noopener' : undefined} class="link-pfeil mt-3 text-[.95rem]">
+                  {w.link}
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</Section>

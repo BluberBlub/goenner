@@ -14,10 +14,33 @@
 //     der Marke AUTOPILOT-EIGEN angelegt statt mit der Projektdatei: sonst sähe der nächste Abgleich
 //     "unverändert" und würde Nikos Version überschreiben (das war das Loch).
 
-import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, copyFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, copyFileSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import { createHash } from 'crypto';
 import { spawnSync } from 'child_process';
+
+// ════════ SITZUNG FORTSETZEN ODER FRISCH (weiter.bat, Tokens sparen, 09.11.2026) ════════
+// Opitz: weiter.bat setzte mit --continue immer dieselbe Sitzung fort, die auf 404k Kontext wuchs.
+// Jeder Schritt liest das ganze Gespräch: 41 Mio. Tokens. Jetzt: nur kleine, frische Sitzungen fortsetzen
+// (unter 120k Kontext und jünger als 12 Stunden), sonst frisch starten. Der Stand liegt in den Dateien.
+// Exit 0 = fortsetzen, 1 = frisch.
+if (process.argv.includes('--sitzung')) {
+  try {
+    const home = process.env.USERPROFILE || process.env.HOME || '';
+    const dir = join(home, '.claude', 'projects', process.cwd().replace(/[^A-Za-z0-9]/g, '-'));
+    const dateien = readdirSync(dir).filter(f => f.endsWith('.jsonl')).map(f => ({ f: join(dir, f), t: statSync(join(dir, f)).mtimeMs })).sort((a, b) => b.t - a.t);
+    if (!dateien.length) process.exit(1);
+    const { f, t } = dateien[0];
+    if (Date.now() - t > 12 * 3600 * 1000) { console.log('  Letzte Sitzung aelter als 12 Stunden: starte frisch (Stand aus den Dateien).'); process.exit(1); }
+    const text = readFileSync(f, 'utf-8'); const zeilen = text.slice(-400000).split('\n').reverse();
+    let kontext = 0;
+    for (const z of zeilen) { if (!z.includes('"usage"')) continue; try { const u = JSON.parse(z).message?.usage; if (u) { kontext = (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0); break; } } catch {} }
+    if (kontext > 120000) { console.log(`  Letzte Sitzung schon gross (${Math.round(kontext / 1000)}k): starte frisch, spart Tokens (Stand aus den Dateien).`); process.exit(1); }
+    console.log(`  Setze kleine Sitzung fort (${Math.round(kontext / 1000)}k).`);
+    process.exit(0);
+  } catch { process.exit(1); }
+}
+
 
 const ROOT = join('..', '..');
 const CACHE = '.autopilot-sync';
@@ -58,6 +81,20 @@ function einrichten() {
     const i = liste.findIndex(e => (e.hooks || []).some(h => /locked-guard\.js/.test(h.command || '')));
     if (i < 0) { liste.push(eintrag); meldungen.push('Hook in .claude/settings.json eingetragen'); }
     else if (JSON.stringify(liste[i]) !== JSON.stringify(eintrag)) { liste[i] = eintrag; meldungen.push('Hook-Pfad in .claude/settings.json aktualisiert'); }
+    // Kontext-Wächter (Tokens sparen: rechtzeitig neu starten, Stand bleibt in AUFGABEN.md)
+    const wQuelle = join(ROOT, '_projektdateien', 'claude-hooks', 'kontext-waechter.js');
+    if (existsSync(wQuelle)) {
+      const wZiel = join('.claude', 'hooks', 'kontext-waechter.js');
+      if (lies(wZiel) !== lies(wQuelle)) { copyFileSync(wQuelle, wZiel); meldungen.push('Kontext-Wächter installiert/aktualisiert'); }
+      const wBefehl = `node "${resolve(wZiel).replace(/\\/g, '/')}"`;
+      for (const ereignis of ['UserPromptSubmit', 'PostToolUse', 'PreToolUse']) {
+        settings.hooks[ereignis] ??= [];
+        const l = settings.hooks[ereignis];
+        const e = { ...(ereignis === 'PostToolUse' ? { matcher: '.*' } : ereignis === 'PreToolUse' ? { matcher: 'Read' } : {}), hooks: [{ type: 'command', command: wBefehl, timeout: 10 }] };
+        const j = l.findIndex(x => (x.hooks || []).some(h => /kontext-waechter\.js/.test(h.command || '')));
+        if (j < 0) l.push(e); else l[j] = e;
+      }
+    }
     writeFileSync(settingsPfad, JSON.stringify(settings, null, 2) + '\n');
   }
 
@@ -102,7 +139,7 @@ function einrichten() {
 
   // 3. .gitignore: Berichte, Status und Secrets gehören nicht ins Kunden-Repo
   const PFLICHT = ['KIT-ZUSAMMENFUEHREN.md', 'node_modules', 'dist', '.env', 'public/.env.php', 'CLAUDE.md', 'progress.json',
-    '.qa-status.json', 'qa-*-report.json', '.qa-screenshots/', '.claude/', '.kit-freigabe', 'KIT-AENDERUNGEN.md', 'deploy.js.alt', '.qa-cache/', '.qa-lauf.json'];
+    '.qa-status.json', 'qa-*-report.json', '.qa-screenshots/', '.claude/', '.kit-freigabe', 'KIT-AENDERUNGEN.md', 'deploy.js.alt', '.qa-cache/', '.qa-lauf.json', '.qa-berichte/', '.claude/.kontext-gemeldet'];
   const gi = lies('.gitignore') ?? '';
   const zeilen = gi.split(/\r?\n/).map(z => z.trim());
   const fehlt = PFLICHT.filter(e => !zeilen.includes(e));

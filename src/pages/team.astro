@@ -1,9 +1,9 @@
 ---
 import Seite from '../layouts/Seite.astro';
-import PageHero from '../components/PageHero.astro';
+import SeitenHero from '../sections/SeitenHero.astro';
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
-import Cta from '../components/Cta.astro';
+import Abschluss from '../sections/Abschluss.astro';
 import SeitenIntro from '../sections/SeitenIntro.astro';
 import Portrait from '../components/Portrait.astro';
 import { approbiert, inAusbildung, type Person } from '../data/team';
@@ -26,7 +26,7 @@ const gruppen: { titel: string; text: string; leute: Person[] }[] = [
   lcpBild="/images/praxis-flur.jpg"
   lcpVarianten
 >
-  <PageHero
+  <SeitenHero
     eyebrow="Therapieteam"
     title="Vierzehn Menschen, ein Haus."
     subtitle="Unser Team, unsere Qualifikationen und Mitgliedschaften."
@@ -87,7 +87,7 @@ const gruppen: { titel: string; text: string; leute: Person[] }[] = [
     </div>
   </Section>
 
-  <Cta
+  <Abschluss
     titel="Wer passt zu Ihnen?"
     text="Das klären wir gemeinsam in der Sprechstunde. Schreiben Sie uns über das Kontaktformular."
     buttonText="Kontakt aufnehmen"

@@ -346,3 +346,21 @@ Die Indexierung verhindert zusätzlich das noindex-Meta (meta.staging).
 Spezialfälle (Formulare, Video, Karten, Overlays,
 spezielle Responsive-Fälle) stehen in _referenzen/technik-details.md.
 Dort NUR nachschlagen, wenn der konkrete Fall im Projekt auftritt.
+
+
+<!-- verschoben aus CLAUDE.md am 09.11.2026 (CLAUDE.md läuft bei jedem Schritt mit) -->
+## PROJEKTREGEL (aus CLAUDE.md)
+- **Performance:** qa-speed misst Lighthouse Mobile im QA-Lauf: Performance 90+
+  Pflicht, Ziel 95+ (Spöri: 98–100), SEO 95+, A11y 90+, BP 90+.
+  Fotos mit `npm run bilder` in AVIF/WebP (800 + groß) umwandeln, Hero-Bild jeder
+  Seite als `lcpBild` an das BaseLayout geben. Nutzt der Hero `<picture>` mit den
+  Varianten (PageHero tut das), zusätzlich `lcpVarianten`: dann wird genau das AVIF vorgeladen.
+
+## PROJEKTREGEL (aus CLAUDE.md)
+- **Build:** `rimraf dist && astro build && node optimize-build.js` (package.json
+  regelt das): WebP, Lazyload, Bildmaße, Schema, llms.txt, Mailer-Daten automatisch.
+  qa-seo prüft Titel, Beschreibungen, Schema und GEO.
+
+## PROJEKTREGEL (aus CLAUDE.md)
+- **robots.txt + .htaccess + OG-Image:** Pflicht-Artefakte. OG-Bild mit
+  `node og-bild.js` erzeugen (echtes JPG 1200×630 aus Hero + Logo, WhatsApp-tauglich).

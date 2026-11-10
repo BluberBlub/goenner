@@ -3,7 +3,7 @@ import Seite from '../layouts/Seite.astro';
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
 import Fragen from '../components/Fragen.astro';
-import Cta from '../components/Cta.astro';
+import Abschluss from '../sections/Abschluss.astro';
 import StartHero from '../sections/StartHero.astro';
 import Schwerpunkte from '../sections/Schwerpunkte.astro';
 import Wartezeit from '../sections/Wartezeit.astro';
@@ -39,7 +39,7 @@ const faqSchema = {
     <SektionsKopf eyebrow="Häufige Fragen" titel="Was Sie vor dem ersten <em>Termin</em> wissen sollten." />
     <Fragen fragen={fragenStart} />
   </Section>
-  <Cta
+  <Abschluss
     titel="Der erste Schritt darf klein sein."
     text="Schreiben Sie uns über das Kontaktformular. Wir melden uns innerhalb von zwei Wochen, wenn wir Ihnen ein Vorgespräch anbieten können."
     buttonText="Therapieplatz anfragen"

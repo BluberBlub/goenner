@@ -83,17 +83,36 @@
       "children": [
         {
           "label": "Therapie und Schwerpunkte",
-          "href": "/behandlung/"
+          "href": "/behandlung/therapie-und-schwerpunkte/"
         },
         {
           "label": "Ablauf und Kosten",
-          "href": "/ablauf-und-kosten/"
+          "href": "/behandlung/ablauf-und-kosten/"
         },
         {
           "label": "AOK- und BKK-Verträge",
-          "href": "/aok-und-bkk/"
+          "href": "/behandlung/aok-und-bkk/"
         }
-      ]
+      ],
+      "mega": {
+        "bild": "/images/therapieraum-sessel-800.webp",
+        "titel": "Ihr Weg durch die Therapie",
+        "text": "Wie wir arbeiten, wie eine Therapie abläuft und wer die Kosten trägt.",
+        "fakten": [
+          "Einzel und Gruppe",
+          "AOK und BKK"
+        ],
+        "aktionen": [
+          {
+            "label": "Zur Übersicht",
+            "href": "/behandlung/"
+          },
+          {
+            "label": "Therapieplatz anfragen",
+            "href": "/kontakt/"
+          }
+        ]
+      }
     },
     {
       "label": "Team",
@@ -105,20 +124,40 @@
     },
     {
       "label": "Fachliches",
+      "href": "/fachliches/",
       "children": [
         {
           "label": "Supervision und Lehre",
-          "href": "/supervision-und-lehre/"
+          "href": "/fachliches/supervision-und-lehre/"
         },
         {
           "label": "Stellenangebote",
-          "href": "/stellenangebote/"
+          "href": "/fachliches/stellenangebote/"
         },
         {
           "label": "Versorgung in Not",
-          "href": "/versorgung-in-not/"
+          "href": "/fachliches/versorgung-in-not/"
         }
-      ]
+      ],
+      "mega": {
+        "bild": "/images/therapieraum-tisch-800.webp",
+        "titel": "Für Kolleginnen und Kollegen",
+        "text": "Supervision, staatlich anerkannte Lehrpraxis, offene Stellen und unsere Position zur Versorgung.",
+        "fakten": [
+          "Lehrpraxis",
+          "Offene Stelle"
+        ],
+        "aktionen": [
+          {
+            "label": "Zur Übersicht",
+            "href": "/fachliches/"
+          },
+          {
+            "label": "Zur Stellenanzeige",
+            "href": "/fachliches/stellenangebote/psychotherapeutin-verhaltenstherapie/"
+          }
+        ]
+      }
     },
     {
       "label": "Kontakt",
@@ -212,5 +251,73 @@
     "kunst-im-wartezimmer-gemaelde-michaela-zollmann": "/images/kunst-frida.jpg",
     "kunst-im-wartezimmer-ausstellung": "/images/kunst-ausstellung-zollmann.jpg",
     "kunst-im-wartezimmer-gemaelde-und-spiegel": "/images/kunst-spiegel.jpg"
+  },
+  "footer": {
+    "leitsatz": "Was diffus war, bekommt <em>Kontur</em>.",
+    "spalten": [
+      {
+        "titel": "Behandlung",
+        "links": [
+          {
+            "label": "Übersicht",
+            "href": "/behandlung/"
+          },
+          {
+            "label": "Therapie und Schwerpunkte",
+            "href": "/behandlung/therapie-und-schwerpunkte/"
+          },
+          {
+            "label": "Ablauf und Kosten",
+            "href": "/behandlung/ablauf-und-kosten/"
+          },
+          {
+            "label": "AOK- und BKK-Verträge",
+            "href": "/behandlung/aok-und-bkk/"
+          }
+        ]
+      },
+      {
+        "titel": "Praxis",
+        "links": [
+          {
+            "label": "Startseite",
+            "href": "/"
+          },
+          {
+            "label": "Team",
+            "href": "/team/"
+          },
+          {
+            "label": "Praxisräume",
+            "href": "/praxis/"
+          },
+          {
+            "label": "Kontakt und Anmeldung",
+            "href": "/kontakt/"
+          }
+        ]
+      },
+      {
+        "titel": "Fachliches",
+        "links": [
+          {
+            "label": "Übersicht",
+            "href": "/fachliches/"
+          },
+          {
+            "label": "Supervision und Lehre",
+            "href": "/fachliches/supervision-und-lehre/"
+          },
+          {
+            "label": "Stellenangebote",
+            "href": "/fachliches/stellenangebote/"
+          },
+          {
+            "label": "Versorgung in Not",
+            "href": "/fachliches/versorgung-in-not/"
+          }
+        ]
+      }
+    ]
   }
 }

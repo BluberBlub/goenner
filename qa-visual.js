@@ -203,13 +203,16 @@ writeFileSync('qa-visual-report.json', JSON.stringify({ fehler, hinweise,
 
 console.log(`\n  ${fehler.length} sichtbare Fehler, ${hinweise.length} Hinweise`);
 console.log(`  Screenshots: ${SHOTS}/  ·  Report: qa-visual-report.json\n`);
+// Ende über exitCode statt process.exit(): unter Windows/Node 24 bricht process.exit() mit
+// "Assertion failed: !(handle->flags & UV_HANDLE_CLOSING)" ab, solange Netzverbindungen schließen,
+// und das zählte als rotes Gate (Waldsee Golf, 27.10.2026).
 if (ueberlastet && !tageslimit && !fehler.length) {
   console.log('  ⚠  qa-visual übersprungen: Gemini überlastet oder Zeitbudget erreicht. Kein Fehler der Website, Screenshots liegen vor.\n');
-  process.exit(0);
+  process.exitCode = 0; global.__fertig = true;
 }
-if (tageslimit && !fehler.length) {
+if (!global.__fertig && tageslimit && !fehler.length) {
   console.log('  ⚠  qa-visual übersprungen: Gemini-Tageskontingent erschöpft. Screenshots liegen trotzdem vor (selbst ansehen).');
   console.log('     Dauerhaft: bezahlter Key in ../../gemini-config.json.\n');
-  process.exit(0);
+  process.exitCode = 0; global.__fertig = true;
 }
-process.exit(fehler.length ? 1 : 0);
+if (!global.__fertig) process.exitCode = fehler.length ? 1 : 0;

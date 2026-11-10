@@ -1,0 +1,94 @@
+---
+import Seite from '../../../layouts/Seite.astro';
+import SeitenHero from '../../../sections/SeitenHero.astro';
+import Section from '../../../components/Section.astro';
+import SektionsKopf from '../../../components/SektionsKopf.astro';
+import Abschluss from '../../../sections/Abschluss.astro';
+import SeitenIntro from '../../../sections/SeitenIntro.astro';
+import Foto from '../../../components/Foto.astro';
+
+// Angebot der Altseite, nach Themen geordnet (nichts weggelassen, nichts dazu)
+const geboten = [
+  { gruppe: 'Vertrag', punkte: ['ein unbefristetes Arbeitsverhältnis', 'Bezahlung orientiert am Tarif des öffentlichen Dienstes', 'flexible Arbeitszeit- und Urlaubsplanung'] },
+  { gruppe: 'Fachlich', punkte: ['regelmäßige praxisinterne Intervision, von der LPK Baden-Württemberg akkreditiert', 'die Möglichkeit, Therapiegruppen anzubieten', 'ein vielfältiges Behandlungsspektrum, in dem Sie nach eigenen Interessen Schwerpunkte setzen können'] },
+  { gruppe: 'Ort', punkte: ['großzügige, helle und modern eingerichtete Räume in einer Jugendstilvilla', 'Innenstadtlage, nur fünf Gehminuten zum Bahnhof', 'Parkplätze für Mitarbeiterinnen und Mitarbeiter'] },
+];
+const stelle = {
+  '@context': 'https://schema.org',
+  '@type': 'JobPosting',
+  title: 'Psychologische Psychotherapeutin / Psychologischer Psychotherapeut (w/m/d) in Festanstellung',
+  description: 'Psychologische Psychotherapeutin oder Psychologischer Psychotherapeut mit Fachkunde in Verhaltenstherapie für die Praxis Dr. Sascha Gönner in Ravensburg. Unbefristet, Bezahlung orientiert am TVöD, Teilzeit möglich.',
+  employmentType: ['FULL_TIME', 'PART_TIME'],
+  datePosted: '2026-11-09',
+  hiringOrganization: { '@type': 'Organization', name: 'Praxis für Psychotherapie Dr. Sascha Gönner', sameAs: 'https://goenner.niko-endres.de' },
+  jobLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', streetAddress: 'Karlstraße 8', postalCode: '88212', addressLocality: 'Ravensburg', addressCountry: 'DE' } },
+};
+---
+<Seite
+  title="Stelle: Psychotherapeut/in Verhaltenstherapie Ravensburg | Dr. Gönner"
+  description="Wir suchen eine Psychologische Psychotherapeutin oder einen Psychologischen Psychotherapeuten mit Fachkunde Verhaltenstherapie in Festanstellung in Ravensburg. Unbefristet, Teilzeit möglich."
+  lcpBild="/images/kunst-ausstellung-zollmann.jpg"
+  lcpVarianten
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(stelle)} />
+  <SeitenHero
+    pfad={[{ label: 'Fachliches', href: '/fachliches/' }, { label: 'Stellenangebote', href: '/fachliches/stellenangebote/' }]}
+    eyebrow="Psychotherapeutin oder Psychotherapeut"
+    title="Psychotherapie mit <em>Haltung</em>, im Team."
+    subtitle="Psychologische Psychotherapeutin oder Psychologischer Psychotherapeut mit Fachkunde Verhaltenstherapie (w/m/d), in Festanstellung."
+    image="/images/kunst-ausstellung-zollmann.jpg"
+    imagePosition="50% 40%"
+  />
+  <SeitenIntro
+    eyebrow="Wen wir suchen"
+    titel="Verstärkung mit Fachkunde <em>Verhaltenstherapie</em>."
+    text="Für unsere Praxis in Ravensburg suchen wir eine Psychologische Psychotherapeutin oder einen Psychologischen Psychotherapeuten mit Fachkunde in Verhaltenstherapie. Auch frisch approbierte oder ältere Kolleginnen und Kollegen, die in Teilzeit arbeiten möchten, sind herzlich willkommen. Wir arbeiten Sie sorgfältig in die Praxisabläufe ein."
+    fakten={[
+      { k: 'Anstellung', v: 'Festanstellung, unbefristet' },
+      { k: 'Umfang', v: 'nach Vereinbarung, Teilzeit möglich' },
+      { k: 'Beginn', v: 'nach Vereinbarung' },
+      { k: 'Arbeitsort', v: 'Karlstraße 8, Ravensburg' },
+    ]}
+  />
+
+  <Section variant="standard" bg="base">
+    <SektionsKopf eyebrow="Was wir bieten" titel="Gute Bedingungen für <em>gute</em> Therapie." />
+    <div class="grid gap-6 md:grid-cols-3">
+      {geboten.map((g, i) => (
+        <div class="flex flex-col rounded-karte border border-primary/12 bg-white/70 p-7 sm:p-8" data-reveal>
+          <p class="flex items-baseline gap-3">
+            <span class="font-display text-4xl italic leading-[1.15] text-accent" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="etikett text-primary">{g.gruppe}</span>
+          </p>
+          <ul class="inhalt-liste mt-6 leading-relaxed text-text/85">
+            {g.punkte.map((p) => <li>{p}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section variant="kompakt" bg="none">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="overflow-hidden rounded-karte"><Foto name="therapieraum-tisch" sizes="(min-width: 640px) 50vw, 100vw" pos="50% 55%" class="block aspect-[4/3] w-full" /></div>
+      <div class="overflow-hidden rounded-karte"><Foto name="wartezimmer-kunst" sizes="(min-width: 640px) 50vw, 100vw" pos="50% 60%" class="block aspect-[4/3] w-full" /></div>
+    </div>
+    <p class="randnotiz mt-5">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Ihr Arbeitsplatz: Hochparterre einer Jugendstilvilla, gegenüber dem Parkhaus P2 Untertor.
+    </p>
+  </Section>
+
+  <Abschluss
+    etikett="Bewerbung"
+    titel="Wir freuen uns auf Ihre <em>Bewerbung</em>."
+    text="Gern per E-Mail oder Post. Fragen zur Stelle beantworten wir vorab persönlich."
+    buttonText="Bewerbung per E-Mail"
+    buttonHref="mailto:praxis@drgoenner.de?subject=Bewerbung%20Psychotherapeut%2Fin"
+    wege={[
+      { titel: 'Per E-Mail', text: 'praxis@drgoenner.de', href: 'mailto:praxis@drgoenner.de?subject=Bewerbung%20Psychotherapeut%2Fin', link: 'E-Mail schreiben' },
+      { titel: 'Per Post', text: 'Dr. phil. Sascha Gönner<br />Karlstraße 8, 88212 Ravensburg' },
+      { titel: 'Telefonisch', text: 'Bei Fragen zur Stelle: 0751 9771973-0', href: 'tel:+4975197719730', link: 'Anrufen' },
+    ]}
+  />
+</Seite>

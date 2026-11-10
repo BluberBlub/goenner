@@ -106,3 +106,23 @@
 
 /* Rasterspalten dürfen schrumpfen (sonst drückt ein langes Wort die Spalte über den Rand) */
 .grid > * { min-width: 0; }
+
+/* Unterseiten-Hero: nur die Textecke unten links wird dunkel (Tiefgrün), das Foto bleibt hell */
+.seiten-hero-schleier {
+  background:
+    linear-gradient(to top, rgb(var(--color-secondary-rgb) / .78) 0%, rgb(var(--color-secondary-rgb) / .35) 38%, transparent 66%),
+    radial-gradient(70% 65% at 0% 100%, rgb(var(--color-secondary-rgb) / .55), transparent 70%);
+}
+.seiten-hero h1, .seiten-hero [data-lead], .seiten-hero nav, .seiten-hero [data-eyebrow] { text-shadow: 0 1px 18px rgb(var(--color-secondary-rgb) / .55); }
+
+/* Abschluss: der Pfad zwischen den drei Wegmarken zeichnet sich beim Hineinscrollen */
+.abschluss-pfad path { stroke-dasharray: 1; stroke-dashoffset: 0; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .abschluss-pfad path { animation: pfad-zeichnen linear both; animation-timeline: view(); animation-range: entry 30% cover 55%; }
+  }
+}
+@keyframes pfad-zeichnen { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* Footer-Leitsatz: kursives Akzentwort in Blattgrün (sonst Grün auf Grün unsichtbar) */
+footer em { color: var(--color-accent); }

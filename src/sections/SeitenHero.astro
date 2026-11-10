@@ -1,0 +1,64 @@
+---
+// Unterseiten-Hero (Niko 10.11.: "zu sehr abgedunkelt, Texte sollen lesbar bleiben").
+// Gleiche Familie wie der Start-Hero: das Foto liegt in einem gerundeten Rahmen mit schmalem Rand,
+// abgedunkelt wird NUR die Ecke unten links, in der der Text steht (Tiefgrün statt Schwarz, wie
+// Nebel, der sich zum Bild hin lichtet). Darüber Höhenlinien als Wegmarke, oben ein Pfad zur
+// Übersichtsseite. Höhe = Fenster minus Navigation (--hero-h), steht sofort da.
+// Props wie PageHero (title, subtitle, image, imagePosition, eyebrow) plus pfad.
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props { title: string; subtitle?: string; image: string; imagePosition?: string; eyebrow?: string; pfad?: { label: string; href: string }[] }
+const { title, subtitle, image, imagePosition = '50% 50%', eyebrow, pfad = [] } = Astro.props;
+const variante = (p: string, ext: string) => {
+  const m = /^(\/.+)\.(jpe?g|png|webp|avif)$/i.exec(p || '');
+  if (!m) return undefined;
+  const da = (x: string) => existsSync(join(process.cwd(), 'public', x));
+  const gross = `${m[1]}.${ext}`, klein = `${m[1]}-800.${ext}`;
+  if (da(klein) && da(gross)) return `${klein} 800w, ${gross} 1600w`;
+  return da(gross) ? `${gross} 1600w` : undefined;
+};
+const avif = variante(image, 'avif');
+const webp = variante(image, 'webp');
+---
+<section data-hero class="relative flex min-h-[var(--hero-h)] flex-col px-3 pb-3 pt-2 sm:px-4 sm:pb-4">
+  <div class="seiten-hero relative flex flex-1 items-end overflow-hidden rounded-karte bg-secondary">
+    <picture>
+      {avif && <source type="image/avif" srcset={avif} sizes="100vw" />}
+      {webp && <source type="image/webp" srcset={webp} sizes="100vw" />}
+      <img src={image} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"
+           style={`object-position:${imagePosition}`} width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async" />
+    </picture>
+    <div class="seiten-hero-schleier absolute inset-0" aria-hidden="true"></div>
+    <svg class="absolute inset-x-0 bottom-0 h-1/2 w-full text-white/25" viewBox="0 0 1200 300" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <g stroke="currentColor" stroke-width="1">
+        <path d="M-20 120C160 90 300 150 480 125S820 70 1220 110" />
+        <path d="M-20 160C170 130 310 190 490 165S830 110 1220 150" />
+        <path d="M-20 200C180 170 320 230 500 205S840 150 1220 190" />
+        <path d="M-20 240C190 210 330 270 510 245S850 190 1220 230" />
+      </g>
+    </svg>
+    <div class="container relative z-10 pb-10 pt-24 text-white sm:pb-14 lg:pb-16">
+      {pfad.length > 0 && (
+        <nav aria-label="Brotkrumen" class="mb-6 text-sm text-white/85">
+          <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+            {pfad.map((p) => (
+              <li class="flex items-center gap-2">
+                <a href={p.href} class="underline decoration-white/40 underline-offset-4 hover:decoration-accent">{p.label}</a>
+                <span aria-hidden="true" class="text-accent">/</span>
+              </li>
+            ))}
+            <li aria-current="page" class="text-white" set:html={eyebrow || ''} />
+          </ol>
+        </nav>
+      )}
+      {eyebrow && pfad.length === 0 && (
+        <p class="etikett mb-4 flex items-center gap-3 text-white/90" data-eyebrow>
+          <span class="h-px w-8 bg-accent" aria-hidden="true"></span><span set:html={eyebrow} />
+        </p>
+      )}
+      <h1 class="max-w-3xl text-[2.5rem] leading-[1.15] sm:text-6xl lg:text-[4.2rem]" set:html={title} />
+      {subtitle && <p data-lead class="mt-5 max-w-xl text-lg leading-relaxed text-white/90" set:html={subtitle} />}
+    </div>
+  </div>
+</section>

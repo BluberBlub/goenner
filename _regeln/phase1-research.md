@@ -309,7 +309,7 @@ KI-Bilder sind FALLBACK, nie erste Wahl. Rangfolge bei jedem Bildbedarf:
 
 Große Altseiten (mehr als 30 Unterseiten oder Bereiche über 20 URLs, z. B. Ortsseiten):
 Das Durchsehen von CONTENT-INVENTAR, Bildern und PDFs an EINEN Sub-Agenten geben (Agent-Tool,
-Typ Explore oder general-purpose). Er liefert nur die Zusammenfassung zurück (Themen, Fakten,
+Typ Explore oder general-purpose, model: "sonnet"). Er liefert nur die Zusammenfassung zurück (Themen, Fakten,
 Bereiche, Auffälligkeiten), das Hauptgespräch bleibt schlank. Leitidee, Positionierung, Gestaltung
 und Texte macht IMMER der Hauptagent selbst: dort steckt der Gesprächskontext mit Niko.
 
@@ -400,3 +400,33 @@ Kernregeln (Details bei Bedarf: _referenzen/phase1-details.md):
 - Impressum: KEIN Hinweis und kein Link mehr auf die EU-OS-Plattform (am 20.07.2025
   eingestellt, qa-copy meldet ihn). Berufsrechtliche Angaben (Kammer, Berufsbezeichnung)
   bei Kammerberufen übernehmen.
+
+
+<!-- verschoben aus CLAUDE.md am 09.11.2026 (CLAUDE.md läuft bei jedem Schritt mit) -->
+## AUS DER ARBEITSWEISE (CLAUDE.md): DESIGN-BRIEF, STIL-MUSTER, DESIGN-REVIEW
+
+6. **Design-Brief-Gate (Phase 1 → 1b):** Nach Phase 1 DESIGN-BRIEF.md schreiben.
+   GANZ OBEN steht die DESIGN-LEITIDEE (ein poetischer Leitsatz mit Naturbild,
+   z.B. "Wie Wellen auf einem stillen See") + Bewegung/Farbwelt/Formsprache/Rhythmus.
+   Darunter erst Hero-Form, 4 Farben, kurze Begründung. Die Leitidee ist das Herz –
+   sie entscheidet über Wow oder Mittelmaß. Wenn Gate aktiv (progress.json designGate):
+   STOPPEN, auf Freigabe warten. Erst nach "ok" Phase 2 beginnen.
+   Auch OHNE Gate: vor dem Brief Niko EINE Frage stellen, 3 echte Referenz-Websites
+   (Screenshots) zur Wahl (Spöri: 8 Hero-Varianten verworfen, nach der Referenzwahl
+   lief es sofort). Details: phase1-research.md, REFERENZ-WAHL.
+
+7. **Phase 1b – STIL-MUSTER (visuelle Freigabe vor dem Seitenbau):**
+   Nach dem Design-Brief zeigt EINE Musterseite (src/pages/stil-muster.astro, liegt
+   fertig im Projekt) die komplette visuelle Sprache: Farben, Schrift auf Farbflächen,
+   Footer-Logo, Typo-Skala, Buttons, Karte, Farbfläche, Hero-Probe. Dann
+   `npm run qa -- --nur=visual --seite=/stil-muster` und Freigabe durch Niko.
+   Korrekturen laufen NUR über site-data.json + fonts.css.
+   Erst nach Freigabe beginnt der Seitenbau. Regeln: _regeln/phase1b-stilmuster.md
+   Grund: Visuelle Fehler früh und billig korrigieren statt später über alle Seiten.
+
+8. **Phase 2c – DESIGN-REVIEW (vor der QA):** Nach dem Bau aller Seiten einmal
+   bewusst hinschauen statt sofort in die Gates gehen: qa-visual über Start- UND
+   Unterseiten, Screenshots ansehen, vier Fragen beantworten (sticht eine Sektion
+   heraus? ist die Karte das einzige Werkzeug? sehen Unterseiten aus wie die
+   Startseite? trägt jedes Bild Information?). Maximal EINE Überarbeitungsrunde,
+   keine mechanischen Umbauten. Regeln: _regeln/phase2c-designreview.md

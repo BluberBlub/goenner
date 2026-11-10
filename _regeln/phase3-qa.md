@@ -78,12 +78,17 @@ führt alle Gates nacheinander aus und zeigt am Ende eine Tabelle:
 checks · copy · relaunch · overflow · contact-form · craft · wow · speed ·
 images · visual · slop (nur Hinweise). Nachweis: .qa-status.json.
 
-1. `npm run qa` ausführen (dauert einige Minuten)
+Ausgabe ist kompakt: je Gate eine Zeile, nur Fehler ausgeschrieben. Details NUR bei Bedarf in
+.qa-berichte/qa-<gate>.log lesen (gezielt, nicht komplett). Unveränderte Gates/Seiten werden übersprungen.
+
+1. `npm run qa` ausführen (ohne KI-Gates, statische Gates parallel)
 2. Jeden gemeldeten Fehler beheben
 3. Nachtest nur der roten Gates: `npm run qa -- --nur=craft,copy` (schnell)
-4. Zum Schluss wieder der KOMPLETTE Lauf `npm run qa` bis "ALLE GATES GRÜN".
-   Nur der Komplettlauf zählt für Marker und Deploy.
-5. Erst DANN die visuelle Prüfung (unten) und der Deploy (Phase 5).
+4. `npm run qa` bis "ALLE GATES GRÜN" (zählt für Deploy).
+5. Ende Phase 3 und vor dem Marker EINMAL der Schlusslauf mit KI-Gates: `npm run qa -- --schluss`.
+   Nur er zählt für den Marker. Sagt Niko etwas anderes (z. B. "ohne KI" oder "mit KI"), gilt das.
+   `--alles-neu` erzwingt eine Vollprüfung ohne Überspringen, `--laut` zeigt die volle Ausgabe.
+6. Erst DANN die visuelle Prüfung (unten) und der Deploy (Phase 5).
 
 Keinen eigenen Preview-Server auf Port 4321 starten: dort läuft oft ein anderes
 Projekt. Einzelne Gates von Hand nur mit der URL, die `npm run qa` benutzt.
@@ -275,7 +280,39 @@ Ohne Inventar (Neubau statt Relaunch) wird der Check übersprungen.
 
     node abschluss.js --marke
 
-Pflicht. Funktioniert NUR nach einem grünen Komplettlauf von `npm run qa`
+Pflicht. Funktioniert NUR nach einem grünen Schlusslauf `npm run qa -- --schluss`
 (sonst verweigert es und nennt den Grund). Markiert den Stand "Autopilot fertig". Alles, was Niko danach in der
 externen IDE ändert, wird beim Abschluss als Lernquelle ausgewertet
 (_regeln/phase6-abschluss.md). Ohne Marker geht dieses Wissen verloren.
+
+
+<!-- verschoben aus CLAUDE.md am 09.11.2026 (CLAUDE.md läuft bei jedem Schritt mit) -->
+## DIE 10 HÄUFIGSTEN FEHLER (aus 7 echten Projekten)
+
+1. Alte Hash-Assets auf Server → deploy.js nutzen, nie manuell hochladen
+2. Du/Sie gemischt → Tonalität aus site-data.json, qa-checks.js prüft
+3. Hardcoded Hex in React-Components → tailwind.config mit CSS-Variablen
+4. Horizontaler Overflow auf Mobile → Deko hidden sm:block, qa-overflow.js prüft
+5. Formular-Endpoint falsch → IMMER /mailer.php, qa-contact-form.js prüft
+6. Bild passt nicht zu Firma/Maßstab → jedes Bild VISUELL prüfen vor Verwendung
+7. Text unlesbar auf Bild/Farbe → Scrim + text-shadow auf Bildern, text-on-* auf Farbflächen (qa-craft misst)
+8. Hero-Text läuft in Nav auf 320px → min-h-[var(--hero-h)] + pt-28, nie feste h-[Xvh]
+9. Counter verliert Suffix/Format → data-counter aus dem Kit (Format bleibt exakt erhalten)
+10. Zwei CTAs für dasselbe nebeneinander → ein CTA pro Kontext, Redundanz-Checks
+
+## QA IN DER ARBEITSWEISE (Original-Wortlaut CLAUDE.md)
+
+4. **Maschinelle Gates:** Phase 3 gilt NUR bei `npm run qa` = "ALLE GATES GRÜN".
+   Ein Befehl: baut, startet einen eigenen Server auf freiem Port, führt alle
+   Gates aus (inkl. PageSpeed) und schreibt den Nachweis .qa-status.json.
+   Ohne grünen Lauf verweigern `node abschluss.js --marke` und `node deploy.js`
+   den Dienst. Phase 5 nur bei `node qa-live.js <url>` Exit 0. Kein "known issue".
+   Komplettlauf am Ende einer Phase bzw. wenn Niko es sagt, NICHT nach jeder
+   Korrektur (Weber: kostet Zeit und Tokens). Zwischendurch: Build + gezielte
+   Teilläufe (`npm run qa -- --nur=craft,copy`). KI-Gates (Bilder, Visual) nur im Schlusslauf
+   `npm run qa -- --schluss` (Ende Phase 3, vor dem Marker), außer Niko sagt etwas anderes.
+   Ausgabe ist kompakt; Details nur gezielt aus .qa-berichte/ lesen. Während `npm run qa` läuft,
+   nichts ändern und nicht deployen: der Lauf wird sonst ungültig.
+   Nach grünem Lauf prüft ein frischer Sub-Agent unabhängig (phase3-qa.md).
+   Sub-Agenten NUR für diese Prüfung und für große Inventare (phase1-research.md),
+   nicht pauschal: sie kennen das Gespräch nicht und kosten insgesamt mehr Tokens.

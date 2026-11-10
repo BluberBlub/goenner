@@ -1,13 +1,13 @@
 ---
-import Seite from '../layouts/Seite.astro';
-import PageHero from '../components/PageHero.astro';
-import Section from '../components/Section.astro';
-import SektionsKopf from '../components/SektionsKopf.astro';
-import Cta from '../components/Cta.astro';
-import SeitenIntro from '../sections/SeitenIntro.astro';
-import KrisenHinweis from '../sections/KrisenHinweis.astro';
-import Foto from '../components/Foto.astro';
-import { schwerpunkte } from '../data/schwerpunkte';
+import Seite from '../../layouts/Seite.astro';
+import SeitenHero from '../../sections/SeitenHero.astro';
+import Section from '../../components/Section.astro';
+import SektionsKopf from '../../components/SektionsKopf.astro';
+import Abschluss from '../../sections/Abschluss.astro';
+import SeitenIntro from '../../sections/SeitenIntro.astro';
+import KrisenHinweis from '../../sections/KrisenHinweis.astro';
+import Foto from '../../components/Foto.astro';
+import { schwerpunkte } from '../../data/schwerpunkte';
 
 const grenzen = [
   {
@@ -30,8 +30,9 @@ const grenzen = [
   lcpBild="/images/therapieraum-gruppe.jpg"
   lcpVarianten
 >
-  <PageHero
-    eyebrow="Behandlung"
+  <SeitenHero
+    pfad={[{ label: 'Behandlung', href: '/behandlung/' }]}
+    eyebrow="Therapie und Schwerpunkte"
     title="Wissenschaftlich fundiert, auf Sie zugeschnitten."
     subtitle="Verhaltenstherapie für Erwachsene in Einzel- und Gruppentherapie."
     image="/images/therapieraum-gruppe.jpg"
@@ -111,7 +112,7 @@ const grenzen = [
     </div>
   </Section>
 
-  <Cta
+  <Abschluss
     titel="Erkennen Sie sich in einem der Themen wieder?"
     text="In der Sprechstunde klären wir gemeinsam, was Sie belastet und welcher Weg zu Ihnen passt."
     buttonText="Therapieplatz anfragen"

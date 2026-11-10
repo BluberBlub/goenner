@@ -179,20 +179,23 @@ for (const img of images) {
 }
 
 console.log(`\n  ${errors.length} unpassende Bilder, ${warnings.length} Warnungen`);
+// Ende über exitCode statt process.exit(): unter Windows/Node 24 bricht process.exit() mit
+// "Assertion failed: !(handle->flags & UV_HANDLE_CLOSING)" ab, solange Netzverbindungen schließen,
+// und das zählte als rotes Gate (Waldsee Golf, 27.10.2026).
 if (ueberlastet && !tageslimit && !errors.length) {
   console.log(`\n  ⚠  qa-images übersprungen: Gemini überlastet oder Zeitbudget erreicht (${geprueft} neu geprüft, Ergebnisse im Cache).`);
   console.log('     Kein Fehler der Website. Der nächste Lauf prüft nur noch die fehlenden Bilder.\n');
-  process.exit(0);
+  process.exitCode = 0; global.__fertig = true;
 }
-if (tageslimit && !errors.length) {
+if (!global.__fertig && tageslimit && !errors.length) {
   console.log(`\n  ⚠  qa-images übersprungen: Gemini-Tageskontingent erschöpft (${geprueft} neu geprüft, Ergebnisse im Cache).`);
   console.log('     Der nächste Lauf prüft nur noch die fehlenden Bilder. Dauerhaft: bezahlter Key in ../../gemini-config.json.\n');
-  process.exit(0);
+  process.exitCode = 0; global.__fertig = true;
 }
-if (warnings.length) warnings.forEach(w => console.log('  ⚠  ' + w));
+if (!global.__fertig && warnings.length) warnings.forEach(w => console.log('  ⚠  ' + w));
 
 // Maschinenlesbaren Reparatur-Report schreiben (fuer Autopilot Phase 3)
-if (errors.length) {
+if (!global.__fertig && errors.length) {
   const { writeFileSync } = await import('fs');
   const report = errors.map(e => {
     const m = e.match(/^(.+?) \[(.+?)\]: zeigt "(.+?)" – (.+)$/);
@@ -204,4 +207,4 @@ if (errors.length) {
   }, null, 2));
   console.log(`\n  → qa-images-report.json geschrieben. Bilder ersetzen, dann erneut prüfen.\n`);
 }
-process.exit(errors.length ? 1 : 0);
+if (!global.__fertig) process.exitCode = errors.length ? 1 : 0;

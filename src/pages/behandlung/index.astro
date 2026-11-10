@@ -1,0 +1,67 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import SeitenHero from '../../sections/SeitenHero.astro';
+import SeitenIntro from '../../sections/SeitenIntro.astro';
+import Uebersicht from '../../sections/Uebersicht.astro';
+import Abschluss from '../../sections/Abschluss.astro';
+---
+<Seite
+  title="Behandlung: Verhaltenstherapie in Ravensburg | Dr. Gönner"
+  description="Alles zur Behandlung in der Praxis Dr. Gönner: Therapiekonzept und Schwerpunkte, Ablauf und Kosten, AOK- und BKK-Verträge mit Vorgespräch innerhalb von zwei Wochen."
+  lcpBild="/images/therapieraum-sessel.jpg"
+  lcpVarianten
+>
+  <SeitenHero
+    eyebrow="Behandlung"
+    title="Ihr Weg durch die <em>Therapie</em>."
+    subtitle="Wie wir arbeiten, wie eine Therapie abläuft und wer die Kosten trägt."
+    image="/images/therapieraum-sessel.jpg"
+    imagePosition="50% 58%"
+  />
+  <SeitenIntro
+    eyebrow="Überblick"
+    titel="Drei Fragen, die sich fast alle <em>stellen</em>."
+    text="Was passiert in einer Verhaltenstherapie? Wie komme ich zu einem Platz, und wer bezahlt ihn? Gibt es einen schnelleren Weg? Hier finden Sie zu jeder Frage die passende Seite."
+    fakten={[
+      { k: 'Für wen', v: 'Erwachsene, einzeln und in Gruppen' },
+      { k: 'Kassen', v: 'gesetzlich, privat, Beihilfe, Selbstzahler' },
+      { k: 'AOK und BKK', v: 'Vorgespräch innerhalb von zwei Wochen' },
+    ]}
+  />
+  <Uebersicht eintraege={[
+    {
+      etikett: 'Therapie und Schwerpunkte',
+      titel: 'Wissenschaftlich fundiert, auf Sie <em>zugeschnitten</em>.',
+      text: 'Kognitive Verhaltenstherapie, verbunden mit Schematherapie und Akzeptanz- und Commitmenttherapie. Dazu unsere Behandlungsschwerpunkte und ehrlich gesagt: wann wir nicht die Richtigen sind.',
+      href: '/behandlung/therapie-und-schwerpunkte/',
+      link: 'Therapie und Schwerpunkte',
+      bild: 'therapieraum-gruppe',
+      pos: '50% 60%',
+      punkte: ['Einzel- und Gruppentherapie', 'Gruppen mit höchstens fünf Teilnehmenden', 'Grenzen der ambulanten Behandlung'],
+    },
+    {
+      etikett: 'Ablauf und Kosten',
+      titel: 'Schritt für Schritt, und <em>transparent</em>.',
+      text: 'Von der Sprechstunde über die Probesitzungen bis zum Antrag bei Ihrer Krankenkasse. Mit allem, was Sie zu Kosten, Ausfallhonorar und Selbstzahler-Leistungen wissen sollten.',
+      href: '/behandlung/ablauf-und-kosten/',
+      link: 'Ablauf und Kosten',
+      bild: 'wartezimmer-kunst',
+      pos: '50% 55%',
+      punkte: ['Sitzungen mit 50 Minuten, meist wöchentlich', 'Kurzzeittherapie mit 24 Sitzungen', 'gesetzlich, privat, Beihilfe oder selbst bezahlt'],
+    },
+    {
+      etikett: 'AOK- und BKK-Verträge',
+      titel: 'Vorgespräch innerhalb von zwei&nbsp;<em>Wochen</em>.',
+      text: 'Mit dem Facharztvertrag der AOK Baden-Württemberg und dem BKK-Selektivvertrag kommen viele gesetzlich Versicherte schneller zu einem ersten Termin.',
+      href: '/behandlung/aok-und-bkk/',
+      link: 'So funktionieren die Verträge',
+      bild: 'kunst-spiegel',
+      pos: '50% 45%',
+      punkte: ['Facharztvertrag der AOK Baden-Württemberg', 'BKK-Selektivvertrag'],
+    },
+  ]} />
+  <Abschluss
+    titel="Der erste Schritt darf <em>klein</em> sein."
+    text="Schreiben Sie uns über das Kontaktformular. Wir melden uns, wenn wir Ihnen ein Vorgespräch anbieten können."
+  />
+</Seite>

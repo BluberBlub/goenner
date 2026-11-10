@@ -75,15 +75,23 @@ if exist "%ROOT%\_template\src\components" (
 echo.
 where claude >nul 2>&1
 if errorlevel 1 ( echo   FEHLER: claude nicht gefunden. & pause & exit /b )
-set "PROMPT=Lies zuerst CLAUDE.md, progress.json und AUFGABEN.md. Setze die Arbeit nahtlos fort - Regel-Datei der aktuellen Phase aus _regeln/ erneut lesen. Gibt es KIT-ZUSAMMENFUEHREN.md, das ZUERST erledigen (neue Kit-Fassung plus eigene Aenderungen, nichts Eigenes weglassen). Eigene Aenderungen an Kit-Dateien nie zurueckbauen. Rueckmeldungen an Niko hoechstens 5 Zeilen (CLAUDE.md). QA immer mit npm run qa (ein Befehl, eigener Server)."
+set "PROMPT=CLAUDE.md ist schon geladen, nicht erneut lesen. Lies progress.json und AUFGABEN.md (offene Punkte). Setze die Arbeit nahtlos fort - Regel-Datei der aktuellen Phase aus _regeln/ erneut lesen. Gibt es KIT-ZUSAMMENFUEHREN.md, das ZUERST erledigen (neue Kit-Fassung plus eigene Aenderungen, nichts Eigenes weglassen). Eigene Aenderungen an Kit-Dateien nie zurueckbauen. Rueckmeldungen an Niko hoechstens 5 Zeilen (CLAUDE.md). QA immer mit npm run qa (ein Befehl, eigener Server)."
 rem ---- Sitzung: nur kleine, frische Sitzungen fortsetzen, sonst frisch starten ----
 rem 09.11.2026: --continue setzte immer dieselbe Sitzung fort (Opitz: 404k Kontext, 41 Mio. Tokens).
 rem Der Projektstand liegt in progress.json, CLAUDE.md und AUFGABEN.md, frisch starten verliert nichts.
+rem ---- Schlanker Start (09.11.2026): Grundlast je Schritt war 90k Tokens (Desktop-App mit allen MCPs). ----
+rem Der Autopilot braucht keine MCP-Server (Gmail, Docs, Browser): Playwright laeuft ueber eigene Skripte.
+rem Nur wenn die installierte claude-Version die Schalter kennt, sonst normaler Start.
+rem --mcp-config nimmt mehrere Werte: danach MUSS eine weitere Option folgen, sonst wird der Auftrag als Datei gelesen.
+set "SCHLANK="
+if not exist ".claude" mkdir ".claude"
+> ".claude\mcp-leer.json" echo {"mcpServers":{}}
+claude --help 2>nul | findstr /c:"--strict-mcp-config" >nul && set "SCHLANK=--strict-mcp-config --mcp-config .claude\mcp-leer.json"
 node stand.js --sitzung
 if errorlevel 1 (
-  cmd /k claude -n "%PROJEKT%" --remote-control "%PROJEKT%" --dangerously-skip-permissions --model opus "%PROMPT%"
+  cmd /k claude -n "%PROJEKT%" --remote-control "%PROJEKT%" --model opus %SCHLANK% --dangerously-skip-permissions "%PROMPT%"
 ) else (
-  cmd /k claude --continue --remote-control "%PROJEKT%" --dangerously-skip-permissions --model opus "%PROMPT%"
+  cmd /k claude --continue --remote-control "%PROJEKT%" --model opus %SCHLANK% --dangerously-skip-permissions "%PROMPT%"
 )
 goto :eof
 

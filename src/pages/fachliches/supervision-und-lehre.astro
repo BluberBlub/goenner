@@ -1,13 +1,13 @@
 ---
-import Seite from '../layouts/Seite.astro';
-import PageHero from '../components/PageHero.astro';
-import Section from '../components/Section.astro';
-import SektionsKopf from '../components/SektionsKopf.astro';
-import Cta from '../components/Cta.astro';
-import SeitenIntro from '../sections/SeitenIntro.astro';
-import Portrait from '../components/Portrait.astro';
-import { approbiert } from '../data/team';
-import { lehreGoenner, lehreGoennerFrueher, lehreMoehrle, rollenName } from '../data/lehre';
+import Seite from '../../layouts/Seite.astro';
+import SeitenHero from '../../sections/SeitenHero.astro';
+import Section from '../../components/Section.astro';
+import SektionsKopf from '../../components/SektionsKopf.astro';
+import Abschluss from '../../sections/Abschluss.astro';
+import SeitenIntro from '../../sections/SeitenIntro.astro';
+import Portrait from '../../components/Portrait.astro';
+import { approbiert } from '../../data/team';
+import { lehreGoenner, lehreGoennerFrueher, lehreMoehrle, rollenName } from '../../data/lehre';
 
 const goenner = approbiert.find((p) => p.slug === 'goenner')!;
 const moehrle = approbiert.find((p) => p.slug === 'moehrle')!;
@@ -33,7 +33,8 @@ const rollen = (r: string[]) => r.map((k) => rollenName[k]).join(', ');
   lcpBild="/images/therapieraum-tisch.jpg"
   lcpVarianten
 >
-  <PageHero
+  <SeitenHero
+    pfad={[{ label: 'Fachliches', href: '/fachliches/' }]}
     eyebrow="Supervision und Lehre"
     title="Erfahrung weitergeben."
     subtitle="Supervision, Lehre und eine staatlich anerkannte Lehrpraxis."
@@ -96,7 +97,7 @@ const rollen = (r: string[]) => r.map((k) => rollenName[k]).join(', ');
     </Section>
   ))}
 
-  <Cta
+  <Abschluss
     titel="Interesse an Supervision oder Lehrpraxis?"
     text="Schreiben Sie uns, wir melden uns bei Ihnen."
     buttonText="Anfrage senden"

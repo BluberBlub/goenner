@@ -65,3 +65,6 @@ deploy.js.alt
 
 .inhalt/
 .qa-screenshots/
+# Autopilot (automatisch ergänzt)
+.qa-berichte/
+.claude/.kontext-gemeldet

@@ -1,0 +1,72 @@
+---
+import Seite from '../../layouts/Seite.astro';
+import SeitenHero from '../../sections/SeitenHero.astro';
+import SeitenIntro from '../../sections/SeitenIntro.astro';
+import Uebersicht from '../../sections/Uebersicht.astro';
+import Abschluss from '../../sections/Abschluss.astro';
+---
+<Seite
+  title="Fachliches: Lehrpraxis, Stellen, Position | Praxis Dr. Gönner"
+  description="Für Kolleginnen und Kollegen: Supervision und staatlich anerkannte Lehrpraxis, Stellenangebote in Ravensburg und unsere Position zur Versorgung in der Psychotherapie."
+  lcpBild="/images/therapieraum-tisch.jpg"
+  lcpVarianten
+>
+  <SeitenHero
+    eyebrow="Fachliches"
+    title="Für Kolleginnen und <em>Kollegen</em>."
+    subtitle="Supervision und Lehre, offene Stellen und unsere Haltung zur Versorgungslage."
+    image="/images/therapieraum-tisch.jpg"
+    imagePosition="50% 55%"
+  />
+  <SeitenIntro
+    eyebrow="Überblick"
+    titel="Eine Praxis, die <em>weitergibt</em>."
+    text="Wir bilden aus, wir suchen Verstärkung und wir beziehen Stellung, wenn die Versorgung psychisch kranker Menschen unter Druck gerät. Hier finden Sie alles, was über die Behandlung hinausgeht."
+    fakten={[
+      { k: 'Lehrpraxis', v: 'staatlich anerkannt' },
+      { k: 'Offene Stelle', v: 'Psychotherapeutin oder Psychotherapeut (w/m/d)' },
+    ]}
+  />
+  <Uebersicht eintraege={[
+    {
+      etikett: 'Supervision und Lehre',
+      titel: 'Erfahrung <em>weitergeben</em>.',
+      text: 'Supervision, Lehre und eine staatlich anerkannte Lehrpraxis für Psychotherapeutinnen und Psychotherapeuten in Ausbildung, in Kooperation mit zahlreichen Ausbildungsinstituten.',
+      href: '/fachliches/supervision-und-lehre/',
+      link: 'Supervision und Lehre',
+      bild: 'praxis-flur',
+      pos: '50% 55%',
+      punkte: ['Lehrpraxis u. a. für DGVT, IVS, CIP und AVM', 'Supervision für Kolleginnen und Kollegen'],
+    },
+    {
+      etikett: 'Stellenangebote',
+      titel: 'Verstärken Sie unser <em>Team</em>.',
+      text: 'Wir suchen eine Psychologische Psychotherapeutin oder einen Psychologischen Psychotherapeuten mit Fachkunde Verhaltenstherapie, gern auch frisch approbiert oder in Teilzeit.',
+      href: '/fachliches/stellenangebote/',
+      link: 'Zu den Stellenangeboten',
+      bild: 'kunst-ausstellung-zollmann',
+      pos: '50% 40%',
+      punkte: ['unbefristet, Bezahlung orientiert am TVöD', 'Teilzeit möglich, sorgfältige Einarbeitung'],
+    },
+    {
+      etikett: 'Versorgung in Not',
+      titel: 'Psychotherapie in <em>Not</em>.',
+      text: 'Wir gehen davon aus, dass ab 2027 bis zu 40 % der ambulanten Therapieplätze für gesetzlich Versicherte wegfallen. Was das bedeutet und wie wir damit umgehen.',
+      href: '/fachliches/versorgung-in-not/',
+      link: 'Unsere Position',
+      bild: 'kunst-frida',
+      pos: '50% 30%',
+    },
+  ]} />
+  <Abschluss
+    etikett="Kontakt"
+    titel="Sprechen wir <em>miteinander</em>."
+    text="Ob Supervision, Lehrpraxis oder Bewerbung: Schreiben Sie uns, wir antworten persönlich."
+    buttonText="Nachricht schreiben"
+    wege={[
+      { titel: 'Per E-Mail', text: 'praxis@drgoenner.de', href: 'mailto:praxis@drgoenner.de', link: 'E-Mail schreiben' },
+      { titel: 'Donnerstags anrufen', text: 'Telefonische Sprechzeit 13:00–14:00 Uhr unter 0751 9771973-0.', href: 'tel:+4975197719730', link: 'Jetzt anrufen' },
+      { titel: 'Per Post', text: 'Dr. phil. Sascha Gönner, Karlstraße 8, 88212 Ravensburg' },
+    ]}
+  />
+</Seite>

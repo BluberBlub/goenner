@@ -18,7 +18,7 @@ export const fragenStart = [
   },
   {
     f: 'Wen behandeln Sie nicht?',
-    a: '<p>Ambulante Psychotherapie ist nicht das Richtige bei akuter Selbstgefährdung, bei Abhängigkeit von Medikamenten, Drogen oder Alkohol und bei akuten Psychosen. Was das genau bedeutet und wer Ihnen dann weiterhilft, lesen Sie unter <a class="underline underline-offset-4" href="/behandlung/#grenzen">Behandlung</a>.</p>',
+    a: '<p>Ambulante Psychotherapie ist nicht das Richtige bei akuter Selbstgefährdung, bei Abhängigkeit von Medikamenten, Drogen oder Alkohol und bei akuten Psychosen. Was das genau bedeutet und wer Ihnen dann weiterhilft, lesen Sie unter <a class="underline underline-offset-4" href="/behandlung/therapie-und-schwerpunkte/#grenzen">Behandlung</a>.</p>',
   },
   {
     f: 'Wie erreiche ich Sie am besten?',

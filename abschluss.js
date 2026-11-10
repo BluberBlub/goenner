@@ -33,7 +33,8 @@ if (process.argv.includes('--marke')) {
   if (!qa) probleme.push('Es gibt keinen QA-Lauf (.qa-status.json fehlt).');
   else {
     if (!qa.bestanden) probleme.push(`Der letzte QA-Lauf war ROT (${Object.entries(qa.gates || {}).filter(([, e]) => e.exit !== 0 && !e.info).map(([n]) => 'qa-' + n).join(', ') || 'Build'}).`);
-    if (qa.komplett === false) probleme.push('Der letzte QA-Lauf war nur ein Teillauf (--nur / --ohne-ki).');
+    if (qa.komplett === false) probleme.push('Der letzte QA-Lauf war nur ein Teillauf (--nur).');
+    else if (qa.ki === false) probleme.push('Der letzte QA-Lauf war ohne KI-Gates. Für den Marker: npm run qa -- --schluss');
     if (stand && qa.stand && stand !== qa.stand) probleme.push('Seit dem letzten QA-Lauf wurden Dateien geändert.');
   }
   if (probleme.length && !process.argv.includes('--trotzdem')) {

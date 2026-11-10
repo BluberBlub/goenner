@@ -42,7 +42,11 @@ function stichprobe(alle, limit = 12) {
   console.log(`  Stichprobe: ${auswahl.length} von ${alle.length} Seiten (je Template 1 Vertreter; --alle für Vollprüfung)`);
   return auswahl;
 }
-const pages = stichprobe(findPages());
+// qa-alle v4: nur geänderte Seiten (CSS/JS/Bilder unverändert), sonst alle bzw. Stichprobe
+const nurSeiten = (process.env.QA_SEITEN || '').split(',').filter(Boolean);
+const pages = stichprobe(nurSeiten.length ? findPages().filter(p => nurSeiten.includes(p)) : findPages());
+if (nurSeiten.length) console.log(`  Nur geänderte Seiten: ${pages.join(', ')}`);
+try { (await import('fs')).writeFileSync('.qa-berichte/qa-overflow-seiten.json', JSON.stringify(pages)); } catch {}
 console.log(`\n══════ QA-OVERFLOW ══════`);
 console.log(`  ${pages.length} Seiten × ${WIDTHS.length} Breiten\n`);
 

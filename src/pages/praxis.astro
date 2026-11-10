@@ -1,10 +1,10 @@
 ---
 import Seite from '../layouts/Seite.astro';
-import PageHero from '../components/PageHero.astro';
+import SeitenHero from '../sections/SeitenHero.astro';
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
 import KontaktKarte from '../components/KontaktKarte.astro';
-import Cta from '../components/Cta.astro';
+import Abschluss from '../sections/Abschluss.astro';
 import SeitenIntro from '../sections/SeitenIntro.astro';
 import Foto from '../components/Foto.astro';
 import type { BildName } from '../data/bilder';
@@ -22,7 +22,7 @@ const raeume: { name: BildName; klasse: string; pos?: string }[] = [
   lcpBild="/images/therapieraum-gruppe.jpg"
   lcpVarianten
 >
-  <PageHero
+  <SeitenHero
     eyebrow="Praxisräume"
     title="Raum zum Durchatmen."
     subtitle="Eine Jugendstilvilla mitten in der Ravensburger Innenstadt."
@@ -98,7 +98,7 @@ const raeume: { name: BildName; klasse: string; pos?: string }[] = [
     </div>
   </Section>
 
-  <Cta
+  <Abschluss
     titel="Wir freuen uns auf Ihren Besuch."
     text="Für ein Vorgespräch melden Sie sich am besten über unser Kontaktformular an."
     buttonText="Therapieplatz anfragen"
