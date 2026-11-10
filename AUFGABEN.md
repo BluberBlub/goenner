@@ -4,7 +4,7 @@
 - [x] Referenzen müssen echte Psychotherapie-Seiten sein (Kinfolk/Kusnacht/Selfapy passten nicht) (2026-11-09)
 - [x] Referenz: Octave (findoctave.com), aber Farben der aktuellen Seite (#3D652B, #88AF42) behalten (2026-11-09)
 - [x] weiter (Autopilot fortsetzen nach Limit) (2026-11-09)
-- [ ] Subdomain goenner.niko-endres.de im IONOS-Panel auf /demo/goenner + SSL (wartet auf Niko), danach qa-live (2026-11-09) — Stand 10.11.: Subdomain per HTTP erreichbar, SSL-Zertifikat fehlt noch (TLS-Handshake schlägt fehl)
+- [ ] Subdomain goenner.niko-endres.de im IONOS-Panel auf /demo/goenner + SSL (wartet auf Niko), danach qa-live (2026-11-09) — Stand 10.11.: Subdomain per HTTP erreichbar, SSL-Zertifikat fehlt noch (TLS-Handshake schlägt fehl). 10.11. 09:43: HTTPS antwortet 200, qa-live noch offen
 
 ## Feedback Niko 10.11.2026
 - [x] "cta ist noch recht langweilig" (2026-11-10) → neue Sektion Abschluss.astro (3 Wegmarken mit Pfad) auf allen Seiten
