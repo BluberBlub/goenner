@@ -13,3 +13,4 @@
 - [x] "heros auf unterseiten sind zu sehr abgedunkelt. texte sollten weiterhin lesbar bleiben." (2026-11-10) → SeitenHero.astro, nur Textecke tiefgrün, mit Brotkrumen
 - [x] "footer ist noch langweilig. copyright fehlen abstände." (2026-11-10) → Sitemap-Footer mit Leitsatz, Copyright-Leerzeichen behoben
 - [ ] "seite ist insgesamt noch nicht sonderlich individuell. sieht sehr generisch/ai slop aus. muss noch optimiert werden" (2026-11-10) → TEILWEISE: Höhenlinien/Wegmarken-Motiv, Hero-Rahmen wie Startseite. OFFEN: Startseite durchsehen, npm run qa, Deploy
+- [x] "deploy ohne qa" (2026-11-10) → node deploy.js --ohne-qa, live
