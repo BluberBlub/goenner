@@ -12,5 +12,6 @@
 - [x] "stellenanzeigen müssen besser werden. für stellen unterseiten erstellen." (2026-11-10) → /fachliches/stellenangebote/ (Übersicht aus data/stellen.ts) + Detailseite
 - [x] "heros auf unterseiten sind zu sehr abgedunkelt. texte sollten weiterhin lesbar bleiben." (2026-11-10) → SeitenHero.astro, nur Textecke tiefgrün, mit Brotkrumen
 - [x] "footer ist noch langweilig. copyright fehlen abstände." (2026-11-10) → Sitemap-Footer mit Leitsatz, Copyright-Leerzeichen behoben
-- [ ] "seite ist insgesamt noch nicht sonderlich individuell. sieht sehr generisch/ai slop aus. muss noch optimiert werden" (2026-11-10) → TEILWEISE: Höhenlinien/Wegmarken-Motiv, Hero-Rahmen wie Startseite. OFFEN: Startseite durchsehen, npm run qa, Deploy
+- [x] "seite ist insgesamt noch nicht sonderlich individuell. sieht sehr generisch/ai slop aus. muss noch optimiert werden" (2026-11-10) → Höhenlinien/Wegmarken-Motiv; Fortsetzung siehe Punkt unten (10.11.)
 - [x] "deploy ohne qa" (2026-11-10) → node deploy.js --ohne-qa, live
+- [x] "seite wirkt noch immer sehr generisch, baukasten mäßig. sie muss individueller, mutiger werden. darf auch interaktiver sein. mehr passende effekte" (2026-11-10) → wischbarer Nebel über Hero-Fotos (alle Seiten), asymmetrischer Start-Hero, Themen-Bühne zum Antippen, Versicherungs-Wegweiser, Weg-Pfad zeichnet sich, 40 von 100 Plätzen lösen sich auf, Team-Hover-Fokus. Teil-QA craft/copy/overflow grün, deployt. Hinweis: mehr als 2 Scroll-Effekte auf der Startseite (Niko-Wunsch nach mehr Effekten)

@@ -26,7 +26,7 @@ const alle = [...approbiert, ...inAusbildung];
         <span>Alle bilden sich regelmäßig in internen und externen <mark>Fortbildungen und Intervisionen</mark> fort.</span>
       </p>
     </div>
-    <ul class="grid grid-cols-2 gap-3 min-[380px]:grid-cols-3 sm:grid-cols-5 sm:gap-4 lg:col-span-8 lg:mt-24 lg:grid-cols-7">
+    <ul class="team-raster grid grid-cols-2 gap-3 min-[380px]:grid-cols-3 sm:grid-cols-5 sm:gap-4 lg:col-span-8 lg:mt-24 lg:grid-cols-7">
       {alle.map((p) => (
         <li data-reveal>
           <a href={`/team/#${p.slug}`} class="group block" aria-label={`${p.name}, ${p.titel}`}>

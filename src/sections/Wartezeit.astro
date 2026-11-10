@@ -1,37 +1,86 @@
 ---
-// Wegweiser nach Versicherung: ehrlich, wie schnell ein Vorgespräch möglich ist (Quelle: Altseite
-// /Kontakt/Kontakt-Anmeldung und /AOK-und-BKK). Ungleiche Karten: der schnellste Weg ist die größte.
+// Wegweiser nach Versicherung (Niko 10.11.: interaktiver). Statt drei Karten eine Frage:
+// "Wie sind Sie versichert?" Die Antwort klart aus dem Nebel auf (Unschärfe zu Schärfe).
+// Botschaft: ehrlich gesagt bekommen, ob man hier richtig ist. Quelle: Altseite /Kontakt/Kontakt-Anmeldung
+// und /AOK-und-BKK. Ohne JS stehen alle drei Antworten untereinander (kein Inhalt geht verloren).
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
 const pfeil = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+const wege = [
+  {
+    id: 'aok', wahl: 'AOK oder BKK mit Vertrag', etikett: 'AOK Baden-Württemberg und Betriebskrankenkassen',
+    titel: 'Vorgespräch innerhalb von zwei&nbsp;Wochen.', stufe: 3,
+    text: 'Wenn Sie am Hausarztvertrag der AOK Baden-Württemberg teilnehmen oder bei einer Betriebskrankenkasse versichert sind, die am BKK-Selektivvertrag teilnimmt, behandeln wir Sie außerhalb unseres begrenzten Kontingents. Sie bekommen dadurch in der Regel auch früher einen Therapieplatz. Die Einschreibung in die Verträge ist direkt in unserer Praxis möglich.',
+    link: { href: '/behandlung/aok-und-bkk/', text: 'So funktionieren die Verträge' },
+  },
+  {
+    id: 'privat', wahl: 'Privat oder Selbstzahler', etikett: 'Privat versichert oder Selbstzahler',
+    titel: 'Erstgespräch und Therapieplatz meist innerhalb von zwei&nbsp;Wochen.', stufe: 3,
+    text: 'Hier gibt es keine Leistungskontingente wie in der gesetzlichen Krankenversicherung. Fordern Sie am besten vorab die Formblätter Ihrer Krankenversicherung oder Beihilfe zur Kostenübernahme an.',
+    link: { href: '/behandlung/ablauf-und-kosten/', text: 'Kosten und Erstattung' },
+  },
+  {
+    id: 'gkv', wahl: 'Andere gesetzliche Kasse', etikett: 'Andere gesetzliche Krankenkassen',
+    titel: 'Aufnahme nur vereinzelt möglich.', stufe: 1,
+    text: 'Wegen der vielen Anfragen und unseres begrenzten Kontingents. Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten.',
+    link: { href: '/fachliches/versorgung-in-not/', text: 'Warum das so ist' },
+  },
+];
 ---
-<Section variant="standard" bg="none" class="nebel-zart">
-  <SektionsKopf
-    eyebrow="Wartezeit und Krankenkasse"
-    titel="Ein ehrliches Wort zur <em>Wartezeit</em>."
-    text="Wir bieten ein Vorgespräch und einen Platz auf der Warteliste nur an, wenn wir zuversichtlich sind, Ihnen innerhalb von zwei Monaten auch einen Therapieplatz anbieten zu können. Wie schnell das geht, hängt vor allem von Ihrer Versicherung ab."
-  />
-  <div class="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12 lg:gap-8">
-    <article class="flex flex-col rounded-karte bg-primary p-8 text-on-primary sm:p-10 lg:col-span-6" data-reveal>
-      <p class="etikett opacity-80">AOK Baden-Württemberg und Betriebskrankenkassen</p>
-      <h3 class="mt-4 text-3xl leading-tight sm:text-4xl">Vorgespräch innerhalb von zwei&nbsp;Wochen</h3>
-      <p class="mt-5 text-lg leading-relaxed opacity-90">
-        Wenn Sie am Hausarztvertrag der AOK Baden-Württemberg teilnehmen oder bei einer Betriebskrankenkasse versichert sind, die am BKK-Selektivvertrag teilnimmt, behandeln wir Sie außerhalb unseres begrenzten Kontingents. Sie bekommen dadurch in der Regel auch früher einen Therapieplatz.
-      </p>
-      <p class="mt-4 leading-relaxed opacity-90">Die Einschreibung in die Verträge ist direkt in unserer Praxis möglich.</p>
-      <a href="/behandlung/aok-und-bkk/" class="mt-auto inline-flex items-center gap-2 pt-8 font-semibold underline decoration-accent decoration-2 underline-offset-[6px]">So funktionieren die Verträge <Fragment set:html={pfeil} /></a>
-    </article>
-    <div class="grid gap-6 lg:col-span-6 lg:gap-8">
-    <article class="nebel-karte flex flex-col justify-center bg-background p-8 sm:p-10" data-reveal>
-      <p class="etikett text-primary">Privat versichert oder Selbstzahler</p>
-      <h3 class="mt-3 text-2xl leading-tight sm:text-3xl">Erstgespräch und Therapieplatz meist innerhalb von zwei Wochen</h3>
-      <p class="mt-4 leading-relaxed text-text/80">Hier gibt es keine Leistungskontingente wie in der gesetzlichen Krankenversicherung.</p>
-    </article>
-    <article class="nebel-karte flex flex-col justify-center bg-background p-8 sm:p-10" data-reveal>
-      <p class="etikett text-primary">Andere gesetzliche Krankenkassen</p>
-      <h3 class="mt-3 text-2xl leading-tight sm:text-3xl">Aufnahme nur vereinzelt möglich</h3>
-      <p class="mt-4 leading-relaxed text-text/80">Wegen der vielen Anfragen und unseres begrenzten Kontingents. Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten.</p>
-    </article>
+<Section id="wegweiser" variant="standard" bg="none" class="nebel-zart scroll-mt-24">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-8" data-wegweiser>
+    <div class="lg:col-span-5">
+      <SektionsKopf
+        eyebrow="Wartezeit und Krankenkasse"
+        titel="Ein ehrliches Wort zur <em>Wartezeit</em>."
+        text="Wir bieten ein Vorgespräch und einen Platz auf der Warteliste nur an, wenn wir zuversichtlich sind, Ihnen innerhalb von zwei Monaten auch einen Therapieplatz anbieten zu können. Wie schnell das geht, hängt vor allem von Ihrer Versicherung ab."
+      />
+      <fieldset class="wegweiser-wahl mt-8 hidden" data-js-only>
+        <legend class="font-display text-xl text-text">Wie sind Sie versichert?</legend>
+        <div class="mt-4 grid gap-2.5">
+          {wege.map((w, i) => (
+            <label class="wahl">
+              <input type="radio" name="versicherung" value={w.id} checked={i === 0} class="sr-only" />
+              <span class="wahl-punkt" aria-hidden="true"></span>
+              <span>{w.wahl}</span>
+              <svg class="ml-auto opacity-0 transition-opacity" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="grid gap-6 lg:col-span-7 lg:col-start-6" aria-live="polite">
+      {wege.map((w) => (
+        <article class="antwort nebel-karte relative flex flex-col overflow-hidden p-8 sm:p-10 lg:p-12" data-weg={w.id} data-stufe={w.stufe}>
+          <p class="etikett text-primary">{w.etikett}</p>
+          <h3 class="mt-4 text-[1.9rem] leading-[1.18] sm:text-[2.6rem]" set:html={w.titel} />
+          <div class="sicht mt-6" aria-hidden="true">
+            <span>Sicht auf einen Therapieplatz</span>
+            <span class="sicht-balken"><i></i><i></i><i></i></span>
+          </div>
+          <p class="mt-6 text-lg leading-relaxed text-text/80">{w.text}</p>
+          <a href={w.link.href} class="link-pfeil mt-auto pt-8">{w.link.text} <Fragment set:html={pfeil} /></a>
+        </article>
+      ))}
     </div>
   </div>
 </Section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-wegweiser]').forEach((box) => {
+    const wahl = box.querySelector<HTMLElement>('[data-js-only]');
+    const antworten = [...box.querySelectorAll<HTMLElement>('.antwort')];
+    if (!wahl || !antworten.length) return;
+    wahl.classList.remove('hidden');
+    box.classList.add('ist-interaktiv');
+    const zeige = (id: string) => antworten.forEach((a) => {
+      const an = a.dataset.weg === id;
+      a.hidden = !an;
+      if (an) { a.classList.remove('klart-auf'); void a.offsetWidth; a.classList.add('klart-auf'); }
+    });
+    wahl.addEventListener('change', (e) => zeige((e.target as HTMLInputElement).value));
+    zeige((wahl.querySelector('input:checked') as HTMLInputElement)?.value || 'aok');
+  });
+</script>

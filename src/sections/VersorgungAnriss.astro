@@ -1,8 +1,14 @@
 ---
 // Vollflächige Waldgrün-Bühne: die Praxis bezieht Stellung (Altseite: "Psychotherapeutische Versorgung in Not!").
+// Hundert Punkte stehen für hundert Therapieplätze; beim Hineinscrollen lösen sich bis zu vierzig davon
+// im Nebel auf (CSS .platz-weg). Botschaft: Die 40 % werden greifbar, statt nur gelesen zu werden.
 import Section from '../components/Section.astro';
+// feste, gestreute Auswahl von 40 Plätzen (jedes Mal gleich, kein Zufall beim Bauen)
+let saat = 7;
+const zufall = () => (saat = (saat * 16807) % 2147483647) / 2147483647;
+const weg = new Set(Array.from({ length: 100 }, (_, i) => i).map((i) => [i, zufall()] as const).sort((a, b) => a[1] - b[1]).slice(0, 40).map(([i]) => i));
 ---
-<Section variant="buehne" bg="dark" class="overflow-hidden">
+<Section variant="buehne" bg="dark" class="overflow-clip">
   <svg slot="bleed" class="hoehenlinien text-on-primary" viewBox="0 0 1200 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
     <g stroke="currentColor" stroke-width="1.2">
       <path d="M-20 420C200 380 360 460 600 420S980 340 1220 390" />
@@ -12,14 +18,23 @@ import Section from '../components/Section.astro';
     </g>
   </svg>
   <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-    <div class="lg:col-span-8">
+    <div class="lg:col-span-7">
       <p class="etikett flex items-center gap-3 opacity-85"><span class="h-px w-8 bg-accent" aria-hidden="true"></span>Psychotherapeutische Versorgung in Not</p>
       <h2 class="mt-6 text-[1.85rem] leading-[1.18] sm:text-5xl lg:text-[3.5rem]">
         Wir gehen davon aus, dass in Deutschland ab 2027 bis zu 40 % der ambulanten Therapieplätze für gesetzlich Versicherte wegfallen.
       </h2>
     </div>
-    <div class="lg:col-span-4 lg:mt-32">
-      <p class="text-lg leading-relaxed opacity-90">
+    <div class="lg:col-span-4 lg:col-start-9">
+      <figure class="plaetze" aria-label="Bis zu 40 von 100 Therapieplätzen könnten wegfallen">
+        <div class="grid grid-cols-10 gap-2 sm:gap-2.5" aria-hidden="true">
+          {Array.from({ length: 100 }, (_, i) => <span class:list={['platz', weg.has(i) && 'platz-weg']} style={`--i:${[...weg].indexOf(i)}`}></span>)}
+        </div>
+        <figcaption class="mt-4 flex items-center justify-between gap-4 text-sm opacity-85">
+          <span>100 Therapieplätze heute</span>
+          <span class="flex items-center gap-2"><span class="inline-block h-2.5 w-2.5 rounded-full border border-current opacity-70"></span>bis zu 40 davon ab 2027</span>
+        </figcaption>
+      </figure>
+      <p class="mt-10 text-lg leading-relaxed opacity-90">
         Wir bemühen uns weiter um eine gute Versorgung aller Patientinnen und Patienten, unabhängig von ihrer Krankenkasse. Die aktuellen Einschnitte machen es aber unmöglich, den Versorgungsumfang wie bisher zu halten.
       </p>
       <a href="/fachliches/versorgung-in-not/" class="mt-6 inline-flex items-center gap-2 font-semibold underline decoration-accent decoration-2 underline-offset-[6px]">

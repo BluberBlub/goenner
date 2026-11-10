@@ -125,4 +125,112 @@
 @keyframes pfad-zeichnen { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 
 /* Footer-Leitsatz: kursives Akzentwort in Blattgrün (sonst Grün auf Grün unsichtbar) */
-footer em { color: var(--color-accent); }
+footer .font-display em, footer em { color: color-mix(in srgb, rgb(var(--color-accent-rgb)) 55%, white); }
+
+/* ===== Feedback 10.11. "mutiger, interaktiver" ===== */
+
+/* Interaktiver Nebel über Fotos (NebelWischen.astro): grob gerechnet, weich skaliert */
+.nebel-wischen { position: absolute; inset: -4%; width: 108%; height: 108%; z-index: 1; pointer-events: none; filter: blur(14px); }
+.hero-bild { touch-action: pan-y; }
+.hero-bild:has(.ist-aktiv) .nebel-hinweis { display: inline-flex; }
+
+/* Akzentwort im Hero stellt sich einmal scharf (Kamera-Fokus), sonst steht alles sofort */
+@media (prefers-reduced-motion: no-preference) {
+  .fokus-wort { display: inline-block; animation: fokus 1.6s cubic-bezier(.2,.7,.2,1) .25s both; }
+}
+@keyframes fokus { from { filter: blur(7px); opacity: .45; } to { filter: blur(0); opacity: 1; } }
+
+/* Themen-Bühne (Schwerpunkte): große Serif-Wörter als Knöpfe, Tafel daneben */
+.thema {
+  display: inline-flex; align-items: baseline; gap: .45rem; text-align: left;
+  font-family: var(--font-display, 'Newsreader', serif); font-weight: 300;
+  font-size: clamp(1.7rem, 3.1vw, 2.85rem); line-height: 1.2;
+  color: rgb(var(--color-on-primary-rgb) / .62); cursor: pointer;
+  transition: color .35s ease;
+}
+.thema-nr { font-family: var(--font-body, sans-serif); font-size: .72rem; letter-spacing: .1em; font-weight: 600; color: rgb(var(--color-accent-rgb)); opacity: .8; transform: translateY(-1.1em); }
+.thema:hover, .thema:focus-visible { color: rgb(var(--color-on-primary-rgb)); }
+.thema[aria-pressed="true"] { color: rgb(var(--color-on-primary-rgb)); text-decoration: underline; text-decoration-color: rgb(var(--color-accent-rgb)); text-decoration-thickness: 2px; text-underline-offset: .22em; }
+.thema-tafel { padding: 2rem; background: rgb(var(--color-secondary-rgb) / .55); border: 1px solid rgb(255 255 255 / .12); backdrop-filter: blur(6px); min-height: 22rem; display: flex; flex-direction: column; }
+@media (min-width: 640px) { .thema-tafel { padding: 2.75rem; } }
+.thema-tafel > article { flex: 1; }
+.thema-neu { animation: klaren .55s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes klaren { from { filter: blur(8px); opacity: 0; transform: translateY(6px); } to { filter: blur(0); opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lichten > li {
+      animation: lichten-gross linear both; animation-timeline: view();
+      animation-range: entry 0% cover calc(17% + var(--i, 0) * .6%);
+    }
+  }
+}
+@keyframes lichten-gross { from { filter: blur(9px); opacity: .25; } to { filter: blur(0); opacity: 1; } }
+
+/* Wegweiser nach Versicherung */
+.wahl {
+  display: flex; align-items: center; gap: .85rem; cursor: pointer;
+  padding: 1rem 1.15rem; border-radius: var(--radius-knopf);
+  border: 1px solid rgb(var(--color-primary-rgb) / .18); background: rgb(255 255 255 / .6);
+  font-weight: 600; color: var(--color-text);
+  transition: background-color .25s ease, border-color .25s ease, transform .25s ease;
+}
+.wahl:hover { background: rgb(255 255 255 / .95); transform: translateX(3px); }
+.wahl-punkt { width: 1.1rem; height: 1.1rem; border-radius: 9999px; border: 1.5px solid rgb(var(--color-primary-rgb) / .5); flex: none; transition: box-shadow .25s ease, background-color .25s ease; }
+.wahl:has(input:checked) { background: var(--color-primary); border-color: var(--color-primary); color: rgb(var(--color-on-primary-rgb)); }
+.wahl:has(input:checked) .wahl-punkt { background: rgb(var(--color-accent-rgb)); border-color: rgb(var(--color-accent-rgb)); box-shadow: 0 0 0 4px rgb(var(--color-accent-rgb) / .3); }
+.wahl:has(input:checked) svg { opacity: 1; }
+.wahl:has(input:focus-visible) { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+.antwort { background: rgb(255 255 255 / .75); }
+.ist-interaktiv .antwort { min-height: 100%; }
+.klart-auf { animation: klaren .6s cubic-bezier(.2,.7,.2,1) both; }
+.sicht { display: none; }
+.ist-interaktiv .sicht { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: rgb(var(--color-text-rgb) / .6); }
+.sicht-balken { display: flex; gap: .35rem; }
+.sicht-balken i { display: block; width: 2.6rem; height: .4rem; border-radius: 9999px; background: rgb(var(--color-primary-rgb) / .12); }
+[data-stufe="1"] .sicht-balken i:nth-child(-n+1),
+[data-stufe="3"] .sicht-balken i { background: rgb(var(--color-accent-rgb)); }
+.klart-auf .sicht-balken i { animation: balken .5s ease both; }
+.klart-auf .sicht-balken i:nth-child(2) { animation-delay: .12s; }
+.klart-auf .sicht-balken i:nth-child(3) { animation-delay: .24s; }
+@keyframes balken { from { transform: scaleX(.2); opacity: .3; } to { transform: none; opacity: 1; } }
+
+/* Weg: geschwungener Pfad über vier Wegmarken */
+.weg-linie { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.weg-punkt {
+  position: absolute; top: 50%; translate: -50% -50%; display: grid; place-items: center;
+  width: 2.1rem; height: 2.1rem; border-radius: 9999px; font-size: .8rem; font-weight: 700;
+  background: var(--color-primary); color: rgb(var(--color-on-primary-rgb));
+  box-shadow: 0 0 0 6px rgb(var(--color-background-rgb)), 0 0 0 7px rgb(var(--color-primary-rgb) / .2);
+}
+.weg-punkt:first-of-type { translate: 0 -50%; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .weg-pfad .weg-linie { animation: pfad-zeichnen linear both; animation-timeline: view(); animation-range: entry 60% cover 55%; }
+    .weg-punkt { animation: punkt-an linear both; animation-timeline: view(); animation-range: entry calc(60% + var(--i) * 20%) cover calc(30% + var(--i) * 8%); }
+  }
+}
+@keyframes punkt-an { from { background: rgb(var(--color-background-rgb)); color: var(--color-primary); scale: .7; } to { scale: 1; } }
+
+/* Versorgung in Not: 100 Plätze, bis zu 40 lösen sich im Nebel auf */
+.platz { aspect-ratio: 1; border-radius: 9999px; background: rgb(var(--color-on-primary-rgb) / .92); }
+.platz-weg { background: transparent; box-shadow: inset 0 0 0 1px rgb(var(--color-on-primary-rgb) / .45); }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .plaetze .platz-weg { animation: platz-weg linear both; animation-timeline: view(); animation-range: entry calc(55% + var(--i) * .9%) cover calc(45% + var(--i) * .4%); }
+  }
+}
+@keyframes platz-weg {
+  from { background: rgb(var(--color-on-primary-rgb) / .92); filter: blur(0); scale: 1; box-shadow: none; }
+  60% { filter: blur(3px); scale: 1.25; }
+  to { background: transparent; filter: blur(0); scale: 1; }
+}
+/* Unterseiten: Nebel nur oben rechts, die Textecke unten links bleibt klar */
+.nebel-maske-ecke { -webkit-mask-image: radial-gradient(120% 110% at 100% 0%, #000 35%, transparent 75%); mask-image: radial-gradient(120% 110% at 100% 0%, #000 35%, transparent 75%); }
+.antwort[hidden] { display: none; }
+/* Kursives Akzentwort auf Waldgrün: helles Blattgrün (Blattgrün pur hätte zu wenig Kontrast) */
+section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, rgb(var(--color-accent-rgb)) 55%, white); }
+/* Team: wer angesehen wird, tritt aus dem Nebel, die anderen treten zurück (nur mit feinem Zeiger) */
+@media (hover: hover) and (pointer: fine) {
+  .team-raster > li { transition: opacity .45s ease, filter .45s ease; }
+  .team-raster:has(a:hover) > li:not(:has(a:hover)) { opacity: .4; filter: blur(1.5px); }
+}

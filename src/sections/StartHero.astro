@@ -1,48 +1,58 @@
 ---
-// Start-Hero (Referenz Octave, Leitidee Morgennebel): große Nebelfläche über die volle Hero-Höhe,
-// zentrierte leichte Serif mit kursivem Akzentwort, darunter der Therapieraum im ruhigen Rahmen.
-// Steht sofort da (keine Einblendung im ersten Bildschirm).
+// Start-Hero (Niko 10.11.: "generisch, baukastenmäßig, mutiger, interaktiver").
+// Asymmetrisch: links große Serif-Headline auf Nebelweiß, rechts der Therapieraum über die volle
+// Höhe, darüber liegt Morgennebel, den man mit Maus oder Finger beiseitewischt (NebelWischen).
+// Botschaft der Leitidee: Wer sich zuwendet, sieht klarer. Text liegt nie auf dem Foto.
+// Das Akzentwort "Namen" stellt sich beim Laden einmal scharf (Kamera-Fokus), alles andere steht sofort.
 import Foto from '../components/Foto.astro';
+import NebelWischen from './NebelWischen.astro';
 ---
 <section data-hero class="relative flex min-h-[var(--hero-h)] flex-col px-3 pb-3 pt-2 sm:px-4 sm:pb-4 lg:h-[var(--hero-h)]">
-  <div class="nebel nebel-karte relative flex flex-1 flex-col overflow-hidden">
-    <svg class="hoehenlinien hidden text-primary sm:block" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" aria-hidden="true">
+  <div class="nebel nebel-karte relative grid flex-1 overflow-hidden lg:grid-cols-12">
+    <svg class="hoehenlinien text-primary" viewBox="0 0 1200 700" preserveAspectRatio="none" fill="none" aria-hidden="true">
       <g stroke="currentColor" stroke-width="1.2">
         <path d="M-20 520C180 470 320 560 520 520S880 430 1220 480" />
         <path d="M-20 560C190 510 330 600 530 560S890 470 1220 520" />
         <path d="M-20 600C200 550 340 640 540 600S900 510 1220 560" />
-        <path d="M-20 140C220 110 380 180 600 150S960 90 1220 130" />
-        <path d="M-20 180C230 150 390 220 610 190S970 130 1220 170" />
+        <path d="M-20 640C210 590 350 680 550 640S910 550 1220 600" />
       </g>
     </svg>
 
-    <div class="container relative z-10 flex flex-col items-center pt-10 text-center sm:pt-14 lg:pt-16">
+    <div class="relative z-10 flex flex-col justify-center px-6 py-12 sm:px-12 lg:col-span-6 lg:py-10 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem)-1rem)] xl:col-span-6">
       <p class="etikett flex items-center gap-3 text-primary">
         <span class="h-px w-8 bg-accent" aria-hidden="true"></span>
         Psychotherapie in Ravensburg
-        <span class="h-px w-8 bg-accent" aria-hidden="true"></span>
       </p>
-      <h1 class="mt-6 max-w-4xl text-[2.6rem] leading-[1.15] text-text sm:text-6xl lg:text-[4.4rem]">
-        Was Sie belastet, darf einen <em>Namen</em> bekommen.
+      <h1 class="hero-titel mt-6 text-[2.75rem] leading-[1.15] text-text sm:text-[4rem] lg:text-[clamp(3.4rem,5.4vw,5.6rem)]">
+        Was Sie belastet, darf einen <em class="fokus-wort">Namen</em> bekommen.
       </h1>
-      <p class="lead mt-6 max-w-2xl text-lg leading-relaxed text-text/80 sm:text-xl">
+      <p class="lead mt-7 max-w-xl text-lg leading-relaxed text-text/80 sm:text-xl">
         Verhaltenstherapie für Erwachsene mitten in Ravensburg: Einzel- und Gruppentherapie in einer Jugendstilvilla, mit einem Team aus vierzehn Psychologinnen und Psychologen.
       </p>
-      <div class="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:justify-center">
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
         <a href="/kontakt/" class="knopf knopf-voll">
           Therapieplatz anfragen
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a href="/behandlung/ablauf-und-kosten/" class="knopf knopf-rand">So läuft eine Therapie ab</a>
+        <a href="#wegweiser" class="knopf knopf-rand">Wie schnell geht es bei mir?</a>
       </div>
+      <p class="mt-10 flex items-center gap-3 text-sm text-text/70">
+        <span class="relative flex h-2.5 w-2.5" aria-hidden="true"><span class="absolute inset-0 animate-ping rounded-full bg-accent/60 motion-reduce:hidden"></span><span class="relative h-2.5 w-2.5 rounded-full bg-accent"></span></span>
+        Telefonische Sprechzeit donnerstags 13:00–14:00 Uhr
+      </p>
     </div>
 
-    <div class="container relative z-10 mt-10 flex min-h-[12rem] flex-1 lg:mt-10">
-      <div class="relative w-full overflow-hidden rounded-t-karte">
-        <Foto name="therapieraum-sessel" eager sizes="(min-width: 1280px) 1200px, 100vw" pos="50% 58%"
+    <div class="relative z-10 min-h-[24rem] p-3 pt-0 sm:p-4 sm:pt-0 lg:col-span-6 lg:min-h-0 lg:pl-0 lg:pt-4">
+      <div class="hero-bild relative h-full w-full overflow-hidden rounded-karte">
+        <Foto name="therapieraum-sessel" eager sizes="(min-width: 1024px) 50vw, 100vw" pos="50% 60%"
               class="absolute inset-0 block h-full w-full" />
-        <p class="absolute bottom-3 left-3 rounded-knopf bg-background/90 px-3 py-1.5 text-sm text-text/80 backdrop-blur sm:bottom-4 sm:left-4">
+        <NebelWischen dichte={0.78} />
+        <p class="absolute bottom-3 left-3 z-[2] flex items-center gap-2 rounded-knopf bg-background/90 px-3 py-1.5 text-sm text-text/80 backdrop-blur sm:bottom-4 sm:left-4">
           Therapieraum in der Karlstraße 8
+          <span class="nebel-hinweis hidden items-center gap-1.5 border-l border-primary/20 pl-2 text-primary" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 0 1 4 0v5m0-1a2 2 0 0 1 4 0v3a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.5 13a1.8 1.8 0 0 1 3-2L9 13.5"/></svg>
+            Nebel beiseitewischen
+          </span>
         </p>
       </div>
     </div>

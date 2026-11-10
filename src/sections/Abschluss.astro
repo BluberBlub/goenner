@@ -20,7 +20,7 @@ const { titel, text, buttonText = 'Therapieplatz anfragen', buttonHref = '/konta
 const extern = (h?: string) => !!h && /^https?:/.test(h);
 ---
 <Section variant="kompakt" bg="none" class="!pb-16 sm:!pb-20 lg:!pb-24">
-  <div class="abschluss nebel nebel-karte relative isolate overflow-hidden px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
+  <div class="abschluss nebel nebel-karte relative isolate overflow-clip px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
     <svg class="hoehenlinien -z-10 text-primary !opacity-[.12]" viewBox="0 0 1200 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
       <g stroke="currentColor" stroke-width="1.1">
         <path d="M-20 80C200 50 380 120 620 90S1000 30 1220 70" />
@@ -50,7 +50,7 @@ const extern = (h?: string) => !!h && /^https?:/.test(h);
             <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full border border-primary/25 bg-background font-display text-lg text-primary">{i + 1}</span>
             <div>
               <p class="font-display text-[1.45rem] leading-snug text-text">{w.titel}</p>
-              <p class="mt-1.5 leading-relaxed text-text/75" set:html={w.text} />
+              <p class="mt-1.5 leading-relaxed text-text/75 [overflow-wrap:anywhere]" set:html={w.text} />
               {w.href && w.link && (
                 <a href={w.href} target={extern(w.href) ? '_blank' : undefined} rel={extern(w.href) ? 'noopener' : undefined} class="link-pfeil mt-3 text-[.95rem]">
                   {w.link}

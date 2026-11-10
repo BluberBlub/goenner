@@ -1,6 +1,7 @@
 ---
 // Der Weg in vier Schritten (Octave "path to care"), Fakten aus /Behandlung/Prozedere und /Kontakt.
-// Die Höhenlinie wächst beim Scrollen mit (Kit data-scroll="fortschritt"): der Weg zeichnet sich ab.
+// Ein geschwungener Pfad zeichnet sich beim Scrollen über die vier Wegmarken (CSS .weg-linie),
+// jede Marke füllt sich, sobald der Pfad sie erreicht. Botschaft: Der Weg wird Schritt für Schritt sichtbar.
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
 
@@ -15,7 +16,7 @@ const schritte = [
 ];
 ---
 <Section variant="standard" bg="base">
-  <div class="nebel nebel-karte relative overflow-hidden px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+  <div class="nebel nebel-karte relative overflow-clip px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
     <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
         <SektionsKopf eyebrow="Ablauf" titel="Ihr <em>Weg</em> zu uns, in vier Schritten." groesse="mittel" class="!mb-0" />
@@ -25,7 +26,13 @@ const schritte = [
         <span>Gesetzlich Versicherte bringen zum ersten Termin nur ihre <mark>Versichertenkarte</mark> mit, dazu vorhandene Arzt- oder Klinikberichte.</span>
       </p>
     </div>
-    <span data-scroll="fortschritt" class="mt-10 hidden h-px bg-primary/40 lg:mt-14 lg:block" aria-hidden="true"></span>
+    <div class="weg-pfad relative mt-10 hidden h-20 lg:mt-14 lg:block" aria-hidden="true">
+      <svg class="absolute inset-0 h-full w-full overflow-visible text-primary" viewBox="0 0 1000 80" preserveAspectRatio="none" fill="none">
+        <path class="weg-spur" d="M0 40C62 8 188 72 250 40S438 8 500 40S688 72 750 40S938 8 1000 40" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="3 6" />
+        <path class="weg-linie" pathLength="1" d="M0 40C62 8 188 72 250 40S438 8 500 40S688 72 750 40S938 8 1000 40" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" />
+      </svg>
+      {schritte.map((s, i) => <span class="weg-punkt" style={`left:${i * 25}%;--i:${i}`}>{i + 1}</span>)}
+    </div>
     <ol class="mt-8 grid lg:mt-0 lg:grid-cols-4">
       {schritte.map((s) => (
         <li class="weg-schritt py-6 lg:px-7 lg:py-8 first:lg:pl-0 last:lg:pr-0" data-reveal>
