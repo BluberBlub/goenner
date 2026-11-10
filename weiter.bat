@@ -83,6 +83,9 @@ rem ---- Schlanker Start (09.11.2026): Grundlast je Schritt war 90k Tokens (Desk
 rem Der Autopilot braucht keine MCP-Server (Gmail, Docs, Browser): Playwright laeuft ueber eigene Skripte.
 rem Nur wenn die installierte claude-Version die Schalter kennt, sonst normaler Start.
 rem --mcp-config nimmt mehrere Werte: danach MUSS eine weitere Option folgen, sonst wird der Auftrag als Datei gelesen.
+rem Automatisch zusammenfassen statt Neustart (10.11.2026): Claude Code verdichtet das Gespraech selbst,
+rem sobald 25 Prozent des Kontextfensters belegt sind (bei 1 Mio. etwa 250k). Kein Eingreifen noetig.
+set "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=25"
 set "SCHLANK="
 if not exist ".claude" mkdir ".claude"
 > ".claude\mcp-leer.json" echo {"mcpServers":{}}

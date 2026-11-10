@@ -44,9 +44,9 @@
     "leitidee": "Wie Morgennebel über dem Schussental, der sich langsam lichtet: Was eben noch diffus war, bekommt Kontur.",
     "bewegung": "Aufklaren statt Auftreten. Weiche Blenden, Unschärfe wird zu Schärfe, nichts springt.",
     "farbwelt": "Waldgrün der bisherigen Praxisseite als Halt, Blattgrün als erstes Licht, Flächen wie Nebel: Weiß mit grünem Hauch.",
-    "formsprache": "Große weich gerundete Flächen wie Nebelbänke, feine Haarlinien als Wegmarken, Schwarz-Weiß-Portraits.",
+    "formsprache": "Flache, satte Farbflächen (Waldgrün, Tiefgrün, Blattgrün) statt Verlaufs-Karten, knappe Radien, Haarlinien, eine von Hand gezogene Weg-Linie, Schwarz-Weiß-Portraits.",
     "rhythmus": "Atmend: viel Luft und große leichte Serif, dazwischen dichte, sachliche Informationsblöcke.",
-    "referenz": "Octave Mental Health (findoctave.com), mit den Hausfarben der Altseite",
+    "referenz": "Two Chairs (twochairs.com) und Alma (helloalma.com): flache satte Flächen, redaktionelle Serif, von Hand gezogene Weg-Linie; Hausfarben der Altseite",
     "farben": {
       "primary": "#3D652B",
       "secondary": "#233B19",
@@ -67,8 +67,8 @@
       "/fonts/instrument-sans-latin-400-normal.woff2"
     ],
     "radius": {
-      "knopf": "10px",
-      "karte": "22px"
+      "knopf": "4px",
+      "karte": "6px"
     },
     "aktivFarbe": "primary"
   },

@@ -29,6 +29,9 @@ const wege = [
 ];
 ---
 <Section id="wegweiser" variant="standard" bg="none" class="nebel-zart scroll-mt-24">
+  <svg slot="bleed" class="weglinie zeichnet left-[calc(38%+7.5rem)] top-0 w-[calc(62%-7.5rem)] hidden h-[6.5rem] text-accent lg:block" viewBox="0 0 1000 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
+    <path pathLength="1" d="M0 0C0 55 30 82 110 82S560 76 1000 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+  </svg>
   <div class="grid gap-10 lg:grid-cols-12 lg:gap-8" data-wegweiser>
     <div class="lg:col-span-5">
       <SektionsKopf

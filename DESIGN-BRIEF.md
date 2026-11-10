@@ -10,7 +10,8 @@ RHYTHMUS: Atmend. Viel Luft, große leichte Serif, dazwischen dichte, sachliche 
 VISUELLES BRANCHENSYMBOL: Nebelschwaden und Höhenlinien (ein Weg, der sich im Gelände abzeichnet): als weiche Verlaufsflächen hinter Sektionen und als Haarlinien-Pfad im Ablauf.
 
 ## REFERENZ
-Octave Mental Health (findoctave.com), gewählt von Niko am 09.11.2026, ausdrücklich mit den Farben der aktuellen Seite.
+REDESIGN 10.11.2026 (Niko: "wirkt baukastenmäßig", große Psychotherapie-Seiten als Maßstab): Two Chairs (twochairs.com) als Hauptreferenz, dazu Alma (helloalma.com). Übernommen: flache, satte Farbflächen statt Verlaufs-Karten mit Schatten (Hero links Waldgrün, rechts Foto randlos; Themen auf Tiefgrün; Abschluss auf Blattgrün), knappe Radien (4/6 px), redaktionelle Serif, eine von Hand gezogene Weg-Linie, die vom Hero in die nächste Sektion läuft (Signature, ergänzt den Weg-Pfad im Ablauf), große Schwarz-Weiß-Portraits über die volle Breite. Unterseiten-Hero im selben Muster.
+Vorher: Octave Mental Health (findoctave.com), gewählt von Niko am 09.11.2026, ausdrücklich mit den Farben der aktuellen Seite.
 Übernommen wird: große helle Verlaufs-Karten als Sektionsbühnen, leichte Serif mit kursivem Akzentwort ("Ihr *Weg* zu uns"), Themen als Pills, Pfad in vier Schritten mit Trennlinien, kleine belegte Randnotizen mit Pfeil neben Überschriften, Foto-Karten mit Text darauf.
 Nicht übernommen: Avatar-Cluster (verbrannt), erfundene Statistiken, Versicherungslogos.
 
