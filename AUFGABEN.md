@@ -52,3 +52,4 @@
 - [x] "Jugendstilvilla - das interessiert niemanden" (2026-11-10) → überall entfernt (Start, Praxis, Stellen, Meta)
 - [x] "mobil ist die seite super unterirdisch. bitte komplett optimieren für mobil. darüber werden die meisten patienten kommen" (2026-11-10) → Hero Bild oben, Themen als Akkordeon, Team als Wischreihe, Team-Karten kompakt, Kontakt Formular vor Karte, Praxis-Galerie 2er-Raster, Wartezeit kompakt
 - [x] "Mobil Hero Bild Startseite in bg integrieren. Darauf achten das Text lesbar bleibt. Grünes overlay ggf" (2026-11-10) → Bild vollflächig hinter dem Text, Waldgrün-Lasur nach unten dichter (nur mobil)
+- [x] "Für alle Seiten so handhaben bitte" (Hero mobil: Bild als Hintergrund mit grüner Lasur, 2026-11-10)
