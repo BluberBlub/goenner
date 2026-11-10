@@ -7,9 +7,6 @@
 // Props wie PageHero (title, subtitle, image, imagePosition, eyebrow) plus pfad.
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import NebelWischen from './NebelWischen.astro';
-// 10.11. ("mutiger, interaktiver"): über dem Foto liegt wischbarer Morgennebel, nur oben rechts,
-// die Textecke bleibt frei (Maske), damit die Schrift lesbar bleibt.
 
 interface Props { title: string; subtitle?: string; image: string; imagePosition?: string; eyebrow?: string; pfad?: { label: string; href: string }[] }
 const { title, subtitle, image, imagePosition = '50% 50%', eyebrow, pfad = [] } = Astro.props;
@@ -32,7 +29,6 @@ const webp = variante(image, 'webp');
       <img src={image} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover"
            style={`object-position:${imagePosition}`} width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async" />
     </picture>
-    <NebelWischen dichte={0.6} class="nebel-maske-ecke" />
     <div class="seiten-hero-schleier absolute inset-0 z-[1]" aria-hidden="true"></div>
     <svg class="absolute inset-x-0 bottom-0 h-1/2 w-full text-white/25" viewBox="0 0 1200 300" preserveAspectRatio="none" fill="none" aria-hidden="true">
       <g stroke="currentColor" stroke-width="1">

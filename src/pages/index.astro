@@ -9,9 +9,6 @@ import Schwerpunkte from '../sections/Schwerpunkte.astro';
 import Wartezeit from '../sections/Wartezeit.astro';
 import Weg from '../sections/Weg.astro';
 import TeamAnriss from '../sections/TeamAnriss.astro';
-import Villa from '../sections/Villa.astro';
-import VersorgungAnriss from '../sections/VersorgungAnriss.astro';
-import LehreAnriss from '../sections/LehreAnriss.astro';
 import { fragenStart } from '../data/fragen';
 
 const faqSchema = {
@@ -32,9 +29,6 @@ const faqSchema = {
   <Wartezeit />
   <Weg />
   <TeamAnriss />
-  <Villa />
-  <VersorgungAnriss />
-  <LehreAnriss />
   <Section variant="standard" bg="base">
     <SektionsKopf eyebrow="Häufige Fragen" titel="Was Sie vor dem ersten <em>Termin</em> wissen sollten." />
     <Fragen fragen={fragenStart} />

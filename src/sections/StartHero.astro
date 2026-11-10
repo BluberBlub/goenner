@@ -1,11 +1,9 @@
 ---
 // Start-Hero (Niko 10.11.: "generisch, baukastenmäßig, mutiger, interaktiver").
 // Asymmetrisch: links große Serif-Headline auf Nebelweiß, rechts der Therapieraum über die volle
-// Höhe, darüber liegt Morgennebel, den man mit Maus oder Finger beiseitewischt (NebelWischen).
-// Botschaft der Leitidee: Wer sich zuwendet, sieht klarer. Text liegt nie auf dem Foto.
+// Höhe.
 // Das Akzentwort "Namen" stellt sich beim Laden einmal scharf (Kamera-Fokus), alles andere steht sofort.
 import Foto from '../components/Foto.astro';
-import NebelWischen from './NebelWischen.astro';
 ---
 <section data-hero class="relative flex min-h-[var(--hero-h)] flex-col px-3 pb-3 pt-2 sm:px-4 sm:pb-4 lg:h-[var(--hero-h)]">
   <div class="nebel nebel-karte relative grid flex-1 overflow-hidden lg:grid-cols-12">
@@ -46,13 +44,8 @@ import NebelWischen from './NebelWischen.astro';
       <div class="hero-bild relative h-full w-full overflow-hidden rounded-karte">
         <Foto name="therapieraum-sessel" eager sizes="(min-width: 1024px) 50vw, 100vw" pos="50% 60%"
               class="absolute inset-0 block h-full w-full" />
-        <NebelWischen dichte={0.78} />
         <p class="absolute bottom-3 left-3 z-[2] flex items-center gap-2 rounded-knopf bg-background/90 px-3 py-1.5 text-sm text-text/80 backdrop-blur sm:bottom-4 sm:left-4">
           Therapieraum in der Karlstraße 8
-          <span class="nebel-hinweis hidden items-center gap-1.5 border-l border-primary/20 pl-2 text-primary" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 0 1 4 0v5m0-1a2 2 0 0 1 4 0v3a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.5 13a1.8 1.8 0 0 1 3-2L9 13.5"/></svg>
-            Nebel beiseitewischen
-          </span>
         </p>
       </div>
     </div>

@@ -129,10 +129,6 @@ footer .font-display em, footer em { color: color-mix(in srgb, rgb(var(--color-a
 
 /* ===== Feedback 10.11. "mutiger, interaktiver" ===== */
 
-/* Interaktiver Nebel über Fotos (NebelWischen.astro): grob gerechnet, weich skaliert */
-.nebel-wischen { position: absolute; inset: -4%; width: 108%; height: 108%; z-index: 1; pointer-events: none; filter: blur(14px); }
-.hero-bild { touch-action: pan-y; }
-.hero-bild:has(.ist-aktiv) .nebel-hinweis { display: inline-flex; }
 
 /* Akzentwort im Hero stellt sich einmal scharf (Kamera-Fokus), sonst steht alles sofort */
 @media (prefers-reduced-motion: no-preference) {
@@ -224,8 +220,6 @@ footer .font-display em, footer em { color: color-mix(in srgb, rgb(var(--color-a
   60% { filter: blur(3px); scale: 1.25; }
   to { background: transparent; filter: blur(0); scale: 1; }
 }
-/* Unterseiten: Nebel nur oben rechts, die Textecke unten links bleibt klar */
-.nebel-maske-ecke { -webkit-mask-image: radial-gradient(120% 110% at 100% 0%, #000 35%, transparent 75%); mask-image: radial-gradient(120% 110% at 100% 0%, #000 35%, transparent 75%); }
 .antwort[hidden] { display: none; }
 /* Kursives Akzentwort auf Waldgrün: helles Blattgrün (Blattgrün pur hätte zu wenig Kontrast) */
 section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, rgb(var(--color-accent-rgb)) 55%, white); }

@@ -15,3 +15,8 @@
 - [x] "seite ist insgesamt noch nicht sonderlich individuell. sieht sehr generisch/ai slop aus. muss noch optimiert werden" (2026-11-10) → Höhenlinien/Wegmarken-Motiv; Fortsetzung siehe Punkt unten (10.11.)
 - [x] "deploy ohne qa" (2026-11-10) → node deploy.js --ohne-qa, live
 - [x] "seite wirkt noch immer sehr generisch, baukasten mäßig. sie muss individueller, mutiger werden. darf auch interaktiver sein. mehr passende effekte" (2026-11-10) → wischbarer Nebel über Hero-Fotos (alle Seiten), asymmetrischer Start-Hero, Themen-Bühne zum Antippen, Versicherungs-Wegweiser, Weg-Pfad zeichnet sich, 40 von 100 Plätzen lösen sich auf, Team-Hover-Fokus. Teil-QA craft/copy/overflow grün, deployt. Hinweis: mehr als 2 Scroll-Effekte auf der Startseite (Niko-Wunsch nach mehr Effekten)
+
+## Feedback Niko 10.11.2026 (2)
+- [x] "nebel deaktivieren. super unpassend." (2026-11-10) → NebelWischen entfernt (Start + Unterseiten), deployt
+- [ ] "startseite ist extrem lang. hier sollte das wichtigste drauf. und nicht zugeschissen werden." (2026-11-10) → ERSTER SCHRITT: Villa, Versorgung, Lehre von der Startseite genommen (stehen auf Unterseiten), deployt. OFFEN: mit Referenz-Redesign Startseite auf das Wichtigste neu komponieren
+- [ ] "schau bitte nochmals nach anderen psychotherapie praxen seiten, gern große, bekannte.. die wert auf gute seiten legen. orientiere dich dort am design. wir müssen besser werden. die seite wirkt noch sehr baukastenmäßig" (2026-11-10) → OFFEN (neue Sitzung): große Psychotherapie-/Mental-Health-Seiten recherchieren (z. B. Praxen, Kliniken, Plattformen mit preisgekröntem Design), 3 Referenzen auswählen, Design danach neu ausrichten, Baukasten-Muster (gleichförmige Sektionen, Karten-Stapel) ablösen
