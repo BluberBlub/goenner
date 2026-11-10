@@ -41,19 +41,21 @@ const nr = (i: number) => String(i + 1).padStart(2, '0');
 
     <div class="lg:col-span-5">
       <div class="thema-tafel rounded-karte lg:sticky lg:top-28" aria-live="polite">
+        <div class="thema-stapel">
         {schwerpunkte.map((s, i) => (
-          <article id={`thema-${i}`} class="thema-inhalt" data-aktiv={i === 0 ? '' : undefined} hidden={i !== 0}>
+          <article id={`thema-${i}`} class="thema-inhalt" data-aktiv={i === 0 ? '' : undefined} aria-hidden={i !== 0 ? 'true' : undefined}>
             <p class="etikett text-accent">{nr(i)} / {schwerpunkte.length}</p>
             <h3 class="mt-4 text-[1.7rem] leading-[1.2] sm:text-[2.1rem]">{s.titel}</h3>
             <p class="mt-4 text-lg leading-relaxed opacity-90">{s.text}</p>
           </article>
         ))}
-        <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/15 pt-6">
-          <a href="/behandlung/therapie-und-schwerpunkte/#schwerpunkte" class="inline-flex items-center gap-2 font-semibold underline decoration-accent decoration-2 underline-offset-[6px]">
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3 border-t border-white/15 pt-6">
+          <a href="/behandlung/therapie-und-schwerpunkte/#schwerpunkte" class="knopf knopf-hell">
             Therapie und Schwerpunkte
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="/behandlung/therapie-und-schwerpunkte/#gruppen" class="inline-flex items-center gap-2 font-semibold underline decoration-accent decoration-2 underline-offset-[6px]">
+          <a href="/behandlung/therapie-und-schwerpunkte/#gruppen" class="knopf knopf-rand-hell">
             Offene Gruppe für Zwänge
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -71,8 +73,8 @@ const nr = (i: number) => String(i + 1).padStart(2, '0');
     const zeige = (n: number) => {
       knoepfe.forEach((k, i) => k.setAttribute('aria-pressed', String(i === n)));
       inhalte.forEach((el, i) => {
-        if (i === n) { el.hidden = false; el.setAttribute('data-aktiv', ''); el.classList.remove('thema-neu'); void el.offsetWidth; el.classList.add('thema-neu'); }
-        else { el.hidden = true; el.removeAttribute('data-aktiv'); }
+        if (i === n) { el.removeAttribute('aria-hidden'); el.setAttribute('data-aktiv', ''); el.classList.remove('thema-neu'); void el.offsetWidth; el.classList.add('thema-neu'); }
+        else { el.setAttribute('aria-hidden', 'true'); el.removeAttribute('data-aktiv'); el.classList.remove('thema-neu'); }
       });
     };
     const fein = matchMedia('(hover: hover) and (pointer: fine)').matches;

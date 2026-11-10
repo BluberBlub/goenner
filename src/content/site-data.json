@@ -3,7 +3,7 @@
     "firmenname": "Praxis Dr. Sascha Gönner",
     "firmennameLang": "Praxis für Psychotherapie und Verhaltenstherapie Dr. Sascha Gönner",
     "kundenname": "Praxis für Psychotherapie Dr. Sascha Gönner",
-    "kurzbeschreibung": "Verhaltenstherapie für Erwachsene mitten in Ravensburg: Einzel- und Gruppentherapie, Supervision und staatlich anerkannte Lehrpraxis in der Karlstraße 8.",
+    "kurzbeschreibung": "Verhaltenstherapie für Erwachsene mitten in Ravensburg: Einzel- und Gruppentherapie, Supervision und eine staatlich anerkannte Lehrpraxis unter einem Dach.",
     "branche": "Psychotherapie, Verhaltenstherapie, Supervision",
     "ort": "Ravensburg",
     "region": "Ravensburg und Oberschwaben",
@@ -115,7 +115,7 @@
       }
     },
     {
-      "label": "Team",
+      "label": "Über uns",
       "href": "/team/"
     },
     {
@@ -181,6 +181,8 @@
   "umbruch": {
     "trennstellen": [
       "Psycho|therapie",
+      "Verlust|ängste",
+      "Arbeits|schwerpunkte",
       "Psycho|therapeut",
       "Psycho|therapeutin",
       "Psycho|therapeuten",
@@ -287,7 +289,7 @@
             "href": "/"
           },
           {
-            "label": "Team",
+            "label": "Über uns",
             "href": "/team/"
           },
           {

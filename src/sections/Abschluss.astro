@@ -14,7 +14,7 @@ const route = `https://www.google.com/maps/dir/?api=1&destination=${encodeURICom
 const standard: Weg[] = [
   { titel: 'Formular ausfüllen', text: 'Mit Ihrem Versicherungsstatus. Wir melden uns, sobald wir ein Vorgespräch anbieten können.', href: '/kontakt/', link: 'Zum Formular' },
   { titel: 'Donnerstags anrufen', text: 'Telefonische Sprechzeit 13:00–14:00 Uhr unter 0751 9771973-0.', href: 'tel:+4975197719730', link: 'Jetzt anrufen' },
-  { titel: 'Karlstraße 8', text: 'Hochparterre der Jugendstilvilla, fünf Gehminuten vom Bahnhof.', href: route, link: 'Route planen' },
+  { titel: 'Karlstraße 8', text: 'Mitten in Ravensburg, fünf Gehminuten vom Bahnhof.', href: route, link: 'Route planen' },
 ];
 const { titel, text, buttonText = 'Therapieplatz anfragen', buttonHref = '/kontakt/', etikett = 'Ihr nächster Schritt', wege = standard } = Astro.props;
 const extern = (h?: string) => !!h && /^https?:/.test(h);
@@ -52,7 +52,7 @@ const extern = (h?: string) => !!h && /^https?:/.test(h);
               <p class="font-display text-[1.45rem] leading-snug text-secondary">{w.titel}</p>
               <p class="mt-1.5 leading-relaxed text-on-accent [overflow-wrap:anywhere]" set:html={w.text} />
               {w.href && w.link && (
-                <a href={w.href} target={extern(w.href) ? '_blank' : undefined} rel={extern(w.href) ? 'noopener' : undefined} class="link-pfeil link-tief mt-3 text-[.95rem]">
+                <a href={w.href} target={extern(w.href) ? '_blank' : undefined} rel={extern(w.href) ? 'noopener' : undefined} class="knopf knopf-rand-tief mt-4">
                   {w.link}
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </a>

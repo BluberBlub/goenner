@@ -8,25 +8,19 @@ const alle = [...approbiert, ...inAusbildung];
 ---
 <Section variant="standard" bg="base">
   <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-    <div class="lg:col-span-6">
+    <div class="lg:col-span-8">
       <SektionsKopf
         eyebrow="Therapieteam"
         titel="Vierzehn Menschen, ein Haus."
-        text="Zehn approbierte Psychologische Psychotherapeutinnen und Psychotherapeuten mit Fachkunde in Verhaltenstherapie, dazu vier Psychologinnen und Psychologen in psychotherapeutischer Ausbildung."
+        text="Zehn approbierte Psychologische Psychotherapeutinnen und Psychotherapeuten mit Fachkunde in Verhaltenstherapie, dazu vier Psychologinnen und Psychologen in psychotherapeutischer Ausbildung. Alle bilden sich regelmäßig in internen und externen Fortbildungen und Intervisionen fort."
       >
         <Fragment slot="aktionen">
-          <a href="/team/" class="link-pfeil">
+          <a href="/team/" class="knopf knopf-voll self-start">
             Das ganze Team kennenlernen
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </Fragment>
       </SektionsKopf>
-    </div>
-    <div class="self-end lg:col-span-4 lg:col-start-9">
-      <p class="randnotiz">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        <span>Alle bilden sich regelmäßig in internen und externen <mark>Fortbildungen und Intervisionen</mark> fort.</span>
-      </p>
     </div>
     <ul class="team-raster grid grid-cols-2 min-[380px]:grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-5 sm:gap-x-4 lg:col-span-12 lg:grid-cols-7 lg:gap-x-5">
       {alle.map((p) => (

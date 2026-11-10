@@ -76,6 +76,8 @@
 .knopf-hell:hover { background: #fff; }
 .knopf-tief { background: var(--color-secondary); color: rgb(var(--color-on-secondary-rgb)); }
 .knopf-tief:hover { background: #172810; }
+.knopf-rand-tief { border: 1px solid var(--color-secondary); color: var(--color-secondary); }
+.knopf-rand-tief:hover { background: var(--color-secondary); color: rgb(var(--color-on-secondary-rgb)); }
 .knopf-rand-hell { border: 1px solid rgb(255 255 255 / .55); color: #fff; }
 .knopf-rand-hell:hover { background: rgb(255 255 255 / .1); }
 
@@ -151,9 +153,13 @@ footer .font-display em, footer em { color: color-mix(in srgb, rgb(var(--color-a
 .thema-nr { font-family: var(--font-body, sans-serif); font-size: .72rem; letter-spacing: .1em; font-weight: 600; color: rgb(var(--color-accent-rgb)); opacity: .8; transform: translateY(-1.1em); }
 .thema:hover, .thema:focus-visible { color: rgb(var(--color-on-primary-rgb)); }
 .thema[aria-pressed="true"] { color: rgb(var(--color-on-primary-rgb)); text-decoration: underline; text-decoration-color: rgb(var(--color-accent-rgb)); text-decoration-thickness: 2px; text-underline-offset: .22em; }
-.thema-tafel { padding: 2rem; background: rgb(255 255 255 / .05); border: 1px solid rgb(255 255 255 / .14); min-height: 22rem; display: flex; flex-direction: column; }
+.thema-tafel { padding: 1.4rem; background: rgb(255 255 255 / .05); border: 1px solid rgb(255 255 255 / .14); min-height: 22rem; display: flex; flex-direction: column; }
 @media (min-width: 640px) { .thema-tafel { padding: 2.75rem; } }
-.thema-tafel > article { flex: 1; }
+.thema-stapel { flex: 1; display: grid; }
+/* Alle Themen liegen übereinander in einer Zelle: die Tafel ist so hoch wie der längste Text und
+   ändert beim Überfahren ihre Höhe nicht mehr (Niko 10.11. (4): "die ganze Seite zittert"). */
+.thema-stapel > .thema-inhalt { grid-area: 1 / 1; }
+.thema-stapel > .thema-inhalt:not([data-aktiv]) { visibility: hidden; }
 .thema-neu { animation: klaren .55s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes klaren { from { filter: blur(8px); opacity: 0; transform: translateY(6px); } to { filter: blur(0); opacity: 1; transform: none; } }
 @supports (animation-timeline: view()) {
@@ -254,13 +260,14 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
 
 /* Sticky-Kontakt (Niko 10.11. (3): "wirkt noch sehr uneinladend"): statt Limetten-Pille mit Amtston eine ruhige
    weiße Karte, Gesprächssymbol im grünen Kreis, Frage in normaler Schrift. Override von außen, Kit bleibt unverändert. */
+/* Runde 4 (Niko: "noch etwas unsichtbar"): Waldgrün statt Weiß, Symbol im Limettenkreis, deutlicher Schatten. */
 #sticky-contact a.bg-accent {
-  background: #fff; color: rgb(var(--color-text-rgb)); border: 1px solid rgb(var(--color-primary-rgb) / .14);
-  padding: .55rem 1.4rem .55rem .55rem; gap: .9rem; border-radius: 999px;
-  box-shadow: 0 18px 40px -18px rgb(var(--color-secondary-rgb) / .45), 0 2px 6px rgb(var(--color-secondary-rgb) / .08);
-  transition: transform .25s ease, box-shadow .25s ease;
+  background: rgb(var(--color-primary-rgb)); color: rgb(var(--color-on-primary-rgb)); border: 1px solid rgb(var(--color-accent-rgb) / .45);
+  padding: .55rem 1.5rem .55rem .55rem; gap: .9rem; border-radius: 999px;
+  box-shadow: 0 20px 44px -14px rgb(var(--color-secondary-rgb) / .6), 0 3px 8px rgb(var(--color-secondary-rgb) / .18);
+  transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
 }
-#sticky-contact a.bg-accent:hover { transform: translateY(-2px); box-shadow: 0 24px 48px -18px rgb(var(--color-secondary-rgb) / .55); }
-#sticky-contact a.bg-accent > svg { width: 2.9rem; height: 2.9rem; padding: .72rem; border-radius: 999px; background: rgb(var(--color-primary-rgb)); color: #fff; }
-#sticky-contact a.bg-accent .opacity-70 { opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .85rem; color: rgb(var(--color-text-rgb) / .7); }
-#sticky-contact a.bg-accent > span > span:last-child { font-family: var(--font-display, inherit); font-size: 1.08rem; color: rgb(var(--color-primary-rgb)); }
+#sticky-contact a.bg-accent:hover { transform: translateY(-2px); background: rgb(var(--color-secondary-rgb)); }
+#sticky-contact a.bg-accent > svg { width: 2.9rem; height: 2.9rem; padding: .72rem; border-radius: 999px; background: rgb(var(--color-accent-rgb)); color: rgb(var(--color-secondary-rgb)); }
+#sticky-contact a.bg-accent .opacity-70 { opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .85rem; color: rgb(var(--color-on-primary-rgb) / .8); }
+#sticky-contact a.bg-accent > span > span:last-child { font-family: var(--font-display, inherit); font-size: 1.12rem; color: rgb(var(--color-on-primary-rgb)); }

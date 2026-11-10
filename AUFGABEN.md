@@ -33,3 +33,17 @@
 - [x] "kontakt formular ist optisch unschön" (2026-11-10) → erledigt: ruhige Felder, Versicherung/Anliegen als Auswahl-Chips, flache weiße Karte
 - [x] "sicherstellen dass alles dsgvo konform gestaltet ist auf der seite. texte, cookiebanner etc." (2026-11-10) → Maps nur über KarteLaden nach Einwilligung, externeInhalte gesetzt (Banner + Footer "Cookie-Einstellungen"), Datenschutz um Maps/TDDDG ergänzt, Formular-Checkbox required
 - [x] "sticky contact wirkt noch sehr uneinladend." (2026-11-10) → weiße Karte, Gesprächssymbol im grünen Kreis, "Sie möchten mit uns sprechen?" (CSS-Override, Kit-Vorschlag notiert)
+
+## Feedback 10.11. (4)
+- [x] "nutze die bilder aus transfer auf der homepage. vllt können wir eins für den startseiten hero verwenden" (2026-11-10) → Zweig = Start-Hero, Fensterlicht/Vertäfelung in "Ihr Weg zu uns"
+- [x] "sektion Behandlungsschwerpunkte wenn ich über punkte hovere wackelt das bild. höhen verändern sich, die ganze seite zittert" (2026-11-10) → alle Thementexte in einer Zelle gestapelt, Tafelhöhe fest (Test: Höhe beim Hovern konstant)
+- [x] "mach buttons statt text links. sonst geht das unter." (2026-11-10) → alle Pfeil-Textlinks sind jetzt Buttons
+- [x] "teilweise steht in sektionen re texte mit einem pfeil icon davor.. verwirrend ... re aufeinmal nochmals text? der geht unter.. keine gute ux" (2026-11-10) → Randnotizen (Team, Weg, Stellen) in den Text links übernommen, rechts nichts mehr
+- [x] "bilder laden extrem langsam auf der seite. extrem." (2026-11-10) → Hero-Bilder wurden doppelt geladen (Vorladen mit falschen Größen), Team-Fotos 400px-Varianten, JPGs bis 3,8 MB verkleinert
+- [x] "Hochparterre der Jugendstilvilla interessiert doch kein schwein" + "Lage Hochparterre - raus" (2026-11-10) → überall entfernt, im CONTENT-INVENTAR dokumentiert
+- [x] "hero bild startseite und behandlung sind identisch, sollte nicht sein." (2026-11-10) → Start: Zweig, Behandlung: Gruppenraum
+- [x] "aus team wird über uns" (2026-11-10) → Navigation, Footer, 404, Team-Seite (URL /team/ bleibt)
+- [x] "sticky contact ist noch etwas unsichtbar" (2026-11-10) → Waldgrün mit Limettenkreis und deutlichem Schatten
+- [ ] "https://github.com/BluberBlub/goenner git push" (2026-11-10)
+- [x] "footer Karlstraße 8. steht allein in einer eigenen zeile. das muss nicht sein." (2026-11-10) → Kurzbeschreibung ohne Adresse (steht in der Kontaktspalte)
+

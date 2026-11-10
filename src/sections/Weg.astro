@@ -4,6 +4,7 @@
 // jede Marke füllt sich, sobald der Pfad sie erreicht. Botschaft: Der Weg wird Schritt für Schritt sichtbar.
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
+import Foto from '../components/Foto.astro';
 
 interface Props { kompakt?: boolean }
 const { kompakt = false } = Astro.props;
@@ -17,14 +18,16 @@ const schritte = [
 ---
 <Section variant="standard" bg="base">
   <div class="relative">
-    <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <SektionsKopf eyebrow="Ablauf" titel="Ihr Weg zu uns, in vier Schritten." groesse="mittel" class="!mb-0" />
+    <div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-8">
+      <div class="lg:col-span-6">
+        <SektionsKopf eyebrow="Ablauf" titel="Ihr Weg zu uns, in vier Schritten." groesse="mittel" class="!mb-0"
+          text="Gesetzlich Versicherte bringen zum ersten Termin nur ihre Versichertenkarte mit, dazu vorhandene Arzt- oder Klinikberichte." />
       </div>
-      <p class="randnotiz self-end lg:col-span-4 lg:col-start-9">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        <span>Gesetzlich Versicherte bringen zum ersten Termin nur ihre <mark>Versichertenkarte</mark> mit, dazu vorhandene Arzt- oder Klinikberichte.</span>
-      </p>
+      {!kompakt && (
+        <div class="overflow-hidden rounded-karte lg:col-span-5 lg:col-start-8">
+          <Foto name="fensterlicht-vertaefelung" sizes="(min-width: 1024px) 520px, 100vw" pos="50% 45%" dekorativ class="block aspect-[16/10] w-full" />
+        </div>
+      )}
     </div>
     <div class="weg-pfad relative mt-10 hidden h-20 lg:mt-14 lg:block" aria-hidden="true">
       <svg class="absolute inset-0 h-full w-full overflow-visible text-primary" viewBox="0 0 1000 80" preserveAspectRatio="none" fill="none">
@@ -43,7 +46,7 @@ const schritte = [
       ))}
     </ol>
     {!kompakt && (
-      <a href="/behandlung/ablauf-und-kosten/" class="link-pfeil mt-4">
+      <a href="/behandlung/ablauf-und-kosten/" class="knopf knopf-rand self-start mt-4">
         Ablauf und Kosten ausführlich
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>

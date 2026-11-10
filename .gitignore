@@ -68,3 +68,6 @@ deploy.js.alt
 # Autopilot (automatisch ergänzt)
 .qa-berichte/
 .claude/.kontext-gemeldet
+
+# Rohbilder vom Kunden (optimierte Fassungen liegen in public/images)
+transfer/

@@ -180,3 +180,6 @@ Vergessen ist kein Status. Prüfung: node qa-relaunch.js
 - [x] picture-1600-18.jpg übernommen
 - [x] picture-1600-19.jpg übernommen
 - [x] picture-1600-20.jpg übernommen
+
+## Bewusst weggelassen
+- "Die Praxis befindet sich im Hochparterre" (Praxis/Anfahrt): auf Wunsch von Niko entfernt (10.11.2026: "interessiert doch kein schwein", "Lage Hochparterre - raus").

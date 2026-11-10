@@ -10,6 +10,8 @@ export const bilder = {
   'kunst-frida': { w: 925, h: 1579, v: true, a: true, alt: 'Gemälde von Michaela Zollmann mit einem Frauenportrait nach Frida Kahlo neben einem Regal' },
   'kunst-ausstellung-zollmann': { w: 1600, h: 1693, v: true, a: true, alt: 'Zwei Personen stehen im Wartebereich vor einem großen Gemälde von Michaela Zollmann' },
   'kunst-spiegel': { w: 1600, h: 2356, v: true, a: true, alt: 'Großformatiges Gemälde mit Frauenfigur, daneben ein Spiegel und orangefarbene Hocker' },
+  'zweig-im-licht': { w: 1600, h: 1195, v: true, a: true, alt: 'Junger Zweig mit hellgrünen Blättern im weichen Gegenlicht' },
+  'fensterlicht-vertaefelung': { w: 1600, h: 1195, v: true, a: true, alt: 'Fensterlicht fällt auf eine helle Wand über alter Holzvertäfelung' },
 } as const;
 
 export type BildName = keyof typeof bilder;

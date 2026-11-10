@@ -30,7 +30,7 @@ const { eintraege } = Astro.props;
                 {e.punkte.map((p) => <li class="!py-3 leading-snug" set:html={p} />)}
               </ul>
             )}
-            <a href={e.href} class="link-pfeil mt-8">
+            <a href={e.href} class="knopf knopf-rand self-start mt-8">
               {e.link}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>

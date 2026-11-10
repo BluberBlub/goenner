@@ -64,7 +64,7 @@ const wege = [
             <span class="sicht-balken"><i></i><i></i><i></i></span>
           </div>
           <p class="mt-6 text-lg leading-relaxed text-text/80">{w.text}</p>
-          <a href={w.link.href} class="link-pfeil mt-auto pt-8">{w.link.text} <Fragment set:html={pfeil} /></a>
+          <div class="mt-auto pt-8"><a href={w.link.href} class="knopf knopf-rand">{w.link.text} <Fragment set:html={pfeil} /></a></div>
         </article>
       ))}
     </div>
