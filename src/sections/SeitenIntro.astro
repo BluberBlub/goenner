@@ -1,21 +1,28 @@
 ---
-// Einheitliche Intro-Karte aller Unterseiten: eine Nebelkarte direkt unter dem Hero
-// und verbindet ihn mit dem Inhalt. Links worum es geht, rechts versetzt "Auf einen Blick".
+// Einheitlicher Einstieg aller Unterseiten (Redesign 10.11. (3), Niko: "Intro-Sektion wirkt lieblos in diesem Block").
+// Keine blasse Box mehr, sondern offen gesetzt wie bei Two Chairs: oben Eyebrow und Titel über die volle Breite,
+// darunter gemeinsam startend links die Einleitung in großer Schrift, rechts "Auf einen Blick" als weiße
+// Karte mit grüner Oberkante. Die Nachbarspalte beginnt so nie auf Höhe der Headline.
+import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
 
 interface Props { eyebrow: string; titel: string; text: string; fakten?: { k: string; v: string }[] }
 const { eyebrow, titel, text, fakten = [] } = Astro.props;
 ---
-<section class="relative z-10 pt-10 sm:pt-14">
+<Section variant="kompakt" class="seiten-intro">
   <div class="container">
-    <div class="nebel nebel-karte grid gap-10 bg-background px-6 py-10 sm:px-10 sm:py-14 lg:grid-cols-12 lg:gap-8 lg:px-14">
-      <div class="lg:col-span-7">
-        <SektionsKopf eyebrow={eyebrow} titel={titel} text={text} groesse="mittel" class="!mb-0"><slot /></SektionsKopf>
+    <SektionsKopf eyebrow={eyebrow} titel={titel} groesse="mittel" class="!mb-0 max-w-4xl" />
+    <div class="mt-10 grid gap-10 border-t border-primary/15 pt-10 lg:mt-12 lg:grid-cols-12 lg:gap-8 lg:pt-12">
+      <div class:list={[fakten.length > 0 ? 'lg:col-span-7' : 'lg:col-span-9']}>
+        <p data-lead class="text-xl leading-relaxed text-text sm:text-[1.4rem] sm:leading-[1.6]" set:html={text} />
+        {Astro.slots.has('default') && <div class="intro-mehr mt-6 space-y-4 text-lg leading-relaxed text-text/85"><slot /></div>}
       </div>
       {fakten.length > 0 && (
-        <aside class="self-start lg:col-span-4 lg:col-start-9 lg:mt-24" aria-label="Auf einen Blick">
-          <p class="etikett text-primary">Auf einen Blick</p>
-          <dl class="fakten mt-3">
+        <aside class="self-start rounded-karte border border-primary/10 border-t-4 border-t-primary bg-white px-6 py-6 sm:px-8 lg:col-span-4 lg:col-start-9" aria-label="Auf einen Blick">
+          <p class="etikett flex items-center gap-3 text-primary">
+            <span class="w-6 border-t border-accent" aria-hidden="true"></span>Auf einen Blick
+          </p>
+          <dl class="fakten intro-fakten mt-4">
             {fakten.map((f) => (
               <div>
                 <dt class="text-sm text-text/65">{f.k}</dt>
@@ -27,4 +34,4 @@ const { eyebrow, titel, text, fakten = [] } = Astro.props;
       )}
     </div>
   </div>
-</section>
+</Section>

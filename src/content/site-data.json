@@ -165,9 +165,9 @@
     }
   ],
   "sticky": {
-    "zeile": "Anmeldung über das Formular",
+    "zeile": "Sie möchten mit uns sprechen?",
     "titel": "Therapieplatz anfragen",
-    "icon": "kalender",
+    "icon": "chat",
     "href": "/kontakt/"
   },
   "tonalitaet": {
@@ -175,7 +175,9 @@
     "perspektive": "wir",
     "stil": "ruhig, klar, fachlich genau, ehrlich auch bei Grenzen, ohne Floskeln und ohne Heilsversprechen"
   },
-  "externeInhalte": [],
+  "externeInhalte": [
+    "Google Maps"
+  ],
   "umbruch": {
     "trennstellen": [
       "Psycho|therapie",
@@ -254,7 +256,7 @@
     "kunst-im-wartezimmer-gemaelde-und-spiegel": "/images/kunst-spiegel.jpg"
   },
   "footer": {
-    "leitsatz": "Was diffus war, bekommt <em>Kontur</em>.",
+    "leitsatz": "Was diffus war, bekommt Kontur.",
     "spalten": [
       {
         "titel": "Behandlung",

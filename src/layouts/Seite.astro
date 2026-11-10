@@ -16,3 +16,20 @@ const { lcpName, lcpSizes = '100vw', ...props } = Astro.props;
   </Fragment>
   <slot />
 </BaseLayout>
+
+<script>
+  // Mega-Menü erst nach echter Mausbewegung (Niko 10.11. (3), Lösung wie Schwabenpflege): nach Klick und
+  // Neuladen steht der Cursor noch auf dem Menüpunkt, das Menü klappte sofort auf und verdeckte die Seite.
+  const html = document.documentElement;
+  let start: { x: number; y: number } | null = null;
+  const frei = () => html.classList.add('nav-bereit');
+  window.addEventListener('mousemove', (e) => {
+    if (html.classList.contains('nav-bereit')) return;
+    if (!start) { start = { x: e.clientX, y: e.clientY }; return; }
+    if (Math.hypot(e.clientX - start.x, e.clientY - start.y) >= 8) frei();
+  }, { passive: true });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Tab') frei(); });
+  document.querySelector('header')?.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) { html.classList.remove('nav-bereit'); start = null; (document.activeElement as HTMLElement | null)?.blur(); }
+  });
+</script>

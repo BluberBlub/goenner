@@ -16,20 +16,20 @@ const gruende = [
 <Seite
   title="Stellenangebote Psychotherapie Ravensburg | Praxis Dr. Gönner"
   description="Offene Stellen in der Praxis Dr. Sascha Gönner in Ravensburg: Psychologische Psychotherapeutin oder Psychotherapeut (w/m/d) mit Fachkunde Verhaltenstherapie, unbefristet, Teilzeit möglich."
-  lcpBild="/images/therapieraum-gruppe.jpg"
+  lcpBild="/images/therapieraum-sessel.jpg"
   lcpVarianten
 >
   <SeitenHero
     pfad={[{ label: 'Fachliches', href: '/fachliches/' }]}
     eyebrow="Stellenangebote"
-    title="Arbeiten in der <em>Villa</em>."
+    title="Arbeiten in der Villa."
     subtitle="Offene Stellen in unserer Praxis für Verhaltenstherapie mitten in Ravensburg."
-    image="/images/therapieraum-gruppe.jpg"
+    image="/images/therapieraum-sessel.jpg"
     imagePosition="50% 60%"
   />
 
   <Section variant="standard" bg="base">
-    <SektionsKopf eyebrow={`${stellen.length === 1 ? 'Eine offene Stelle' : `${stellen.length} offene Stellen`}`} titel="Wen wir <em>suchen</em>." />
+    <SektionsKopf eyebrow={`${stellen.length === 1 ? 'Eine offene Stelle' : `${stellen.length} offene Stellen`}`} titel="Wen wir suchen." />
     <ul class="space-y-6">
       {stellen.map((s) => (
         <li>
@@ -63,7 +63,7 @@ const gruende = [
         </div>
       </div>
       <div class="lg:col-span-6 lg:col-start-7 lg:self-center">
-        <SektionsKopf eyebrow="Warum bei uns" titel="Gute Bedingungen für <em>gute</em> Therapie." groesse="mittel" />
+        <SektionsKopf eyebrow="Warum bei uns" titel="Gute Bedingungen für gute Therapie." groesse="mittel" />
         <ol>
           {gruende.map((g, i) => (
             <li class="grid grid-cols-[3rem_1fr] gap-4 border-t border-primary/15 py-6" data-reveal>
@@ -81,7 +81,7 @@ const gruende = [
 
   <Abschluss
     etikett="Bewerbung"
-    titel="Wir freuen uns auf Ihre <em>Bewerbung</em>."
+    titel="Wir freuen uns auf Ihre Bewerbung."
     text="Gern per E-Mail oder Post. Fragen zur Stelle beantworten wir vorab persönlich."
     buttonText="Bewerbung per E-Mail"
     buttonHref="mailto:praxis@drgoenner.de?subject=Bewerbung"

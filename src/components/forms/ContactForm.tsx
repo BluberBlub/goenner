@@ -28,9 +28,11 @@ const schema = z.object({
 type Daten = z.infer<typeof schema>;
 type Status = 'bereit' | 'sendet' | 'ok' | 'fehler';
 
-const feld = 'w-full rounded-karte border border-primary/25 bg-background px-4 py-3.5 text-base text-text placeholder:text-text/45 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15';
-const label = 'mb-1.5 block text-sm font-semibold text-primary';
+const feld = 'w-full rounded-knopf border border-text/15 bg-white px-4 py-3.5 text-base text-text placeholder:text-text/45 transition hover:border-text/30 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10';
+const label = 'mb-2 block text-[0.95rem] font-medium text-text';
 const fehlerText = 'mt-1.5 text-sm font-semibold text-primary';
+const chip = 'flex cursor-pointer items-center gap-3 rounded-knopf border border-text/15 bg-white px-4 py-3 text-[0.95rem] leading-snug text-text transition hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-primary/20';
+const punkt = 'grid h-4 w-4 shrink-0 place-items-center rounded-full border border-current opacity-70';
 
 const honeypot = (reg: UseFormRegisterReturn) => (
   <div className="hidden" aria-hidden="true">
@@ -94,23 +96,29 @@ export default function ContactForm() {
         <input id="kf-email" type="email" autoComplete="email" className={feld} aria-invalid={!!errors.email} {...register('email')} />
         {errors.email && <p className={fehlerText} role="alert">{errors.email.message}</p>}
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="kf-versicherung" className={label}>Versicherungsstatus (wichtig für die Einordnung)</label>
-          <select id="kf-versicherung" className={feld} defaultValue="" aria-invalid={!!errors.versicherung} {...register('versicherung')}>
-            <option value="">Bitte wählen</option>
-            {VERSICHERUNG.map((v) => <option key={v} value={v}>{v}</option>)}
-          </select>
-          {errors.versicherung && <p className={fehlerText} role="alert">{errors.versicherung.message}</p>}
+      <fieldset>
+        <legend className={label}>Wie sind Sie versichert? <span className="font-normal text-text/60">(wichtig für die Einordnung)</span></legend>
+        <div className="grid gap-2.5 sm:grid-cols-2">
+          {VERSICHERUNG.map((v) => (
+            <label key={v} className={chip}>
+              <input type="radio" value={v} className="sr-only" {...register('versicherung')} />
+              <span className={punkt} aria-hidden="true" />
+              <span>{v}</span>
+            </label>
+          ))}
         </div>
-        <div>
-          <label htmlFor="kf-anliegen" className={label}>Worum geht es?</label>
-          <select id="kf-anliegen" className={feld} defaultValue="" {...register('anliegen')}>
-            <option value="">Bitte wählen</option>
-            {ANLIEGEN.map((a) => <option key={a} value={a}>{a}</option>)}
-          </select>
+      </fieldset>
+      <fieldset>
+        <legend className={label}>Worum geht es?</legend>
+        <div className="flex flex-wrap gap-2.5">
+          {ANLIEGEN.map((a) => (
+            <label key={a} className={chip + ' py-2.5'}>
+              <input type="radio" value={a} className="sr-only" {...register('anliegen')} />
+              <span>{a}</span>
+            </label>
+          ))}
         </div>
-      </div>
+      </fieldset>
       <div>
         <label htmlFor="kf-message" className={label}>Ihre Nachricht *</label>
         <textarea id="kf-message" rows={6} className={feld} aria-invalid={!!errors.message}
@@ -123,7 +131,7 @@ export default function ContactForm() {
 
       <div>
         <label className="flex cursor-pointer items-start gap-3 text-sm text-text/80">
-          <input type="checkbox" required className="mt-0.5 h-5 w-5 shrink-0 accent-primary" aria-invalid={!!errors.dsgvo} {...register('dsgvo')} />
+          <input type="checkbox" required className="mt-0.5 h-5 w-5 shrink-0 rounded accent-primary" aria-invalid={!!errors.dsgvo} {...register('dsgvo')} />
           <span>Ich habe die <a href="/datenschutz/" className="font-semibold text-primary underline underline-offset-2">Datenschutzerklärung</a> gelesen und willige ein, dass meine Angaben, auch zu meiner Gesundheit, zur Bearbeitung meiner Anfrage verwendet werden. Die Einwilligung kann ich jederzeit widerrufen. *</span>
         </label>
         {errors.dsgvo && <p className={fehlerText} role="alert">{errors.dsgvo.message}</p>}

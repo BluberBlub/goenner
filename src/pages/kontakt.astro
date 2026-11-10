@@ -5,6 +5,7 @@ import SektionsKopf from '../components/SektionsKopf.astro';
 import KontaktKarte from '../components/KontaktKarte.astro';
 import ContactForm from '../components/forms/ContactForm.tsx';
 import KrisenHinweis from '../sections/KrisenHinweis.astro';
+import KarteLaden from '../components/KarteLaden.astro';
 ---
 <Seite
   title="Kontakt und Anmeldung | Psychotherapie Dr. Gönner"
@@ -15,7 +16,7 @@ import KrisenHinweis from '../sections/KrisenHinweis.astro';
       <div class="container grid gap-10 py-12 lg:grid-cols-12 lg:gap-8">
         <div class="lg:col-span-7">
           <p class="etikett flex items-center gap-3 text-primary"><span class="h-px w-8 bg-accent" aria-hidden="true"></span>Kontakt und Anmeldung</p>
-          <h1 class="mt-5 text-[2.5rem] leading-[1.15] sm:text-5xl lg:text-[3.8rem]">Schreiben Sie uns. Wir <em>antworten</em> ehrlich.</h1>
+          <h1 class="mt-5 text-[2.5rem] leading-[1.15] sm:text-5xl lg:text-[3.8rem]">Schreiben Sie uns. Wir antworten ehrlich.</h1>
           <p class="lead mt-6 max-w-2xl text-lg leading-relaxed text-text/80">
             Für einen Beratungs- oder Diagnostiktermin, eine Therapieanfrage oder ein anderes Anliegen nutzen Sie am besten unser Kontaktformular. Ein Vorgespräch und einen Wartelistenplatz bieten wir nur an, wenn wir zuversichtlich sind, Ihnen innerhalb von zwei Monaten auch einen Therapieplatz anbieten zu können.
           </p>
@@ -38,11 +39,12 @@ import KrisenHinweis from '../sections/KrisenHinweis.astro';
 
   <Section variant="standard" bg="base" id="formular" class="scroll-mt-20">
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-4">
-        <SektionsKopf eyebrow="Anmeldung" titel="Ihre <em>Anfrage</em>." text="Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten." groesse="mittel" />
+      <div class="lg:col-span-5">
+        <SektionsKopf eyebrow="Anmeldung" titel="Ihre Anfrage." text="Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten." groesse="mittel" />
+        <KarteLaden titel="Karte: Praxis Dr. Gönner, Karlstraße 8, Ravensburg" class="mt-8 lg:sticky lg:top-28" />
       </div>
       <div class="lg:col-span-7 lg:col-start-6">
-        <div class="rounded-karte bg-background p-6 shadow-2xl ring-1 ring-primary/10 sm:p-9">
+        <div class="rounded-karte border border-primary/15 bg-white p-6 sm:p-10">
           <ContactForm client:visible={{ rootMargin: '2500px' }} />
         </div>
       </div>
@@ -50,7 +52,7 @@ import KrisenHinweis from '../sections/KrisenHinweis.astro';
   </Section>
 
   <Section variant="standard" bg="tint">
-    <SektionsKopf eyebrow="Gut zu wissen" titel="Wie es nach Ihrer Anfrage <em>weitergeht</em>." />
+    <SektionsKopf eyebrow="Gut zu wissen" titel="Wie es nach Ihrer Anfrage weitergeht." />
     <div class="grid gap-6 lg:grid-cols-3 lg:gap-8">
       <article class="border-t border-primary/15 pt-6" data-reveal>
         <h3 class="text-[1.4rem] leading-snug">Vorgespräch</h3>
@@ -72,7 +74,7 @@ import KrisenHinweis from '../sections/KrisenHinweis.astro';
       <div class="lg:col-span-6">
         <SektionsKopf
           eyebrow="So finden Sie uns"
-          titel="Karlstraße 8, <em>Hochparterre</em>."
+          titel="Karlstraße 8, Hochparterre."
           text="Mitten in der Ravensburger Innenstadt, fünf Gehminuten vom Bahnhof. Mit dem Auto parken Sie am besten im direkt gegenüberliegenden Parkhaus P2 Untertor, Adlerstraße 39."
         />
       </div>

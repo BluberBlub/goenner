@@ -42,8 +42,8 @@ const extern = (h?: string) => !!h && /^https?:/.test(h);
         </div>
       </div>
       <ol class="abschluss-weg relative lg:col-span-5 lg:col-start-8">
-        <svg class="abschluss-pfad absolute left-[1.15rem] top-6 bottom-6 w-3 text-secondary" viewBox="0 0 12 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
-          <path d="M6 0 C10 20 2 30 6 50 S10 80 6 100" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1" vector-effect="non-scaling-stroke" />
+        <svg class="abschluss-pfad absolute left-[1.15rem] top-6 h-[calc(100%-3rem)] w-3 text-secondary" viewBox="0 0 12 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
+          <path d="M6 0 C10 20 2 30 6 50 S10 80 6 100" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1" />
         </svg>
         {wege.map((w, i) => (
           <li class="relative grid grid-cols-[2.5rem_1fr] gap-5 py-5">

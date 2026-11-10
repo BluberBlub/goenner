@@ -19,7 +19,7 @@ const schritte = [
   <div class="relative">
     <div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
-        <SektionsKopf eyebrow="Ablauf" titel="Ihr <em>Weg</em> zu uns, in vier Schritten." groesse="mittel" class="!mb-0" />
+        <SektionsKopf eyebrow="Ablauf" titel="Ihr Weg zu uns, in vier Schritten." groesse="mittel" class="!mb-0" />
       </div>
       <p class="randnotiz self-end lg:col-span-4 lg:col-start-9">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
@@ -29,7 +29,7 @@ const schritte = [
     <div class="weg-pfad relative mt-10 hidden h-20 lg:mt-14 lg:block" aria-hidden="true">
       <svg class="absolute inset-0 h-full w-full overflow-visible text-primary" viewBox="0 0 1000 80" preserveAspectRatio="none" fill="none">
         <path class="weg-spur" d="M0 40C62 8 188 72 250 40S438 8 500 40S688 72 750 40S938 8 1000 40" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="3 6" />
-        <path class="weg-linie" pathLength="1" d="M0 40C62 8 188 72 250 40S438 8 500 40S688 72 750 40S938 8 1000 40" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+        <path class="weg-linie" pathLength="1" d="M0 40C62 8 188 72 250 40S438 8 500 40S688 72 750 40S938 8 1000 40" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
       </svg>
       {schritte.map((s, i) => <span class="weg-punkt" style={`left:${i * 25}%;--i:${i}`}>{i + 1}</span>)}
     </div>

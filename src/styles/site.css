@@ -239,3 +239,28 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
 .link-tief { color: var(--color-secondary); text-decoration-color: var(--color-secondary); }
 .seiten-hero h1 em { color: color-mix(in srgb, rgb(var(--color-accent-rgb)) 60%, white); }
 .flaeche-licht h2 em { color: var(--color-secondary); }
+
+/* Mega-Menü/Dropdown (Niko 10.11. (3), wie Schwabenpflege): öffnet nur nach echter Mausbewegung
+   (Seite.astro setzt .nav-bereit) und mit kurzer Absicht-Verzögerung; Schließen sofort. */
+@media (min-width: 1024px) {
+  html:not(.nav-bereit) header .group > div.absolute { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+  header .group:hover > div.absolute { transition-delay: 140ms; }
+  html:not(.nav-bereit) header .group svg.group-hover\:rotate-180 { transform: none !important; }
+}
+
+/* Unterseiten-Einstieg: Fakten in der weißen Karte ohne Linie oben und unten */
+.intro-fakten > *:first-child { border-top: 0; padding-top: 0; }
+.intro-fakten > *:last-child { border-bottom: 0; padding-bottom: 0; }
+
+/* Sticky-Kontakt (Niko 10.11. (3): "wirkt noch sehr uneinladend"): statt Limetten-Pille mit Amtston eine ruhige
+   weiße Karte, Gesprächssymbol im grünen Kreis, Frage in normaler Schrift. Override von außen, Kit bleibt unverändert. */
+#sticky-contact a.bg-accent {
+  background: #fff; color: rgb(var(--color-text-rgb)); border: 1px solid rgb(var(--color-primary-rgb) / .14);
+  padding: .55rem 1.4rem .55rem .55rem; gap: .9rem; border-radius: 999px;
+  box-shadow: 0 18px 40px -18px rgb(var(--color-secondary-rgb) / .45), 0 2px 6px rgb(var(--color-secondary-rgb) / .08);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+#sticky-contact a.bg-accent:hover { transform: translateY(-2px); box-shadow: 0 24px 48px -18px rgb(var(--color-secondary-rgb) / .55); }
+#sticky-contact a.bg-accent > svg { width: 2.9rem; height: 2.9rem; padding: .72rem; border-radius: 999px; background: rgb(var(--color-primary-rgb)); color: #fff; }
+#sticky-contact a.bg-accent .opacity-70 { opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .85rem; color: rgb(var(--color-text-rgb) / .7); }
+#sticky-contact a.bg-accent > span > span:last-child { font-family: var(--font-display, inherit); font-size: 1.08rem; color: rgb(var(--color-primary-rgb)); }
