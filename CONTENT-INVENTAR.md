@@ -183,3 +183,4 @@ Vergessen ist kein Status. Prüfung: node qa-relaunch.js
 
 ## Bewusst weggelassen
 - "Die Praxis befindet sich im Hochparterre" (Praxis/Anfahrt): auf Wunsch von Niko entfernt (10.11.2026: "interessiert doch kein schwein", "Lage Hochparterre - raus").
+- "Jugendstilvilla" (Startseite, Praxis, Stellen): auf Wunsch von Niko entfernt (10.11.2026: "das interessiert niemanden").
