@@ -5,10 +5,10 @@
 // Alles im Hero steht sofort da (Kit-Regel), nur das Akzentwort stellt sich einmal scharf.
 import Foto from '../components/Foto.astro';
 ---
-<section data-hero class="relative grid min-h-[var(--hero-h)] grid-rows-[auto_1fr] bg-primary text-on-primary lg:h-[var(--hero-h)] lg:grid-cols-2 lg:grid-rows-1">
-  <div class="relative z-10 order-2 flex flex-col justify-center px-6 pb-10 pt-8 sm:px-12 sm:py-12 lg:order-none lg:py-10 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
+<section data-hero class="relative grid min-h-[var(--hero-h)] overflow-hidden bg-primary text-on-primary lg:h-[var(--hero-h)] lg:grid-cols-2 lg:grid-rows-1">
+  <div class="relative z-10 flex flex-col justify-end px-6 pb-10 pt-28 sm:px-12 sm:py-12 lg:justify-center lg:py-10 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
     <p class="etikett flex items-center gap-3 text-on-primary/80">
-      <span class="w-8 border-t border-accent" aria-hidden="true"></span>
+      <span class="w-8 shrink-0 border-t border-accent" aria-hidden="true"></span>
       Verhaltenstherapie in Ravensburg
     </p>
     <h1 class="hero-titel mt-5 text-[2.35rem] min-[380px]:text-[2.6rem] lg:mt-7 leading-[1.15] sm:text-[3.6rem] lg:text-[clamp(3.2rem,4.4vw,4.8rem)]">
@@ -30,9 +30,11 @@ import Foto from '../components/Foto.astro';
     </p>
   </div>
 
-  <div class="relative order-1 h-[26svh] min-h-[11rem] lg:order-none lg:h-auto lg:min-h-0">
+  <!-- Mobil: Bild als Hintergrund unter einer grünen Lasur, damit der Text sicher lesbar bleibt -->
+  <div class="absolute inset-0 lg:relative lg:inset-auto">
     <Foto name="zweig-im-licht" eager sizes="(min-width: 1024px) 50vw, 100vw" pos="58% 50%"
           class="absolute inset-0 block h-full w-full" />
+    <div class="hero-lasur absolute inset-0 lg:hidden" aria-hidden="true"></div>
   </div>
 
   <!-- Beginn der Weg-Linie: kleine Schleife in der freien Ecke unten, läuft nach unten aus dem Hero -->
