@@ -271,3 +271,8 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
 #sticky-contact a.bg-accent > svg { width: 2.9rem; height: 2.9rem; padding: .72rem; border-radius: 999px; background: rgb(var(--color-accent-rgb)); color: rgb(var(--color-secondary-rgb)); }
 #sticky-contact a.bg-accent .opacity-70 { opacity: 1; text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .85rem; color: rgb(var(--color-on-primary-rgb) / .8); }
 #sticky-contact a.bg-accent > span > span:last-child { font-family: var(--font-display, inherit); font-size: 1.12rem; color: rgb(var(--color-on-primary-rgb)); }
+
+/* Hero-Typo (Niko 10.11. (4): "Texte im Hero nicht ansprechend formatiert"): Titel ausgeglichen umbrechen,
+   kein einzelnes kurzes Wort in der letzten Zeile; Einleitung mit ruhigem Flatterrand. */
+.hero-titel { text-wrap: balance; letter-spacing: -0.012em; }
+.hero-lead, .seiten-hero [data-lead] { text-wrap: pretty; }

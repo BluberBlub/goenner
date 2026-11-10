@@ -47,3 +47,5 @@
 - [x] "https://github.com/BluberBlub/goenner git push" (2026-11-10) → origin = BluberBlub/goenner, master → main gepusht
 - [x] "footer Karlstraße 8. steht allein in einer eigenen zeile. das muss nicht sein." (2026-11-10) → Kurzbeschreibung ohne Adresse (steht in der Kontaktspalte)
 
+- [x] "texte im hero sind noch nicht sonderlich ansprechend formatiert. das darf besser werden" (2026-11-10) → Titel ausgeglichen (balance), Einleitung ein ruhiger Satz, Sprechzeit mit Haarlinie abgesetzt, Unterseiten text-wrap pretty
+- [x] "Ihr nächster Schritt cta bei 3 sollte der strich enden und nicht weiterfahren" (2026-11-10) → Linie wird von Kreis 1 bis Kreis 3 gemessen und endet dort

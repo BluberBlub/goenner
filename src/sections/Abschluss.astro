@@ -42,12 +42,12 @@ const extern = (h?: string) => !!h && /^https?:/.test(h);
         </div>
       </div>
       <ol class="abschluss-weg relative lg:col-span-5 lg:col-start-8">
-        <svg class="abschluss-pfad absolute left-[1.15rem] top-6 h-[calc(100%-3rem)] w-3 text-secondary" viewBox="0 0 12 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <svg class="abschluss-pfad absolute left-[1.15rem] top-6 h-[calc(100%-12rem)] w-3 text-secondary" viewBox="0 0 12 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
           <path d="M6 0 C10 20 2 30 6 50 S10 80 6 100" stroke="currentColor" stroke-width="2" stroke-linecap="round" pathLength="1" />
         </svg>
         {wege.map((w, i) => (
           <li class="relative grid grid-cols-[2.5rem_1fr] gap-5 py-5">
-            <span class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-secondary font-display text-lg text-on-secondary">{i + 1}</span>
+            <span data-marke class="relative z-10 grid h-10 w-10 place-items-center rounded-full bg-secondary font-display text-lg text-on-secondary">{i + 1}</span>
             <div>
               <p class="font-display text-[1.45rem] leading-snug text-secondary">{w.titel}</p>
               <p class="mt-1.5 leading-relaxed text-on-accent [overflow-wrap:anywhere]" set:html={w.text} />
@@ -64,3 +64,20 @@ const extern = (h?: string) => !!h && /^https?:/.test(h);
     </div>
   </div>
 </Section>
+
+<script>
+  // Linie läuft genau von Kreis 1 bis Kreis 3 und endet dort (Niko 10.11. (4)): Höhe nach den Kreisen messen.
+  document.querySelectorAll<HTMLElement>('.abschluss-weg').forEach((ol) => {
+    const pfad = ol.querySelector<SVGElement>('.abschluss-pfad');
+    const marken = ol.querySelectorAll<HTMLElement>('[data-marke]');
+    if (!pfad || marken.length < 2) return;
+    const setzen = () => {
+      const o = ol.getBoundingClientRect().top;
+      const mitte = (el: HTMLElement) => { const r = el.getBoundingClientRect(); return r.top + r.height / 2 - o; };
+      const a = mitte(marken[0]), b = mitte(marken[marken.length - 1]);
+      pfad.style.top = `${a}px`; pfad.style.height = `${b - a}px`;
+    };
+    setzen();
+    new ResizeObserver(setzen).observe(ol);
+  });
+</script>
