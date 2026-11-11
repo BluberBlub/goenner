@@ -55,3 +55,4 @@
 - [x] "Für alle Seiten so handhaben bitte" (Hero mobil: Bild als Hintergrund mit grüner Lasur, 2026-11-10)
 - [x] "weiß noch nicht, ob mich die headline vom hocker reist" (Start-Hero, 2026-11-10) → 11.11. neu vorgeschlagen: 1 "Es muss nicht so bleiben, wie es gerade ist." 2 "Wenn der Kopf nicht mehr zur Ruhe kommt." 3 "Klarheit beginnt mit einem ersten Gespräch." 4 "Der erste Schritt ist ein Anruf. Den Rest gehen wir gemeinsam." Niko wählt 3, umgesetzt und deployt
 - [x] "Einzel- und Gruppentherapie … könnte noch besser formatiert werden" (Start-Hero, 2026-11-11) → zwei Sinnzeilen, ausbalanciert, deployt
+- [x] "Ablauf sektion - das bild passt hier garnicht an dieser stelle" (Startseite, 2026-11-11) → Bild entfernt, deployt

@@ -4,7 +4,6 @@
 // jede Marke füllt sich, sobald der Pfad sie erreicht. Botschaft: Der Weg wird Schritt für Schritt sichtbar.
 import Section from '../components/Section.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
-import Foto from '../components/Foto.astro';
 
 interface Props { kompakt?: boolean }
 const { kompakt = false } = Astro.props;
@@ -23,11 +22,6 @@ const schritte = [
         <SektionsKopf eyebrow="Ablauf" titel="Ihr Weg zu uns, in vier Schritten." groesse="mittel" class="!mb-0"
           text="Gesetzlich Versicherte bringen zum ersten Termin nur ihre Versichertenkarte mit, dazu vorhandene Arzt- oder Klinikberichte." />
       </div>
-      {!kompakt && (
-        <div class="hidden overflow-hidden rounded-karte lg:col-span-5 lg:col-start-8 lg:block">
-          <Foto name="fensterlicht-vertaefelung" sizes="(min-width: 1024px) 520px, 100vw" pos="50% 45%" dekorativ class="block aspect-[16/10] w-full" />
-        </div>
-      )}
     </div>
     <div class="weg-pfad relative mt-10 hidden h-20 lg:mt-14 lg:block" aria-hidden="true">
       <svg class="absolute inset-0 h-full w-full overflow-visible text-primary" viewBox="0 0 1000 80" preserveAspectRatio="none" fill="none">
