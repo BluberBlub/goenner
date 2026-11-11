@@ -5,6 +5,7 @@
 import BaseLayout from './BaseLayout.astro';
 import { bilder, bildSet, type BildName } from '../data/bilder';
 import '../styles/site.css';
+import Leitlinie from '../components/Leitlinie.astro';
 
 interface Props { title: string; description: string; ogImage?: string; lcpName?: BildName; lcpSizes?: string; lcpBild?: string; lcpVarianten?: boolean; }
 const { lcpName: name, lcpSizes = '100vw', ...rest } = Astro.props;
@@ -22,6 +23,7 @@ const props = halbHero ? { ...rest, lcpBild: undefined, lcpVarianten: false } : 
     <slot name="head" />
   </Fragment>
   <slot />
+  <Leitlinie />
 </BaseLayout>
 
 <script>

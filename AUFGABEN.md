@@ -71,3 +71,8 @@
 - [x] Kontakt: Text "Bitte sprechen Sie Erstanfragen nicht auf unseren Anrufbeantworter. Weitere telefonische Erreichbarkeit … 07541 3739489." besser formatieren (2026-11-11) → 11.11.: Telefonkarte gegliedert (Sprechzeit, weitere Erreichbarkeit, Hinweis), neben dem Formular
 - [x] "Generell nochmals die texte visuell prüfen ob diese auch optisch ansprechend formatiert wurden - egal welches gerät/auflösung" (2026-11-11) → 11.11.: Start, Kontakt, Praxis, Team, Ablauf auf Desktop/Handy geprüft, Umbruch Dipl.-Psych. behoben
 - [x] "im vz transfer sind nochmals 2 weitere bilder gelandet, damit können wir praxis und kontakt noch verbessern" (2026-11-11) → 11.11.: Eichenzweig im Kontakt-Hero, Farn im Gegenlicht im Praxis-Hero
+- [x] "das mit den rundungen hat nicht ganz geklappt.. ich glaub ich wollte eher wellen.. sanft, was zum thema psychotherapie passt" (2026-11-11) → 11.11.: sanfte Wellenkanten (CSS-Maske) an Hero und Farbflächen statt Rundungen
+- [x] "kontaktformular ist unübersichtlich geworden mit den rundungunen. die texte sind zu groß, das ganze formular ist anstrengend. vllt etwas zum durchklicken? einfach machen.." (2026-11-11) → 11.11.: 3 Schritte (Anliegen, Versicherung per Klick, dann Kontakt), kleinere Schrift, weniger Rundung; QA-Formulartest klickt [data-weiter]
+- [x] "der grüne strich zieht sich noch nicht durch die seite. er darf gern animiert sein." (2026-11-11) → 11.11.: Leitlinie.astro: eine durchgehende Linie ab Hero-Schleife bis Footer, zeichnet sich beim Scrollen (ab 1024 px)
+- [x] Kontakt-Hero "Schreiben Sie uns. Wir antworten ehrlich.": "umbruch nach uns." (2026-11-11) → 11.11.: Umbruch nach „uns.“
+- [x] "linie durchbrochen" (Start-Hero, 2026-11-11) → 11.11.: Schleife endet über der Welle, Leitlinie setzt nahtlos an

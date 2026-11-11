@@ -310,12 +310,29 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
     transparent 52%);
 }
 
-/* Weichere Kanten (Niko 11.11.: "die sektionen haben teilweise zu harte kanten, mach sie weicher. runder").
-   Farbige Flächen schweben als abgerundete Tafeln mit schmalem Rand, Heros enden unten gerundet.
-   Botschaft: nichts Kantiges, alles ein wenig gehalten. */
-:root { --rund: clamp(1.25rem, 2.6vw, 2.5rem); --rand-flaeche: clamp(.5rem, 1.1vw, 1rem); }
-.hero-rund { border-bottom-left-radius: var(--rund); border-bottom-right-radius: var(--rund); }
+/* Sanfte Wellen statt harter Kanten (Niko 11.11.: "ich wollte eher wellen.. sanft, was zum thema psychotherapie passt").
+   Farbflächen beginnen und enden in einer ruhigen, langen Welle; die Heros laufen unten in einer Welle aus.
+   Botschaft: Gefühle kommen und gehen wie Wellen, nichts bricht abrupt ab. Umsetzung als Maske, Inhalt bleibt unberührt. */
+:root {
+  --welle-h: clamp(14px, 2vw, 30px);
+  --welle-oben: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15C200 0 400 0 600 15S1000 30 1200 15V30H0Z'/%3E%3C/svg%3E");
+  --welle-unten: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30' preserveAspectRatio='none'%3E%3Cpath d='M0 15C200 30 400 30 600 15S1000 0 1200 15V0H0Z'/%3E%3C/svg%3E");
+  --welle-breite: clamp(900px, 110vw, 1800px);
+}
+.hero-rund {
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--welle-h) + 1px) no-repeat, var(--welle-unten) bottom / var(--welle-breite) var(--welle-h) repeat-x;
+          mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--welle-h) + 1px) no-repeat, var(--welle-unten) bottom / var(--welle-breite) var(--welle-h) repeat-x;
+}
 main > section.flaeche-tief, main > section.flaeche-licht, main > section.nebel-zart,
 main > section.bg-primary\/5, main > section.bg-primary:not([data-hero]) {
-  border-radius: var(--rund); margin-inline: var(--rand-flaeche); margin-block: var(--rand-flaeche);
+  -webkit-mask: var(--welle-oben) top left 30% / var(--welle-breite) var(--welle-h) repeat-x,
+    linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--welle-h) + 2px) no-repeat,
+    var(--welle-unten) bottom right 20% / var(--welle-breite) var(--welle-h) repeat-x;
+          mask: var(--welle-oben) top left 30% / var(--welle-breite) var(--welle-h) repeat-x,
+    linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--welle-h) + 2px) no-repeat,
+    var(--welle-unten) bottom right 20% / var(--welle-breite) var(--welle-h) repeat-x;
+}
+/* Letzte Fläche vor dem Footer: hinter ihrer unteren Welle liegt schon das Footer-Grün, damit sie hineinfließt. */
+main:has(> section:last-of-type:is(.flaeche-licht, .flaeche-tief, .bg-primary\/5)) {
+  background: linear-gradient(to top, var(--footer-grund, var(--color-primary)) var(--welle-h), transparent 0);
 }

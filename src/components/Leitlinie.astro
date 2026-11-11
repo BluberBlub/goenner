@@ -1,0 +1,99 @@
+---
+// Die grüne Leitlinie (Niko 11.11.: "der grüne strich zieht sich noch nicht durch die seite. er darf gern animiert sein.").
+// Sie beginnt am Ende der Schleife im Hero ([data-leitlinie-start]) und schwingt in den Seitenrändern bis zum Footer,
+// an jedem zweiten Sektionswechsel quert sie sanft die Seite. Beim Scrollen zeichnet sie sich mit.
+// Botschaft: Der Weg aus dem ersten Bild begleitet durch die ganze Seite, ruhig und ohne Unterbrechung.
+// Nur ab 1024 px und nur, wenn der Rand breit genug ist (sonst läge sie über Text). Rein dekorativ.
+---
+<svg class="leitlinie" aria-hidden="true" fill="none"><path pathLength="1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+
+<script>
+  const svg = document.querySelector<SVGSVGElement>('svg.leitlinie');
+  const pfad = svg?.querySelector('path');
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let proben: number[] = [];
+
+  const seiteY = (r: DOMRect) => r.top + scrollY;
+  function bauen() {
+    if (!svg || !pfad) return;
+    const main = document.querySelector('main');
+    const cont = document.querySelector<HTMLElement>('main .container');
+    const footer = document.querySelector('footer');
+    if (!main || !cont || !footer || innerWidth < 1024) { svg.style.display = 'none'; return; }
+    const cr = cont.getBoundingClientRect();
+    const innen = cr.left + parseFloat(getComputedStyle(cont).paddingLeft);
+    if (innen < 64) { svg.style.display = 'none'; return; }
+    svg.style.display = '';
+    const breite = document.documentElement.clientWidth;
+    const xL = innen * 0.45, xR = breite - innen * 0.45;
+    const ende = seiteY(footer.getBoundingClientRect()) - 24;
+    svg.setAttribute('width', String(breite));
+    svg.setAttribute('height', String(ende + 40));
+    svg.setAttribute('viewBox', `0 0 ${breite} ${ende + 40}`);
+
+    // Anfang: Ende der Hero-Schleife, sonst unter dem Hero am linken Rand
+    const hero = document.querySelector('[data-hero]');
+    const hr = hero?.getBoundingClientRect();
+    let sx = xL, sy = hr ? seiteY(hr) + hr.height : 0;
+    const startPfad = document.querySelector<SVGPathElement>('[data-leitlinie-start] path');
+    if (startPfad && startPfad.getBoundingClientRect().width > 0) {
+      const p = startPfad.getPointAtLength(startPfad.getTotalLength());
+      const m = startPfad.getScreenCTM();
+      if (m) { const q = new DOMPoint(p.x, p.y).matrixTransform(m); sx = q.x; sy = q.y + scrollY; }
+    }
+    let x = xL, y = sy + 160;
+    let d = `M${sx} ${sy} C${sx} ${sy + 80} ${xL} ${sy + 60} ${xL} ${y}`;
+
+    const grenzen = [...main.querySelectorAll(':scope > section')]
+      .map((s) => seiteY(s.getBoundingClientRect()))
+      .filter((g) => g > y + 160 && g < ende - 160);
+    let welle = 1;
+    const schwingen = (bis: number) => {
+      // ruhiges Pendeln im Rand bis zur Höhe "bis"
+      while (bis - y > 260) {
+        const n = Math.min(y + 420, bis);
+        const a = 22 * welle; welle *= -1;
+        d += ` C${x + a} ${y + (n - y) / 3} ${x + a} ${y + ((n - y) * 2) / 3} ${x} ${n}`;
+        y = n;
+      }
+      if (bis > y) { d += ` L${x} ${bis}`; y = bis; }
+    };
+    grenzen.forEach((g, i) => {
+      if (i % 2 === 1) return;
+      schwingen(g - 90);
+      const nx = x === xL ? xR : xL;
+      d += ` C${x} ${g} ${nx} ${g - 10} ${nx} ${g + 90}`;
+      x = nx; y = g + 90;
+    });
+    schwingen(ende - 60);
+    const r = x === xL ? 1 : -1;
+    d += ` C${x} ${ende - 20} ${x + 30 * r} ${ende} ${x + 60 * r} ${ende}`;
+    pfad.setAttribute('d', d);
+
+    // Höhenproben für das Mitzeichnen: welcher Anteil der Linie liegt über einer Seitenhöhe
+    const len = pfad.getTotalLength();
+    proben = [];
+    for (let i = 0; i <= 300; i++) proben.push(pfad.getPointAtLength((len * i) / 300).y);
+    zeichnen();
+  }
+  function zeichnen() {
+    if (!pfad || !proben.length) return;
+    if (ruhig) { pfad.style.strokeDashoffset = '0'; return; }
+    const bis = scrollY + innerHeight * 0.72;
+    let i = 0;
+    while (i < proben.length - 1 && proben[i + 1] <= bis) i++;
+    pfad.style.strokeDashoffset = String(1 - i / (proben.length - 1));
+  }
+  let rahmen = 0;
+  const spaeter = () => { cancelAnimationFrame(rahmen); rahmen = requestAnimationFrame(bauen); };
+  addEventListener('scroll', () => requestAnimationFrame(zeichnen), { passive: true });
+  addEventListener('resize', spaeter);
+  new ResizeObserver(spaeter).observe(document.body);
+  document.fonts?.ready.then(spaeter);
+  bauen();
+</script>
+
+<style>
+  .leitlinie { position: absolute; top: 0; left: 0; z-index: 30; pointer-events: none; overflow: visible; color: rgb(var(--color-accent-rgb)); }
+  .leitlinie path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.35s ease-out; }
+</style>

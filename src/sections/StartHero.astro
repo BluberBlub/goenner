@@ -40,7 +40,7 @@ import Foto from '../components/Foto.astro';
   </div>
 
   <!-- Beginn der Weg-Linie: kleine Schleife in der freien Ecke unten, läuft nach unten aus dem Hero -->
-  <svg class="weglinie z-20 bottom-0 left-[38%] hidden h-28 w-40 text-accent lg:block" viewBox="0 0 160 112" fill="none" aria-hidden="true">
+  <svg data-leitlinie-start class="weglinie z-20 bottom-[calc(var(--welle-h)+0.5rem)] left-[38%] hidden h-28 w-40 text-accent lg:block" viewBox="0 0 160 112" fill="none" aria-hidden="true">
     <path pathLength="1" d="M10 30C40 10 80 14 84 40c4 26-30 36-40 18-10-18 20-36 50-24 28 12 30 50 26 78" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
   </svg>
 </section>

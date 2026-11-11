@@ -70,6 +70,14 @@ try {
   }, null, { timeout: 8000 }).then(() => true).catch(() => false);
   if (!hydriert) bad('Formular wird nicht interaktiv (React-Insel nach 8 s noch nicht hydriert) – client:visible={{ rootMargin: "2500px" }} oder client:idle nutzen');
 
+  // Schritt-Formulare (Gönner 11.11.): optionale Auswahl-Schritte mit [data-weiter] erst durchklicken,
+  // bis die Pflichtfelder und der Absende-Knopf sichtbar sind. Formulare ohne Schritte: keine Wirkung.
+  for (let i = 0; i < 6; i++) {
+    const weiter = form.locator('[data-weiter]:visible').first();
+    if (!(await weiter.count())) break;
+    await weiter.click(); await page.waitForTimeout(300);
+  }
+
   // Test 1: leer absenden -> Fehlermeldungen
   await submit.click();
   await page.waitForTimeout(600);

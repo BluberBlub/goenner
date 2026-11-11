@@ -3,8 +3,8 @@
 // nicht zu viel, nicht störend"). Eine Linie, die sich beim Hineinscrollen zeichnet (.weglinie.zeichnet).
 // Botschaft: Der Weg aus dem ersten Bild begleitet leise durch die ganze Seite.
 // Höchstens ein Schwung pro Sektion, rein dekorativ (aria-hidden), Position über class.
-interface Props { form?: 'schleife' | 'welle' | 'bogen' | 'haken'; class?: string; zeichnen?: boolean }
-const { form = 'schleife', class: cls = '', zeichnen = true } = Astro.props;
+interface Props { form?: 'schleife' | 'welle' | 'bogen' | 'haken'; class?: string; zeichnen?: boolean; start?: boolean }
+const { form = 'schleife', class: cls = '', zeichnen = true, start = false } = Astro.props;
 const formen = {
   schleife: { vb: '0 0 160 112', d: 'M10 30C40 10 80 14 84 40c4 26-30 36-40 18-10-18 20-36 50-24 28 12 30 50 26 78' },
   welle: { vb: '0 0 220 60', d: 'M6 40C30 14 54 14 72 32s44 20 64 2 46-22 78 4' },
@@ -12,6 +12,6 @@ const formen = {
   haken: { vb: '0 0 140 120', d: 'M8 12c34 4 60 22 56 50-3 22-30 26-32 10-2-18 30-26 52-12 20 13 34 34 48 52' },
 }[form];
 ---
-<svg class:list={['weglinie text-accent', zeichnen && 'zeichnet', cls]} viewBox={formen.vb} fill="none" aria-hidden="true">
+<svg data-leitlinie-start={start ? '' : undefined} class:list={['weglinie text-accent', zeichnen && 'zeichnet', cls]} viewBox={formen.vb} fill="none" aria-hidden="true">
   <path pathLength="1" d={formen.d} stroke="currentColor" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
 </svg>
