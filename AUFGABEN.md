@@ -80,3 +80,4 @@
 - [x] "der strich sollte immer im footer enden. auf manchen seiten tut er das noch nicht" (2026-11-11) → 11.11.: Linie läuft auf allen Seiten in den Footer und endet dort mit einem Haken auf Höhe des Claims
 - [x] "die infoleiste mit der verlinkung auf meine seite sollte immer erst kommen wenn der user scrollt. nicht von anfang an, sonst verunstaltet es das erscheiungsbild der seite. umsetzten und merken bitte" (2026-11-11) → 11.11.: Kit DemoBar v6, gleitet beim ersten Scrollen herein; Hero wieder volle Höhe; QA prüft es; gemerkt
 - [x] "hero bottom bei den wellen ist eine andere bg farbe wie in der nachfolgenden sektion. bitte fürm jede seite prüfen und sicherstellen, dass es farblich korrekt ist" (2026-11-11) → 11.11.: Sektion nach dem Hero läuft unter die Welle, alle Seiten geprüft (Startseite war betroffen)
+- [x] "strich - cta reicht, nicht footer" (2026-11-11) → 11.11.: Linie endet am Abschluss-CTA (Kontakt: an der Anfahrt)

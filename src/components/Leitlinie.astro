@@ -26,8 +26,10 @@
     svg.style.display = '';
     const breite = document.documentElement.clientWidth;
     const xL = innen * 0.45, xR = breite - innen * 0.45;
-    // endet immer im Footer (Niko 11.11.: "der strich sollte immer im footer enden"), auf Höhe des Footer-Claims
-    const ende = seiteY(footer.getBoundingClientRect()) + 90;
+    // endet im Abschluss-CTA, die letzte Sektion vor dem Footer (Niko 11.11.: "strich - cta reicht, nicht footer"):
+    // knapp unter ihrer oberen Welle läuft sie in einem Haken aus
+    const ziel = main.querySelector(':scope > section:last-of-type') ?? footer;
+    const ende = seiteY(ziel.getBoundingClientRect()) + 70;
     svg.setAttribute('width', String(breite));
     svg.setAttribute('height', String(ende + 40));
     svg.setAttribute('viewBox', `0 0 ${breite} ${ende + 40}`);
