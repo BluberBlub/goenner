@@ -5,11 +5,13 @@
 // fährt, bekommt rechts den Namen und was dazugehört (Altseite /Behandlung/Schwerpunkte).
 // Botschaft: Das Diffuse bekommt einen Namen und damit einen Weg.
 import Section from '../components/Section.astro';
+import Schwung from '../components/Schwung.astro';
 import SektionsKopf from '../components/SektionsKopf.astro';
 import { schwerpunkte } from '../data/schwerpunkte';
 const nr = (i: number) => String(i + 1).padStart(2, '0');
 ---
 <Section variant="buehne" bg="none" class="flaeche-tief overflow-clip">
+  <Schwung slot="bleed" form="haken" class="right-[5%] top-10 hidden h-28 w-32 lg:block" />
   <svg slot="bleed" class="hoehenlinien text-on-primary" viewBox="0 0 1200 800" preserveAspectRatio="none" fill="none" aria-hidden="true">
     <g stroke="currentColor" stroke-width="1.2">
       <path d="M-20 120C200 80 380 170 620 120S1000 60 1220 110" />

@@ -6,6 +6,7 @@
 // Props wie PageHero (title, subtitle, image, imagePosition, eyebrow) plus pfad.
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import Schwung from '../components/Schwung.astro';
 
 interface Props { title: string; subtitle?: string; image: string; imagePosition?: string; eyebrow?: string; pfad?: { label: string; href: string }[] }
 const { title, subtitle, image, imagePosition = '50% 50%', eyebrow, pfad = [] } = Astro.props;
@@ -20,7 +21,7 @@ const variante = (p: string, ext: string) => {
 const avif = variante(image, 'avif');
 const webp = variante(image, 'webp');
 ---
-<section data-hero class="seiten-hero relative grid min-h-[var(--hero-h)] overflow-hidden bg-primary text-on-primary lg:grid-cols-2 lg:grid-rows-1">
+<section data-hero class="seiten-hero hero-rund relative grid min-h-[var(--hero-h)] overflow-hidden bg-primary text-on-primary lg:grid-cols-2 lg:grid-rows-1">
   <div class="relative z-10 flex flex-col justify-end px-6 pb-10 pt-28 sm:px-12 sm:pb-14 sm:pt-32 lg:justify-center lg:py-12 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
     {pfad.length > 0 && (
       <nav aria-label="Brotkrumen" class="mb-6 text-sm text-on-primary/85">
@@ -42,6 +43,7 @@ const webp = variante(image, 'webp');
     )}
     <h1 class="hero-titel text-[2.2rem] leading-[1.15] min-[380px]:text-[2.5rem] sm:text-[3.4rem] lg:text-[clamp(3rem,4.2vw,4.4rem)]" set:html={title} />
     {subtitle && <p data-lead class="mt-6 max-w-xl text-lg leading-relaxed text-on-primary/85 sm:text-xl" set:html={subtitle} />}
+    <slot />
   </div>
   <div class="hero-bild absolute inset-0 overflow-hidden bg-secondary lg:relative lg:inset-auto lg:h-auto lg:-ml-[8vw]">
     <picture>
@@ -53,4 +55,5 @@ const webp = variante(image, 'webp');
     <div class="hero-lasur absolute inset-0 lg:hidden" aria-hidden="true"></div>
     <div class="hero-uebergang absolute inset-0 hidden lg:block" aria-hidden="true"></div>
   </div>
+  <Schwung form="schleife" zeichnen={false} class="z-20 bottom-8 left-[calc(50%-8vw-3rem)] hidden h-20 w-28 lg:block" />
 </section>

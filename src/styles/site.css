@@ -309,3 +309,13 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
     rgb(var(--color-primary-rgb) / .04) 44%,
     transparent 52%);
 }
+
+/* Weichere Kanten (Niko 11.11.: "die sektionen haben teilweise zu harte kanten, mach sie weicher. runder").
+   Farbige Flächen schweben als abgerundete Tafeln mit schmalem Rand, Heros enden unten gerundet.
+   Botschaft: nichts Kantiges, alles ein wenig gehalten. */
+:root { --rund: clamp(1.25rem, 2.6vw, 2.5rem); --rand-flaeche: clamp(.5rem, 1.1vw, 1rem); }
+.hero-rund { border-bottom-left-radius: var(--rund); border-bottom-right-radius: var(--rund); }
+main > section.flaeche-tief, main > section.flaeche-licht, main > section.nebel-zart,
+main > section.bg-primary\/5, main > section.bg-primary:not([data-hero]) {
+  border-radius: var(--rund); margin-inline: var(--rand-flaeche); margin-block: var(--rand-flaeche);
+}

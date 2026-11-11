@@ -67,8 +67,8 @@
       "/fonts/instrument-sans-latin-400-normal.woff2"
     ],
     "radius": {
-      "knopf": "4px",
-      "karte": "6px"
+      "knopf": "999px",
+      "karte": "14px"
     },
     "aktivFarbe": "primary"
   },

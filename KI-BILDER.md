@@ -12,3 +12,5 @@ lizenzfreie Alternativen (Unsplash, Pexels) suchen. Haken setzen wenn ersetzt.
 
 ## 11.11.2026: Hero-Bilder Unterseiten ersetzt
 Nikos Gemini-Bilder aus transfer/ (hero-farn, hero-knospenzweig, hero-efeu, hero-buchenlaub) ersetzen die Pollinations-Platzhalter (hero-trittsteine, -buchenzweig, -see, -eiche, -morgennebel, -huegel-nebel gelöscht).
+
+- hero-eichenzweig (Kontakt-Hero) und hero-farn-licht (Praxis-Hero): von Niko geliefert (transfer/, Gemini), 11.11.2026
