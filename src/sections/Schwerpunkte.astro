@@ -62,13 +62,15 @@ const nr = (i: number) => String(i + 1).padStart(2, '0');
       ))}
     </ul>
 
-    <div class="lg:col-span-5">
-      <div class="thema-tafel rounded-karte lg:sticky lg:top-28" aria-live="polite">
+    <!-- Die Tafel liegt über ihrer Spalte (absolut): die Höhe der Sektion bestimmt allein die Themenliste,
+         so springt beim Wechseln nichts, und die Tafel ist nur so hoch wie ihr Thema (Niko 11.11.: "so viel platz vergeudet") -->
+    <div class="relative lg:col-span-5">
+      <div class="thema-tafel rounded-karte lg:absolute lg:inset-x-0 lg:top-0" aria-live="polite">
         <div class="thema-stapel">
         {schwerpunkte.map((s, i) => (
           <article id={`thema-${i}`} class="thema-inhalt" data-aktiv={i === 0 ? '' : undefined} aria-hidden={i !== 0 ? 'true' : undefined}>
             <p class="etikett text-accent">{nr(i)} / {schwerpunkte.length}</p>
-            <h3 class="mt-4 text-[1.7rem] leading-[1.2] sm:text-[2.1rem]">{s.titel}</h3>
+            <h3 class="mt-4 text-[1.6rem] leading-[1.2] xl:text-[1.85rem]">{s.titel}</h3>
             <p class="mt-4 text-base md:text-lg leading-relaxed opacity-90">{s.text}</p>
           </article>
         ))}
@@ -92,8 +94,21 @@ const nr = (i: number) => String(i + 1).padStart(2, '0');
   document.querySelectorAll<HTMLElement>('[data-themen]').forEach((box) => {
     const knoepfe = [...box.querySelectorAll<HTMLButtonElement>('.thema')];
     const inhalte = [...box.querySelectorAll<HTMLElement>('.thema-inhalt')];
-    let fest = 0;
+    const stapel = box.querySelector<HTMLElement>('.thema-stapel');
+    let fest = 0, jetzt = 0;
+    // Der Stapel gleitet auf die Höhe des aktiven Themas (statt fest auf das längste)
+    const spalte = stapel?.closest<HTMLElement>('.thema-tafel')?.parentElement;
+    const hoehe = () => {
+      if (!stapel) return;
+      stapel.style.height = inhalte[jetzt].offsetHeight + 'px';
+      // Die Spalte reserviert Platz für das längste Thema, damit die Tafel nie über die Sektion hinausragt
+      const rest = (stapel.parentElement?.offsetHeight ?? 0) - stapel.offsetHeight;
+      if (spalte) spalte.style.minHeight = Math.max(...inhalte.map((el) => el.offsetHeight)) + rest + 'px';
+    };
+    hoehe(); addEventListener('resize', hoehe); document.fonts?.ready.then(hoehe);
+    requestAnimationFrame(() => stapel?.classList.add('gleitet'));
     const zeige = (n: number) => {
+      jetzt = n; hoehe();
       knoepfe.forEach((k, i) => k.setAttribute('aria-pressed', String(i === n)));
       inhalte.forEach((el, i) => {
         if (i === n) { el.removeAttribute('aria-hidden'); el.setAttribute('data-aktiv', ''); el.classList.remove('thema-neu'); void el.offsetWidth; el.classList.add('thema-neu'); }

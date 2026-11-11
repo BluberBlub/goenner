@@ -153,11 +153,13 @@ footer .font-display em, footer em { color: color-mix(in srgb, rgb(var(--color-a
 .thema-nr { font-family: var(--font-body, sans-serif); font-size: .72rem; letter-spacing: .1em; font-weight: 600; color: rgb(var(--color-accent-rgb)); opacity: .8; transform: translateY(-1.1em); }
 .thema:hover, .thema:focus-visible { color: rgb(var(--color-on-primary-rgb)); }
 .thema[aria-pressed="true"] { color: rgb(var(--color-on-primary-rgb)); text-decoration: underline; text-decoration-color: rgb(var(--color-accent-rgb)); text-decoration-thickness: 2px; text-underline-offset: .22em; }
-.thema-tafel { padding: 1.4rem; background: rgb(255 255 255 / .05); border: 1px solid rgb(255 255 255 / .14); min-height: 22rem; display: flex; flex-direction: column; }
+.thema-tafel { padding: 1.4rem; background: rgb(255 255 255 / .05); border: 1px solid rgb(255 255 255 / .14); display: flex; flex-direction: column; }
 @media (min-width: 640px) { .thema-tafel { padding: 2.75rem; } }
-.thema-stapel { flex: 1; display: grid; }
-/* Alle Themen liegen übereinander in einer Zelle: die Tafel ist so hoch wie der längste Text und
-   ändert beim Überfahren ihre Höhe nicht mehr (Niko 10.11. (4): "die ganze Seite zittert"). */
+.thema-stapel { display: grid; align-items: start; overflow: hidden; }
+.thema-stapel.gleitet { transition: height .45s cubic-bezier(.2,.7,.2,1); }
+@media (prefers-reduced-motion: reduce) { .thema-stapel.gleitet { transition: none; } }
+/* Alle Themen liegen übereinander in einer Zelle; die Tafel gleitet auf die Höhe des aktiven Themas.
+   Sie liegt absolut über ihrer Spalte, die Seite darunter bewegt sich nie (Niko 10.11. (4): "die ganze Seite zittert"). */
 .thema-stapel > .thema-inhalt { grid-area: 1 / 1; }
 .thema-stapel > .thema-inhalt:not([data-aktiv]) { visibility: hidden; }
 .thema-neu { animation: klaren .55s cubic-bezier(.2,.7,.2,1) both; }
