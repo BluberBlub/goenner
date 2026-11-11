@@ -5,11 +5,18 @@
 // Botschaft: Der Weg aus dem ersten Bild begleitet durch die ganze Seite, ruhig und ohne Unterbrechung.
 // Nur ab 1024 px und nur, wenn der Rand breit genug ist (sonst läge sie über Text). Rein dekorativ.
 ---
-<svg class="leitlinie" aria-hidden="true" fill="none"><path pathLength="1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<svg class="leitlinie" aria-hidden="true" fill="none">
+  <defs><clipPath id="leitlinie-cta"><rect></rect></clipPath></defs>
+  <path class="leitlinie-hell" pathLength="1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+  <!-- im hellgrünen Abschluss wäre die Linie unsichtbar: dort dieselbe Linie in Dunkelgrün darüber -->
+  <path class="leitlinie-tief" clip-path="url(#leitlinie-cta)" pathLength="1" stroke-width="1.6" stroke-linecap="round"></path>
+</svg>
 
 <script>
   const svg = document.querySelector<SVGSVGElement>('svg.leitlinie');
-  const pfad = svg?.querySelector('path');
+  const pfad = svg?.querySelector<SVGPathElement>('path.leitlinie-hell');
+  const tief = svg?.querySelector<SVGPathElement>('path.leitlinie-tief');
+  const rahmen_ = svg?.querySelector('#leitlinie-cta rect');
   const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let proben: number[] = [];
 
@@ -29,7 +36,18 @@
     // endet im Abschluss-CTA, die letzte Sektion vor dem Footer (Niko 11.11.: "strich - cta reicht, nicht footer"):
     // knapp unter ihrer oberen Welle läuft sie in einem Haken aus
     const ziel = main.querySelector(':scope > section:last-of-type') ?? footer;
-    const ende = seiteY(ziel.getBoundingClientRect()) + 70;
+    // Gibt es den Abschluss mit "Der erste Schritt …", hängt sie sich genau hinter dessen Überschrift ein
+    // (Niko 11.11.: "der strich sollte immer beim cta hängen bleiben. genau da, wo die überschrift ist"),
+    // als Gegenstück zum Anfang hinter der Hero-Überschrift.
+    const zielH2 = ziel.querySelector<HTMLElement>('.abschluss h2');
+    let zielPunkt: { x: number; y: number } | null = null;
+    if (zielH2) {
+      const b = document.createRange(); b.selectNodeContents(zielH2);
+      const z = [...b.getClientRects()].filter((r) => r.width > 2);
+      const l = z[z.length - 1] ?? zielH2.getBoundingClientRect();
+      zielPunkt = { x: l.right + 18, y: seiteY(l) + l.height * 0.62 };
+    }
+    const ende = zielPunkt ? zielPunkt.y : seiteY(ziel.getBoundingClientRect()) + 70;
     svg.setAttribute('width', String(breite));
     svg.setAttribute('height', String(ende + 40));
     svg.setAttribute('viewBox', `0 0 ${breite} ${ende + 40}`);
@@ -59,7 +77,8 @@
 
     const grenzen = [...main.querySelectorAll(':scope > section')]
       .map((s) => seiteY(s.getBoundingClientRect()))
-      .filter((g) => g > y + 160 && g < ende - 250);
+      // vor dem Abschluss bleibt Platz, damit sie ruhig von rechts zur Überschrift kommt
+      .filter((g) => g > y + 160 && g < (zielPunkt ? seiteY(ziel.getBoundingClientRect()) - 420 : ende - 250));
     let welle = 1;
     const schwingen = (bis: number) => {
       // ruhiges Pendeln im Rand bis zur Höhe "bis"
@@ -78,10 +97,33 @@
       d += ` C${x} ${g} ${nx} ${g - 10} ${nx} ${g + 90}`;
       x = nx; y = g + 90;
     });
-    schwingen(ende - 60);
-    const r = x === xL ? 1 : -1;
-    d += ` C${x} ${ende - 20} ${x + 30 * r} ${ende} ${x + 60 * r} ${ende}`;
+    if (zielPunkt) {
+      // von oben rechts in einem ruhigen Bogen heran, mit kleiner Schleife wie am Anfang, endet am letzten Wort
+      const { x: ex, y: ey } = zielPunkt;
+      const top = seiteY(ziel.getBoundingClientRect());
+      // immer aus dem rechten Rand kommen, sonst kreuzt sie Etikett und Überschrift
+      if (x === xL) {
+        schwingen(Math.max(y, top - 380));
+        d += ` C${x} ${y + 90} ${xR} ${y + 80} ${xR} ${y + 180}`; x = xR; y += 180;
+      }
+      schwingen(Math.max(y, top - 120));
+      const lx = ex + 70, ly = ey - 40;
+      d += ` C${x} ${top + 10} ${lx + 140} ${top + 30} ${lx} ${ly - 18}`
+        + ` C${lx - 22} ${ly + 2} ${lx - 4} ${ly + 30} ${lx + 26} ${ly + 12}`
+        + ` C${lx + 50} ${ly - 2} ${ex + 40} ${ey + 4} ${ex} ${ey}`;
+    } else {
+      schwingen(ende - 60);
+      const r = x === xL ? 1 : -1;
+      d += ` C${x} ${ende - 20} ${x + 30 * r} ${ende} ${x + 60 * r} ${ende}`;
+    }
     pfad.setAttribute('d', d);
+    tief?.setAttribute('d', d);
+    if (rahmen_) {
+      const zr = ziel.getBoundingClientRect();
+      const farbig = !!zielH2; // der Abschluss ist immer hellgrün
+      rahmen_.setAttribute('x', '0'); rahmen_.setAttribute('width', String(breite));
+      rahmen_.setAttribute('y', String(seiteY(zr))); rahmen_.setAttribute('height', farbig ? String(zr.height) : '0');
+    }
 
     // Höhenproben für das Mitzeichnen: welcher Anteil der Linie liegt über einer Seitenhöhe
     const len = pfad.getTotalLength();
@@ -91,7 +133,7 @@
   }
   function zeichnen() {
     if (!pfad || !proben.length) return;
-    if (ruhig) { pfad.style.strokeDashoffset = '0'; return; }
+    if (ruhig) { pfad.style.strokeDashoffset = '0'; if (tief) tief.style.strokeDashoffset = '0'; return; }
     // Nichts zu sehen, solange man oben steht (Niko 11.11.: "darf gern erst kommen wenn man scrollt");
     // dann wächst die Linie mit dem Fenster mit bis zum CTA.
     // Die Spitze folgt dem Fenster (gut halb unten im Bild), damit man sie nie aus dem Blick verliert
@@ -99,7 +141,9 @@
     const bis = scrollY > 0 ? scrollY + innerHeight * 0.62 : proben[0] - 1;
     let i = 0;
     while (i < proben.length - 1 && proben[i + 1] <= bis) i++;
-    pfad.style.strokeDashoffset = String(1 - i / (proben.length - 1));
+    const off = String(1 - i / (proben.length - 1));
+    pfad.style.strokeDashoffset = off;
+    if (tief) tief.style.strokeDashoffset = off;
   }
   let rahmen = 0;
   const spaeter = () => { cancelAnimationFrame(rahmen); rahmen = requestAnimationFrame(bauen); };
@@ -112,5 +156,6 @@
 
 <style>
   .leitlinie { position: absolute; top: 0; left: 0; z-index: 30; pointer-events: none; overflow: visible; color: rgb(var(--color-accent-rgb)); }
+  .leitlinie-tief { stroke: rgb(var(--color-secondary-rgb, 34 51 30)); }
   .leitlinie path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.35s ease-out; }
 </style>
