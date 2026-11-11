@@ -26,8 +26,8 @@ const raeume: { name: BildName; klasse: string; pos?: string }[] = [
     eyebrow="Praxisräume"
     title="Raum zum Durchatmen."
     subtitle="Helle, ruhige Räume mitten in der Ravensburger Innenstadt."
-    image="/images/therapieraum-sessel.jpg"
-    imagePosition="50% 62%"
+    image="/images/fensterlicht-vertaefelung.jpg"
+    imagePosition="50% 50%"
   />
   <SeitenIntro
     eyebrow="Die Praxis"
@@ -59,7 +59,7 @@ const raeume: { name: BildName; klasse: string; pos?: string }[] = [
           titel="Warten, und dabei etwas entdecken."
           text="In unserem Wartebereich stellen wir Werke talentierter Künstlerinnen und Künstler aus und geben ihnen die Gelegenheit, ihre Arbeiten zu zeigen."
         >
-          <p class="mt-4 text-lg leading-relaxed text-text/80">Derzeit zeigen wir Arbeiten von Michaela Zollmann, einer Künstlerin aus der Region, die sich vom Leben und von den Werken Frida Kahlos inspirieren ließ. Ihre Bilder greifen Themen und Motive auf, die an Kahlos kreative und leidenschaftliche Persönlichkeit erinnern. Für ihre Mixed Media Art verwendet sie Muscheln, Strukturpaste, Blattgold und Federn, die den Werken eine eigene Textur und Tiefe geben.</p>
+          <p class="mt-4 text-base md:text-lg leading-relaxed text-text/80">Derzeit zeigen wir Arbeiten von Michaela Zollmann, einer Künstlerin aus der Region, die sich vom Leben und von den Werken Frida Kahlos inspirieren ließ. Ihre Bilder greifen Themen und Motive auf, die an Kahlos kreative und leidenschaftliche Persönlichkeit erinnern. Für ihre Mixed Media Art verwendet sie Muscheln, Strukturpaste, Blattgold und Federn, die den Werken eine eigene Textur und Tiefe geben.</p>
           <Fragment slot="aktionen">
             <a href="https://www.kunst-online.com/collections/ela-zollmann" target="_blank" rel="noopener" class="knopf knopf-rand self-start">
               Weitere Werke von Michaela Zollmann
@@ -83,15 +83,15 @@ const raeume: { name: BildName; klasse: string; pos?: string }[] = [
   </Section>
 
   <Section variant="standard" bg="base" id="anfahrt">
-    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-6">
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
+      <div class="lg:col-span-7">
         <SektionsKopf
-          eyebrow="So finden Sie uns"
+          eyebrow="So finden Sie uns" class="!mb-0"
           titel="Mit Bus, Bahn oder Auto leicht erreichbar."
           text="Die Praxis liegt in der Karlstraße 8, mitten in der Ravensburger Innenstadt. Vom Bahnhof sind es fünf Minuten zu Fuß. Wenn Sie mit dem Auto kommen, parken Sie am besten im direkt gegenüberliegenden Parkhaus P2 Untertor in der Adlerstraße 39."
         />
       </div>
-      <div class="lg:col-span-5 lg:col-start-8 lg:mt-24">
+      <div class="lg:col-span-5 lg:col-start-8">
         <KontaktKarte />
       </div>
     </div>

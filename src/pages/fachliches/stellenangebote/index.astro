@@ -24,8 +24,8 @@ const gruende = [
     eyebrow="Stellenangebote"
     title="Arbeiten mitten in Ravensburg."
     subtitle="Offene Stellen in unserer Praxis für Verhaltenstherapie mitten in Ravensburg."
-    image="/images/therapieraum-sessel.jpg"
-    imagePosition="50% 60%"
+    image="/images/hero-eiche.jpg"
+    imagePosition="50% 50%"
   />
 
   <Section variant="standard" bg="base">
@@ -38,7 +38,7 @@ const gruende = [
               <p class="etikett flex items-center gap-3 text-primary"><span class="h-2 w-2 rounded-full bg-accent" aria-hidden="true"></span>Jetzt offen</p>
               <h2 class="mt-5 text-[1.9rem] leading-[1.15] text-text sm:text-[2.6rem]">{s.titel}</h2>
               <p class="mt-3 font-display text-xl italic text-primary">{s.kurz}</p>
-              <p class="mt-5 max-w-2xl text-lg leading-relaxed text-text/80">{s.text}</p>
+              <p class="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-text/80">{s.text}</p>
               <ul class="mt-7 flex flex-wrap gap-2.5">
                 {s.fakten.map((f) => <li class="rounded-knopf border border-primary/20 bg-white/70 px-3.5 py-1.5 text-[.95rem] text-text">{f}</li>)}
               </ul>

@@ -287,3 +287,12 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
 
 /* Start-Hero mobil (10.11.): Bild als Hintergrund, Waldgrün-Lasur oben leicht, unter dem Text fast deckend */
 .hero-lasur{background:linear-gradient(to bottom,rgb(var(--color-primary-rgb) /.35) 0%,rgb(var(--color-primary-rgb) /.82) 38%,rgb(var(--color-primary-rgb) /.95) 70%)}
+
+/* Lead-Sätze: Kit setzt jeden Satz als eigenen Block mit balance, das halbiert lange Sätze
+   ("Mitten in der Ravensburger / Innenstadt"). pretty füllt die Zeile und vermeidet nur Einzelwörter. */
+.satz { text-wrap: pretty !important; }
+/* Sektionsköpfe: die Breite nutzen statt schmaler Spalte (Niko 11.11.) */
+@media (min-width: 1024px) {
+  .sektions-kopf { max-width: 60rem; }
+  .sektions-kopf .max-w-2xl { max-width: 52rem; }
+}

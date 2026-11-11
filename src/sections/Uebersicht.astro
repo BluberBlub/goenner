@@ -24,7 +24,7 @@ const { eintraege } = Astro.props;
           </a>
           <div class:list={['lg:col-span-5', i % 2 ? 'lg:order-1 lg:col-start-1' : 'lg:col-start-8']}>
             <h2 class="text-[2rem] leading-[1.15] text-text sm:text-[2.6rem]"><a href={e.href} class="hover:text-primary" set:html={e.titel} /></h2>
-            <p class="mt-5 text-lg leading-relaxed text-text/80" set:html={e.text} />
+            <p class="mt-5 text-base md:text-lg leading-relaxed text-text/80" set:html={e.text} />
             {e.punkte && (
               <ul class="fakten mt-7">
                 {e.punkte.map((p) => <li class="!py-3 leading-snug" set:html={p} />)}

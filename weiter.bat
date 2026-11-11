@@ -20,14 +20,16 @@ echo.
 if not exist "%CACHE%" mkdir "%CACHE%" >nul 2>&1
 
 rem ---- Regeln und Gates: unkritisch, immer aktualisieren ----
-copy /Y "%ROOT%\CLAUDE.md" "CLAUDE.md" >nul 2>&1
+rem 11.11.2026: Claude Code laedt die CLAUDE.md aus dem Ordner Websites automatisch mit. Die Kopie im Projekt
+rem stand deshalb doppelt im Kontext (Messung Goenner: 2 x 13 KB bei jedem Schritt). Im Projekt nur noch ein Verweis.
+> "CLAUDE.md" echo Regeln: ..\..\CLAUDE.md im Ordner Websites. Claude Code laedt sie automatisch mit, hier nichts eintragen, sonst steht alles doppelt im Kontext.
 if not exist "_regeln" mkdir "_regeln"
 copy /Y "%ROOT%\_regeln\*" "_regeln\" >nul 2>&1
 if exist "%ROOT%\_referenzen" (
   if not exist "_referenzen" mkdir "_referenzen"
   copy /Y "%ROOT%\_referenzen\*" "_referenzen\" >nul 2>&1
 )
-for %%F in (qa-alle.js qa-checks.js qa-overflow.js qa-contact-form.js qa-live.js qa-craft.js qa-wow.js qa-copy.js qa-visual.js qa-relaunch.js qa-images.js qa-slop.js qa-speed.js qa-seo.js og-bild.js optimize-build.js bild-formate.js generate-image.js optimize-images.js validate-sitedata.js test-mailer.js) do copy /Y "%ROOT%\%%F" "%%F" >nul 2>&1
+for %%F in (qa-alle.js qa-checks.js qa-overflow.js qa-contact-form.js qa-live.js qa-craft.js qa-wow.js qa-copy.js qa-visual.js qa-relaunch.js qa-images.js qa-slop.js qa-speed.js qa-seo.js og-bild.js optimize-build.js bild-formate.js generate-image.js optimize-images.js validate-sitedata.js test-mailer.js schau.js) do copy /Y "%ROOT%\%%F" "%%F" >nul 2>&1
 copy /Y "%ROOT%\abschluss.js" "abschluss.js" >nul 2>&1
 copy /Y "%ROOT%\stand.js" "stand.js" >nul 2>&1
 echo   Regeln und Pruef-Skripte aktualisiert.
@@ -69,13 +71,13 @@ if exist "%ROOT%\_template\src\components" (
   copy /Y "%ROOT%\_komponenten\tailwind.config.mjs" "%ROOT%\_template\tailwind.config.mjs" >nul 2>&1
   if exist "%ROOT%\_template\src" copy /Y "%ROOT%\_komponenten\middleware.ts" "%ROOT%\_template\src\middleware.ts" >nul 2>&1
   if exist "%ROOT%\_template\_regeln" copy /Y "%ROOT%\_regeln\*" "%ROOT%\_template\_regeln\" >nul 2>&1
-  copy /Y "%ROOT%\CLAUDE.md" "%ROOT%\_template\CLAUDE.md" >nul 2>&1
+  > "%ROOT%\_template\CLAUDE.md" echo Regeln: ..\..\CLAUDE.md im Ordner Websites. Claude Code laedt sie automatisch mit, hier nichts eintragen, sonst steht alles doppelt im Kontext.
 )
 
 echo.
 where claude >nul 2>&1
 if errorlevel 1 ( echo   FEHLER: claude nicht gefunden. & pause & exit /b )
-set "PROMPT=CLAUDE.md ist schon geladen, nicht erneut lesen. Lies progress.json und AUFGABEN.md (offene Punkte). Setze die Arbeit nahtlos fort - Regel-Datei der aktuellen Phase aus _regeln/ erneut lesen. Gibt es KIT-ZUSAMMENFUEHREN.md, das ZUERST erledigen (neue Kit-Fassung plus eigene Aenderungen, nichts Eigenes weglassen). Eigene Aenderungen an Kit-Dateien nie zurueckbauen. Rueckmeldungen an Niko hoechstens 5 Zeilen (CLAUDE.md). QA immer mit npm run qa (ein Befehl, eigener Server)."
+set "PROMPT=Stand und offene Punkte stehen im Sitzungsstart (falls nicht: node stand.js --start). CLAUDE.md ist geladen. Setze die Arbeit fort. Regeln nur bei Bedarf lesen, wie im Stand angegeben. Gibt es KIT-ZUSAMMENFUEHREN.md, das ZUERST erledigen (nichts Eigenes weglassen)."
 rem ---- Sitzung: nur kleine, frische Sitzungen fortsetzen, sonst frisch starten ----
 rem 09.11.2026: --continue setzte immer dieselbe Sitzung fort (Opitz: 404k Kontext, 41 Mio. Tokens).
 rem Der Projektstand liegt in progress.json, CLAUDE.md und AUFGABEN.md, frisch starten verliert nichts.
@@ -91,6 +93,9 @@ set "SCHLANK="
 if not exist ".claude" mkdir ".claude"
 > ".claude\mcp-leer.json" echo {"mcpServers":{}}
 claude --help 2>nul | findstr /c:"--strict-mcp-config" >nul && set "SCHLANK=--strict-mcp-config --mcp-config .claude\mcp-leer.json"
+rem 11.11.2026: Skills/Plugins (Angebot, Kaltmail, Impeccable ...) stehen mit ueber 10k Tokens in jedem Schritt,
+rem der Autopilot nutzt keinen davon (Impeccable laeuft als Kommandozeile in qa-slop.js). Nur wenn der Schalter existiert.
+claude --help 2>nul | findstr /c:"--disable-slash-commands" >nul && set "SCHLANK=%SCHLANK% --disable-slash-commands"
 node stand.js --sitzung
 if errorlevel 1 (
   cmd /k claude -n "%PROJEKT%" --remote-control "%PROJEKT%" --model opus %SCHLANK% --dangerously-skip-permissions "%PROMPT%"

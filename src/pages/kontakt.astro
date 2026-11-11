@@ -17,7 +17,7 @@ import KarteLaden from '../components/KarteLaden.astro';
         <div class="lg:col-span-7">
           <p class="etikett flex items-center gap-3 text-primary"><span class="h-px w-8 bg-accent" aria-hidden="true"></span>Kontakt und Anmeldung</p>
           <h1 class="mt-5 text-[2.5rem] leading-[1.15] sm:text-5xl lg:text-[3.8rem]">Schreiben Sie uns. Wir antworten ehrlich.</h1>
-          <p class="lead mt-6 max-w-2xl text-lg leading-relaxed text-text/80">
+          <p class="lead mt-6 max-w-2xl text-base md:text-lg leading-relaxed text-text/80">
             Für einen Beratungs- oder Diagnostiktermin, eine Therapieanfrage oder ein anderes Anliegen nutzen Sie am besten unser Kontaktformular. Ein Vorgespräch und einen Wartelistenplatz bieten wir nur an, wenn wir zuversichtlich sind, Ihnen innerhalb von zwei Monaten auch einen Therapieplatz anbieten zu können.
           </p>
           <a href="#formular" class="knopf knopf-voll mt-8 w-full sm:w-auto">
@@ -40,9 +40,9 @@ import KarteLaden from '../components/KarteLaden.astro';
   <Section variant="standard" bg="base" id="formular" class="scroll-mt-20">
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
       <!-- Mobil: Kopf, Formular, dann erst die Karte (contents löst die Spalte auf) -->
-      <div class="contents lg:col-span-5 lg:block">
+      <div class="contents lg:col-span-5 lg:block lg:sticky lg:top-28 lg:self-start">
         <SektionsKopf eyebrow="Anmeldung" titel="Ihre Anfrage." text="Bekommen Sie innerhalb von zwei Wochen kein Angebot für ein Vorgespräch, können wir Ihnen derzeit leider keinen Wartelistenplatz anbieten." groesse="mittel" class="order-1 !mb-0 lg:order-none" />
-        <KarteLaden titel="Karte: Praxis Dr. Gönner, Karlstraße 8, Ravensburg" class="order-3 lg:order-none lg:mt-8 lg:sticky lg:top-28" />
+        <KarteLaden titel="Karte: Praxis Dr. Gönner, Karlstraße 8, Ravensburg" class="order-3 lg:order-none lg:mt-8" />
       </div>
       <div class="order-2 lg:order-none lg:col-span-7 lg:col-start-6">
         <div class="rounded-karte border border-primary/15 bg-white p-6 sm:p-10">
@@ -71,15 +71,16 @@ import KarteLaden from '../components/KarteLaden.astro';
   </Section>
 
   <Section variant="standard" bg="base" id="anfahrt">
-    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-6">
+    <div class="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
+      <div class="lg:col-span-7">
         <SektionsKopf
           eyebrow="So finden Sie uns"
           titel="Karlstraße 8, Ravensburg."
           text="Mitten in der Ravensburger Innenstadt, fünf Gehminuten vom Bahnhof. Mit dem Auto parken Sie am besten im direkt gegenüberliegenden Parkhaus P2 Untertor, Adlerstraße 39."
+          class="!mb-0"
         />
       </div>
-      <div class="lg:col-span-5 lg:col-start-8 lg:mt-24">
+      <div class="lg:col-span-5 lg:col-start-8">
         <KontaktKarte />
       </div>
     </div>

@@ -33,7 +33,7 @@ const extern = (h?: string) => !!h && /^https?:/.test(h);
       <div class="lg:col-span-6">
         <p class="etikett flex items-center gap-3 text-secondary"><span class="w-8 border-t border-secondary" aria-hidden="true"></span>{etikett}</p>
         <h2 class="mt-6 text-[2.2rem] leading-[1.15] text-secondary sm:text-5xl lg:text-[3.6rem]" set:html={titel} />
-        {text && <p class="mt-6 max-w-lg text-lg leading-relaxed text-on-accent" set:html={text} />}
+        {text && <p class="mt-6 max-w-lg text-base md:text-lg leading-relaxed text-on-accent" set:html={text} />}
         <div class="mt-9 flex flex-wrap items-center gap-4">
           <a href={buttonHref} class="knopf knopf-tief">
             {buttonText}

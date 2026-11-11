@@ -15,7 +15,8 @@
 //     "unverändert" und würde Nikos Version überschreiben (das war das Loch).
 
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, copyFileSync, statSync } from 'fs';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
 import { spawnSync } from 'child_process';
 
@@ -24,6 +25,33 @@ import { spawnSync } from 'child_process';
 // Jeder Schritt liest das ganze Gespräch: 41 Mio. Tokens. Jetzt: nur kleine, frische Sitzungen fortsetzen
 // (unter 120k Kontext und jünger als 12 Stunden), sonst frisch starten. Der Stand liegt in den Dateien.
 // Exit 0 = fortsetzen, 1 = frisch.
+// ════════ SITZUNGSSTART (10.11.2026): alles Nötige in EINER Ausgabe ════════
+// Vorher brauchte der Autopilot 4 bis 5 Einzelschritte (cat, grep, git, ls), bis er wusste, wo er steht.
+// Jeder Schritt liest den ganzen Kontext neu. Der SessionStart-Hook ruft dies auf, die Ausgabe steht dann
+// ohne einen einzigen Schritt im Gespräch.
+if (process.argv.includes('--start')) {
+  try { process.chdir(dirname(fileURLToPath(import.meta.url))); } catch {}   // Hooks starten nicht immer im Projektordner
+  const l = (p) => { try { return readFileSync(p, 'utf-8'); } catch { return null; } };
+  let pr = {}; try { pr = JSON.parse(l('progress.json') || '{}'); } catch {}
+  const phase = String(pr.phase ?? '?');
+  const aus = [`STAND ${pr.projekt || process.cwd().split(/[\\/]/).pop()}: Phase ${phase} (${pr.status || '?'})${pr.urlLive ? ' · Demo ' + pr.urlLive : ''}${pr.eskalation ? ' · ESKALATION: ' + pr.eskalation : ''}`];
+  const auf = l('AUFGABEN.md') || '';
+  const offen = auf.split('\n').filter(z => /^\s*- \[ \]/.test(z));
+  aus.push(offen.length ? `OFFENE PUNKTE (${offen.length}):\n${offen.slice(0, 25).map(z => z.trim().slice(0, 300)).join('\n')}${offen.length > 25 ? `\n… ${offen.length - 25} weitere in AUFGABEN.md` : ''}` : 'OFFENE PUNKTE: keine. Auf Nikos nächste Anweisung warten, nichts von selbst umbauen, keinen QA-Lauf ohne Anlass.');
+  const erledigt = auf.split('\n').filter(z => /^\s*- \[x\]/i.test(z)).slice(-3).map(z => z.trim().slice(0, 160));
+  if (erledigt.length) aus.push(`ZULETZT ERLEDIGT:\n${erledigt.join('\n')}`);
+  if (existsSync('KIT-ZUSAMMENFUEHREN.md')) aus.push('ZUERST: KIT-ZUSAMMENFUEHREN.md erledigen.');
+  try { const q = JSON.parse(l('.qa-status.json')); const rot = Object.entries(q.gates || {}).filter(([, g]) => g.exit !== 0 && !g.info).map(([n]) => n); aus.push(`LETZTE QA: ${q.bestanden ? 'grün' : 'rot (' + rot.join(', ') + ')'}${q.komplett ? '' : ', Teillauf'}${q.ki ? ', mit KI-Gates' : ''}`); } catch {}
+  try { const g = spawnSync('git', ['status', '--short'], { encoding: 'utf-8' }).stdout.split('\n').filter(Boolean); if (g.length) aus.push(`GIT: ${g.length} uncommittete Datei(en)`); } catch {}
+  const REGEL = { '1': 'phase1-research.md', '1b': 'phase1b-stilmuster.md', '2': 'phase2-design.md + phase2-technik.md' + (pr.katalogeGelesen ? '' : ' + phase2-kataloge.md'), '2c': 'phase2c-designreview.md', '5': 'phase5-deploy.md', '6': 'phase6-abschluss.md' };
+  aus.push(/^3/.test(phase)
+    ? 'REGELN: _regeln/phase3-feedback.md jetzt lesen (kurz). phase3-qa.md nur vor einem QA-Komplettlauf oder bei rotem Gate, phase2-design.md nur bei neuen Sektionen/Seiten.'
+    : `REGELN: _regeln/${REGEL[phase] || 'Datei der aktuellen Phase'} jetzt lesen.`);
+  aus.push('ANSEHEN: node schau.js <pfad> [--sel "<css>"] liefert EIN Bild (Desktop + Handy). Keine eigenen Playwright-Skripte.');
+  console.log(aus.join('\n'));
+  process.exit(0);
+}
+
 if (process.argv.includes('--sitzung')) {
   try {
     const home = process.env.USERPROFILE || process.env.HOME || '';
@@ -87,7 +115,17 @@ function einrichten() {
       const wZiel = join('.claude', 'hooks', 'kontext-waechter.js');
       if (lies(wZiel) !== lies(wQuelle)) { copyFileSync(wQuelle, wZiel); meldungen.push('Kontext-Wächter installiert/aktualisiert'); }
       const wBefehl = `node "${resolve(wZiel).replace(/\\/g, '/')}"`;
-      for (const ereignis of ['UserPromptSubmit', 'PostToolUse', 'PreToolUse']) {
+      // Sitzungsstart: Stand und offene Punkte ohne einen einzigen Tool-Schritt ins Gespräch
+      settings.hooks.SessionStart ??= [];
+      {
+        const l = settings.hooks.SessionStart, bef = `node "${resolve('stand.js').replace(/\\/g, '/')}" --start`;
+        const e = { hooks: [{ type: 'command', command: bef, timeout: 15 }] };
+        const j = l.findIndex(x => (x.hooks || []).some(h => /stand\.js" --start/.test(h.command || '')));
+        if (j < 0) l.push(e); else l[j] = e;
+      }
+      // UserPromptSubmit wird nicht mehr gebraucht (Wächter ist dort still): alten Eintrag entfernen
+      if (settings.hooks.UserPromptSubmit) { settings.hooks.UserPromptSubmit = settings.hooks.UserPromptSubmit.filter(x => !(x.hooks || []).some(h => /kontext-waechter\.js/.test(h.command || ''))); if (!settings.hooks.UserPromptSubmit.length) delete settings.hooks.UserPromptSubmit; }
+      for (const ereignis of ['PostToolUse', 'PreToolUse']) {
         settings.hooks[ereignis] ??= [];
         const l = settings.hooks[ereignis];
         const e = { ...(ereignis === 'PostToolUse' ? { matcher: '.*' } : ereignis === 'PreToolUse' ? { matcher: 'Read' } : {}), hooks: [{ type: 'command', command: wBefehl, timeout: 10 }] };

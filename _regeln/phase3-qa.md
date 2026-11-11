@@ -103,7 +103,8 @@ Auftrag an ihn, vollständig mitgeben (er kennt das Gespräch nicht):
 - Projektordner, Dev-URL bzw. dist/, und dass er NUR prüft und NICHTS ändert.
 - Lesen: CLAUDE.md (Abschnitt Gestaltungsregeln), _regeln/phase2-design.md, DESIGN-BRIEF.md,
   AUFGABEN.md (Nikos Wünsche aus dem Chat), bei Relaunch CONTENT-INVENTAR.md.
-- Jede Seite bei 390 und 1440 px per Playwright ansehen (Startseite zusätzlich 2000 px).
+- Jede Seite mit `node schau.js <pfad>` ansehen (ein Bild zeigt 1440 und 390), lange Seiten zusätzlich
+  `--schirm 1`, `--schirm 2` oder `--ganz`, die Startseite zusätzlich `--breit 2000`. Mehrere Seiten in einem Aufruf. Keine eigenen Playwright-Skripte.
 - Prüfen gegen: Maßstab 250.000-€-Projekt, Leitidee durchgehalten, jeder offene Punkt aus
   AUFGABEN.md wirklich umgesetzt, nur belegte Aussagen, Contentkante, Lesefluss, Hurenkinder,
   gleiche Muster auf allen Unterseiten, nichts doppelt.
