@@ -1,6 +1,6 @@
 ---
 // Die grüne Leitlinie (Niko 11.11.: "der grüne strich zieht sich noch nicht durch die seite. er darf gern animiert sein.").
-// Sie beginnt am Ende der Schleife im Hero ([data-leitlinie-start]) und schwingt in den Seitenrändern bis zum Footer,
+// Sie beginnt hinter der Hero-Überschrift und schwingt in den Seitenrändern bis zum Footer,
 // an jedem zweiten Sektionswechsel quert sie sanft die Seite. Beim Scrollen zeichnet sie sich mit.
 // Botschaft: Der Weg aus dem ersten Bild begleitet durch die ganze Seite, ruhig und ohne Unterbrechung.
 // Nur ab 1024 px und nur, wenn der Rand breit genug ist (sonst läge sie über Text). Rein dekorativ.
@@ -31,18 +31,28 @@
     svg.setAttribute('height', String(ende + 40));
     svg.setAttribute('viewBox', `0 0 ${breite} ${ende + 40}`);
 
-    // Anfang: Ende der Hero-Schleife, sonst unter dem Hero am linken Rand
+    // Anfang an der Hero-Überschrift (Niko 11.11.: "bei der hero überschrift anfangen"): direkt hinter dem
+    // letzten Wort, dann mit einer kleinen Schleife über die Bildseite hinunter und am Hero-Ende in den rechten Rand
     const hero = document.querySelector('[data-hero]');
     const hr = hero?.getBoundingClientRect();
-    let sx = xL, sy = hr ? seiteY(hr) + hr.height : 0;
-    const startPfad = document.querySelector<SVGPathElement>('[data-leitlinie-start] path');
-    if (startPfad && startPfad.getBoundingClientRect().width > 0) {
-      const p = startPfad.getPointAtLength(startPfad.getTotalLength());
-      const m = startPfad.getScreenCTM();
-      if (m) { const q = new DOMPoint(p.x, p.y).matrixTransform(m); sx = q.x; sy = q.y + scrollY; }
+    const heroUnten = hr ? seiteY(hr) + hr.height : 0;
+    const h1 = hero?.querySelector('h1');
+    let x = xR, y: number, d: string;
+    if (h1 && hr) {
+      const bereich = document.createRange(); bereich.selectNodeContents(h1);
+      const zeilen = [...bereich.getClientRects()].filter((r) => r.width > 2);
+      const letzte = zeilen[zeilen.length - 1] ?? h1.getBoundingClientRect();
+      const sx = letzte.right + 18, sy = seiteY(letzte) + letzte.height * 0.62;
+      const lx = sx + 70, ly = sy + 40; // kleine Schleife
+      const mx = Math.min(breite * 0.56, xR - 120);
+      y = heroUnten + 120;
+      d = `M${sx} ${sy} C${sx + 40} ${sy + 4} ${lx + 30} ${ly - 40} ${lx} ${ly - 18}`
+        + ` C${lx - 22} ${ly + 2} ${lx - 4} ${ly + 30} ${lx + 26} ${ly + 12}`
+        + ` C${lx + 70} ${ly - 14} ${mx} ${ly + 40} ${mx} ${(ly + heroUnten) / 2}`
+        + ` C${mx} ${heroUnten - 30} ${xR} ${heroUnten - 10} ${xR} ${y}`;
+    } else {
+      y = heroUnten + 120; d = `M${xR} ${heroUnten} L${xR} ${y}`;
     }
-    let x = xL, y = sy + 160;
-    let d = `M${sx} ${sy} C${sx} ${sy + 80} ${xL} ${sy + 60} ${xL} ${y}`;
 
     const grenzen = [...main.querySelectorAll(':scope > section')]
       .map((s) => seiteY(s.getBoundingClientRect()))
@@ -79,7 +89,11 @@
   function zeichnen() {
     if (!pfad || !proben.length) return;
     if (ruhig) { pfad.style.strokeDashoffset = '0'; return; }
-    const bis = scrollY + innerHeight * 0.72;
+    // Nichts zu sehen, solange man oben steht (Niko 11.11.: "darf gern erst kommen wenn man scrollt");
+    // dann wächst die Linie im Gleichschritt mit dem Scrollen bis zum Footer.
+    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const anteil = Math.min(1, scrollY / max);
+    const bis = proben[0] + (proben[proben.length - 1] - proben[0]) * anteil + (anteil > 0 ? 40 : -1);
     let i = 0;
     while (i < proben.length - 1 && proben[i + 1] <= bis) i++;
     pfad.style.strokeDashoffset = String(1 - i / (proben.length - 1));

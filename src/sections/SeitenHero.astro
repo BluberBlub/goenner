@@ -6,7 +6,6 @@
 // Props wie PageHero (title, subtitle, image, imagePosition, eyebrow) plus pfad.
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import Schwung from '../components/Schwung.astro';
 
 interface Props { title: string; subtitle?: string; image: string; imagePosition?: string; eyebrow?: string; pfad?: { label: string; href: string }[] }
 const { title, subtitle, image, imagePosition = '50% 50%', eyebrow, pfad = [] } = Astro.props;
@@ -55,5 +54,4 @@ const webp = variante(image, 'webp');
     <div class="hero-lasur absolute inset-0 lg:hidden" aria-hidden="true"></div>
     <div class="hero-uebergang absolute inset-0 hidden lg:block" aria-hidden="true"></div>
   </div>
-  <Schwung form="schleife" zeichnen={false} start class="z-20 bottom-[calc(var(--welle-h)+0.5rem)] left-[calc(50%-8vw-3rem)] hidden h-20 w-28 lg:block" />
 </section>
