@@ -215,7 +215,9 @@ function messeLayout() {
   if (hero && main) {
     const r = hero.getBoundingClientRect();
     const oben = main.getBoundingClientRect().top + window.scrollY;
-    erg.hero = { hoehe: Math.round(r.height), soll: Math.round(window.innerHeight - oben - demoH), oben: Math.round(r.top + window.scrollY - oben), markiert: hero.hasAttribute('data-hero') };
+    // Projekt darf unter der Hero-Welle Luft lassen (--hero-luft, Gönner 11.11.)
+    const probe = document.createElement('div'); probe.style.cssText = 'position:absolute;visibility:hidden;height:var(--hero-luft,0px)'; hero.appendChild(probe); const luft = probe.getBoundingClientRect().height; probe.remove();
+    erg.hero = { hoehe: Math.round(r.height), soll: Math.round(window.innerHeight - oben - demoH - luft), oben: Math.round(r.top + window.scrollY - oben), markiert: hero.hasAttribute('data-hero') };
   }
   const sichtbar = (cs) => {
     const bg = (cs.backgroundColor.match(/[\d.]+/g) || []).map(Number);

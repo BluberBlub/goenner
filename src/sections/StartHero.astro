@@ -5,7 +5,7 @@
 // Alles im Hero steht sofort da (Kit-Regel), nur das Akzentwort stellt sich einmal scharf.
 import Foto from '../components/Foto.astro';
 ---
-<section data-hero class="hero-rund relative grid min-h-[var(--hero-h)] overflow-hidden bg-primary text-on-primary lg:h-[var(--hero-h)] lg:grid-cols-2 lg:grid-rows-1">
+<section data-hero class="hero-rund relative grid min-h-[calc(var(--hero-h)-var(--hero-luft,0px))] overflow-hidden bg-primary text-on-primary lg:h-[calc(var(--hero-h)-var(--hero-luft,0px))] lg:grid-cols-2 lg:grid-rows-1">
   <div class="relative z-10 flex flex-col justify-end px-6 pb-10 pt-28 sm:px-12 sm:py-12 lg:justify-center lg:py-10 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
     <p class="etikett flex items-center gap-3 text-on-primary/80">
       <span class="w-8 shrink-0 border-t border-accent" aria-hidden="true"></span>

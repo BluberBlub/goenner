@@ -20,7 +20,7 @@ const variante = (p: string, ext: string) => {
 const avif = variante(image, 'avif');
 const webp = variante(image, 'webp');
 ---
-<section data-hero class="seiten-hero hero-rund relative grid min-h-[var(--hero-h)] overflow-hidden bg-primary text-on-primary lg:grid-cols-2 lg:grid-rows-1">
+<section data-hero class="seiten-hero hero-rund relative grid min-h-[calc(var(--hero-h)-var(--hero-luft,0px))] overflow-hidden bg-primary text-on-primary lg:grid-cols-2 lg:grid-rows-1">
   <div class="relative z-10 flex flex-col justify-end px-6 pb-10 pt-28 sm:px-12 sm:pb-14 sm:pt-32 lg:justify-center lg:py-12 lg:pl-[calc(max(0px,(100vw-1280px)/2)+clamp(1.5rem,5vw,4rem))] lg:pr-14">
     {pfad.length > 0 && (
       <nav aria-label="Brotkrumen" class="mb-6 text-sm text-on-primary/85">

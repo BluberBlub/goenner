@@ -93,10 +93,10 @@
     if (!pfad || !proben.length) return;
     if (ruhig) { pfad.style.strokeDashoffset = '0'; return; }
     // Nichts zu sehen, solange man oben steht (Niko 11.11.: "darf gern erst kommen wenn man scrollt");
-    // dann wächst die Linie im Gleichschritt mit dem Scrollen bis zum Footer.
-    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-    const anteil = Math.min(1, scrollY / max);
-    const bis = proben[0] + (proben[proben.length - 1] - proben[0]) * anteil + (anteil > 0 ? 40 : -1);
+    // dann wächst die Linie mit dem Fenster mit bis zum CTA.
+    // Die Spitze folgt dem Fenster (gut halb unten im Bild), damit man sie nie aus dem Blick verliert
+    // (Niko 11.11.: "wir verlieren ihn beim scrollen irgendwann aus dem sichtfeld"); am CTA ist sie ganz gezeichnet.
+    const bis = scrollY > 0 ? scrollY + innerHeight * 0.62 : proben[0] - 1;
     let i = 0;
     while (i < proben.length - 1 && proben[i + 1] <= bis) i++;
     pfad.style.strokeDashoffset = String(1 - i / (proben.length - 1));

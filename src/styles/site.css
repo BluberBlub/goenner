@@ -350,3 +350,7 @@ main > section[data-hero] + section:is(.flaeche-tief, .flaeche-licht, .nebel-zar
           mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--welle-h) + 1px) no-repeat,
     var(--welle-unten) bottom right 20% / var(--welle-breite) var(--welle-h) repeat-x;
 }
+
+/* Luft unter der Hero-Welle (Niko 11.11.: "die welle sitzt knapp an der kante zum unsichtbaren.. lass mehr abstand nach unten"):
+   der Hero endet etwas über dem Fensterrand, darunter zeigt sich schon die Folgesektion. qa-craft rechnet --hero-luft ab. */
+:root { --hero-luft: clamp(40px, 7svh, 72px); }
