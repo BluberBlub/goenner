@@ -32,10 +32,11 @@ import Foto from '../components/Foto.astro';
   </div>
 
   <!-- Mobil: Bild als Hintergrund unter einer grünen Lasur, damit der Text sicher lesbar bleibt -->
-  <div class="absolute inset-0 lg:relative lg:inset-auto">
+  <div class="absolute inset-0 lg:relative lg:inset-auto lg:-ml-[8vw]">
     <Foto name="zweig-im-licht" eager sizes="(min-width: 1024px) 50vw, 100vw" pos="58% 50%"
           class="absolute inset-0 block h-full w-full" />
     <div class="hero-lasur absolute inset-0 lg:hidden" aria-hidden="true"></div>
+    <div class="hero-uebergang absolute inset-0 hidden lg:block" aria-hidden="true"></div>
   </div>
 
   <!-- Beginn der Weg-Linie: kleine Schleife in der freien Ecke unten, läuft nach unten aus dem Hero -->

@@ -296,3 +296,16 @@ section.bg-primary h2 em, section.bg-primary h3 em { color: color-mix(in srgb, r
   .sektions-kopf { max-width: 60rem; }
   .sektions-kopf .max-w-2xl { max-width: 52rem; }
 }
+
+/* Hero-Übergang (Niko 11.11.: "scharfe Kante zwischen grünem bg und bild nicht ansprechend"):
+   das Waldgrün läuft weich ins Foto aus, Übergang statt Bruch. Das Motiv rechts bleibt unverdunkelt. */
+.hero-uebergang {
+  background: linear-gradient(to right,
+    rgb(var(--color-primary-rgb) / 1) 0%,
+    rgb(var(--color-primary-rgb) / .86) 9%,
+    rgb(var(--color-primary-rgb) / .62) 18%,
+    rgb(var(--color-primary-rgb) / .36) 27%,
+    rgb(var(--color-primary-rgb) / .15) 36%,
+    rgb(var(--color-primary-rgb) / .04) 44%,
+    transparent 52%);
+}

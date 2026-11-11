@@ -43,7 +43,7 @@ const webp = variante(image, 'webp');
     <h1 class="hero-titel text-[2.2rem] leading-[1.15] min-[380px]:text-[2.5rem] sm:text-[3.4rem] lg:text-[clamp(3rem,4.2vw,4.4rem)]" set:html={title} />
     {subtitle && <p data-lead class="mt-6 max-w-xl text-lg leading-relaxed text-on-primary/85 sm:text-xl" set:html={subtitle} />}
   </div>
-  <div class="hero-bild absolute inset-0 overflow-hidden bg-secondary lg:relative lg:inset-auto lg:h-auto">
+  <div class="hero-bild absolute inset-0 overflow-hidden bg-secondary lg:relative lg:inset-auto lg:h-auto lg:-ml-[8vw]">
     <picture>
       {avif && <source type="image/avif" srcset={avif} sizes="(min-width: 1024px) 50vw, 100vw" />}
       {webp && <source type="image/webp" srcset={webp} sizes="(min-width: 1024px) 50vw, 100vw" />}
@@ -51,5 +51,6 @@ const webp = variante(image, 'webp');
            style={`object-position:${imagePosition}`} width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async" />
     </picture>
     <div class="hero-lasur absolute inset-0 lg:hidden" aria-hidden="true"></div>
+    <div class="hero-uebergang absolute inset-0 hidden lg:block" aria-hidden="true"></div>
   </div>
 </section>
