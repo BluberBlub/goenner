@@ -26,7 +26,8 @@
     svg.style.display = '';
     const breite = document.documentElement.clientWidth;
     const xL = innen * 0.45, xR = breite - innen * 0.45;
-    const ende = seiteY(footer.getBoundingClientRect()) - 24;
+    // endet immer im Footer (Niko 11.11.: "der strich sollte immer im footer enden"), auf Höhe des Footer-Claims
+    const ende = seiteY(footer.getBoundingClientRect()) + 90;
     svg.setAttribute('width', String(breite));
     svg.setAttribute('height', String(ende + 40));
     svg.setAttribute('viewBox', `0 0 ${breite} ${ende + 40}`);
@@ -56,7 +57,7 @@
 
     const grenzen = [...main.querySelectorAll(':scope > section')]
       .map((s) => seiteY(s.getBoundingClientRect()))
-      .filter((g) => g > y + 160 && g < ende - 160);
+      .filter((g) => g > y + 160 && g < ende - 250);
     let welle = 1;
     const schwingen = (bis: number) => {
       // ruhiges Pendeln im Rand bis zur Höhe "bis"

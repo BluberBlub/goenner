@@ -77,3 +77,4 @@
 - [x] Kontakt-Hero "Schreiben Sie uns. Wir antworten ehrlich.": "umbruch nach uns." (2026-11-11) → 11.11.: Umbruch nach „uns.“
 - [x] "linie durchbrochen" (Start-Hero, 2026-11-11) → 11.11.: Schleife endet über der Welle, Leitlinie setzt nahtlos an
 - [x] "der strich darf gern erst kommen wenn man scrollt.. und bei der hero überschrift anfangen" (2026-11-11) → 11.11.: Linie oben unsichtbar, beginnt hinter dem letzten Wort der Hero-Überschrift mit kleiner Schleife und wächst im Gleichschritt mit dem Scrollen
+- [x] "der strich sollte immer im footer enden. auf manchen seiten tut er das noch nicht" (2026-11-11) → 11.11.: Linie läuft auf allen Seiten in den Footer und endet dort mit einem Haken auf Höhe des Claims
