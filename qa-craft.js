@@ -206,8 +206,9 @@ function messeLayout() {
   const erg = { hero: null, boxen: [], radien: {}, zeilen: [], demo: null, kopfzeilen: [], kante: [], ziffern: [], hoehe: document.documentElement.scrollHeight };
   const main = document.querySelector('main');
   const demo = document.getElementById('demo-bar');
-  const demoH = demo && getComputedStyle(demo).display !== 'none' ? demo.getBoundingClientRect().height : 0;
-  if (demo) { const r = demo.getBoundingClientRect(); erg.demo = r.height > 0 && r.top < window.innerHeight && parseFloat(getComputedStyle(demo).opacity) > 0.5; }
+  if (demo) { const r = demo.getBoundingClientRect(); erg.demo = r.height > 0 && r.top < window.innerHeight - 2 && parseFloat(getComputedStyle(demo).opacity) > 0.5; }
+  // DemoBar v6: beim Laden unsichtbar, der Hero zieht sie nie ab (Sichtbarkeit beim Laden prüft der Seitenaufruf)
+  const demoH = 0;
   // Hero
   const erste = main?.querySelector(':scope > section');
   const hero = document.querySelector('[data-hero]') || (location.pathname === '/' && erste?.querySelector('h1') ? erste : null);
@@ -403,6 +404,9 @@ for (const path of pages) {
     await page.goto(BASE + path, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForTimeout(150);
     const frueh = await page.evaluate(messeErstenBildschirm);
+    // DemoBar v6: direkt nach dem Laden, vor jedem Scrollen, darf die Leiste nicht im Bild sein (Niko 11.11.2026)
+    const demoFrueh = await page.evaluate(() => { const b = document.getElementById('demo-bar'); if (!b) return false; const r = b.getBoundingClientRect(); return r.height > 0 && r.top < innerHeight - 2 && parseFloat(getComputedStyle(b).opacity) > 0.5; });
+    if (demoFrueh) bad(`Demo-Leiste auf ${path} schon beim Laden sichtbar – sie kommt erst beim Scrollen (Kit DemoBar v6, Niko 11.11.2026)`);
     await page.waitForTimeout(1050);
     const spaet = await page.evaluate(messeErstenBildschirm);
     const verzoegert = spaet.filter(s => {
@@ -710,11 +714,10 @@ for (const path of pages) {
       await page.waitForTimeout(250);
       const l = await page.evaluate(messeLayout);
       if (bw < 768 && l.hoehe > 12000) hint(`Seite ${path} ist auf dem Handy ${Math.round(l.hoehe / 1000)}.000 px lang – Kartengruppen als Wisch-Reihe (class="wisch") statt gestapelt (Schwabenpflege)`);
-      if (l.demo === false) bad(`Demo-Leiste auf ${path} bei ${bw}px im ersten Bildschirm nicht sichtbar – sie muss immer sichtbar sein (Kit DemoBar v5)`);
       if (l.hero) {
         const diff = l.hero.hoehe - l.hero.soll;
         if (bw >= 1024 ? Math.abs(diff) > 6 : diff < -6)
-          bad(`Hero auf ${path} bei ${bw}×${bh}: ${l.hero.hoehe}px statt ${l.hero.soll}px (Fenster minus Navigation${l.demo !== null ? ' und Demo-Leiste' : ''}) – Höhe min-h-[var(--hero-h)] bzw. h-[var(--hero-h)] aus dem BaseLayout nutzen${l.hero.markiert ? '' : ' und data-hero setzen'}`);
+          bad(`Hero auf ${path} bei ${bw}×${bh}: ${l.hero.hoehe}px statt ${l.hero.soll}px (Fenster minus Navigation) – Höhe min-h-[var(--hero-h)] bzw. h-[var(--hero-h)] aus dem BaseLayout nutzen${l.hero.markiert ? '' : ' und data-hero setzen'}`);
       } else if (path === '/' && bw === 1440) hint('Startseite ohne erkennbaren Hero (erste Sektion in <main>) – Hero-Höhe nicht geprüft');
       if (bw !== 1440) continue;
       if (path === '/') heroHoehen.start = l.hero?.hoehe; else if (l.hero) heroHoehen.unterseiten.push([path, l.hero.hoehe]);

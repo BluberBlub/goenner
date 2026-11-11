@@ -336,3 +336,15 @@ main > section.bg-primary\/5, main > section.bg-primary:not([data-hero]) {
 main:has(> section:last-of-type:is(.flaeche-licht, .flaeche-tief, .bg-primary\/5)) {
   background: linear-gradient(to top, var(--footer-grund, var(--color-primary)) var(--welle-h), transparent 0);
 }
+
+/* Unter der Hero-Welle liegt die Farbe der folgenden Sektion (Niko 11.11.: "hero bottom bei den wellen ist eine andere
+   bg farbe wie in der nachfolgenden sektion"): die Sektion rückt um eine Wellenhöhe unter den Hero (transparenter
+   Rand, ihr Hintergrund läuft darunter mit), und ihre eigene obere Welle entfällt. Inhalt bleibt an seiner Stelle. */
+main > section[data-hero] { z-index: 2; }
+main > section[data-hero] + section { margin-top: calc(-1 * var(--welle-h)); border-top: var(--welle-h) solid transparent; }
+main > section[data-hero] + section:is(.flaeche-tief, .flaeche-licht, .nebel-zart, .bg-primary\/5, .bg-primary) {
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--welle-h) + 1px) no-repeat,
+    var(--welle-unten) bottom right 20% / var(--welle-breite) var(--welle-h) repeat-x;
+          mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--welle-h) + 1px) no-repeat,
+    var(--welle-unten) bottom right 20% / var(--welle-breite) var(--welle-h) repeat-x;
+}

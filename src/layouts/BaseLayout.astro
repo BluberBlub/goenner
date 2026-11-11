@@ -173,9 +173,10 @@ const lcpAvif = lcpVarianten ? variante(lcpBild, 'avif') : null;
     /* @LOCKED – define:vars legt die Variablen an. KEINE :root-Umdefinition (zirkulär = kaputt)! */
     :root { --demo-bar-h: 0px; --nav-h: 4rem; }   /* --demo-bar-h überschreibt DemoBar, wenn aktiv */
     @media (min-width: 1024px) { :root { --nav-h: 5rem; } }
-    /* Hero = sichtbare Fensterhöhe minus Navigation und Demo-Leiste (Joos, Bioladen, Weber, Spöri).
+    /* Hero = sichtbare Fensterhöhe minus Navigation (Joos, Bioladen, Weber, Spöri). Die Demo-Leiste kommt erst
+       beim Scrollen (DemoBar v6, Niko 11.11.2026) und wird deshalb nicht mehr abgezogen.
        Nutzung: min-h-[var(--hero-h)] bzw. h-[var(--hero-h)]. PageHero nutzt sie automatisch. */
-    :root { --hero-h: calc(100svh - var(--nav-h) - var(--demo-bar-h)); }
+    :root { --hero-h: calc(100svh - var(--nav-h)); }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 1rem); }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

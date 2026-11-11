@@ -1,17 +1,22 @@
 ---
-// @LOCKED v5 – Demo-Hinweisleiste unten. Aktivierung: meta.demo = true in site-data.json, beim Go-Live false.
+// @LOCKED v6 – Demo-Hinweisleiste unten. Aktivierung: meta.demo = true in site-data.json, beim Go-Live false.
 // v5 (Joos: "muss endgültig gefixt werden", Opitz): IMMER sichtbar, auf jeder Seite, ab dem ersten
 //     Bildschirm. Früher erschien sie erst nach dem Hero und fehlte so oben und auf Seiten ohne Hero.
 //     Der Footer reicht unter die Leiste (Weber: "Footer muss immer bündig unten sein, kein Streifen").
 //     Die Hero-Höhe zieht die Leiste ab (--hero-h im BaseLayout), der Hero bleibt also ganz sichtbar.
+// v6 (Niko, 11.11.2026, Gönner: "die infoleiste ... sollte immer erst kommen wenn der user scrollt. nicht von
+//     anfang an, sonst verunstaltet es das erscheinungsbild der seite"): Beim Laden steht sie unter dem
+//     Fensterrand, beim ersten Scrollen gleitet sie herein und bleibt dann auf jeder Seite stehen.
+//     Der Hero zieht sie deshalb nicht mehr ab (BaseLayout v-hero-h), er füllt den ersten Bildschirm ganz.
 import siteData from '../content/site-data.json';
 const demo = siteData.meta?.demo === true;
 ---
 {demo && (
   <>
-    <div id="demo-bar" role="note" data-sichtbar="true"
+    <div id="demo-bar" role="note" data-sichtbar="false"
          class="fixed bottom-0 inset-x-0 z-[60] bg-[#1d1d1f] text-white/85 flex items-center justify-center
-                gap-x-2 px-4 text-center flex-wrap h-11 lg:h-10 print:hidden">
+                gap-x-2 px-4 text-center flex-wrap h-11 lg:h-10 print:hidden translate-y-full
+                transition-transform duration-500 ease-out data-[sichtbar=true]:translate-y-0">
       <span class="text-[11px] sm:text-xs leading-tight">
         Dies ist eine unverbindliche Demo und nicht die offizielle Seite dieser Firma.
       </span>
@@ -20,6 +25,15 @@ const demo = siteData.meta?.demo === true;
         Interesse an einem eigenen Redesign? www.niko-endres.de
       </a>
     </div>
+    <script is:inline>
+      (() => {
+        const bar = document.getElementById('demo-bar');
+        if (!bar) return;
+        const zeigen = () => { if (scrollY > 8) { bar.dataset.sichtbar = 'true'; removeEventListener('scroll', zeigen); } };
+        addEventListener('scroll', zeigen, { passive: true });
+        zeigen();
+      })();
+    </script>
     <style is:global>
       :root { --demo-bar-h: 44px; }
       @media (min-width: 1024px) { :root { --demo-bar-h: 40px; } }
