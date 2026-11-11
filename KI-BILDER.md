@@ -9,3 +9,6 @@ lizenzfreie Alternativen (Unsplash, Pexels) suchen. Haken setzen wenn ersetzt.
 - [ ] public/images/hero-buchenzweig.jpg — Prompt: single young beech branch with fresh green leaves backlit by soft morning sun, shallow depth of field, calm nature photo
 - [ ] public/images/hero-see.jpg — Prompt: calm lake at sunrise with light mist and reeds in foreground, nature photograph, muted soft colors
 - [ ] public/images/hero-eiche.jpg — Prompt: old solitary oak tree on a green hill in morning mist, nature photograph, muted greens
+
+## 11.11.2026: Hero-Bilder Unterseiten ersetzt
+Nikos Gemini-Bilder aus transfer/ (hero-farn, hero-knospenzweig, hero-efeu, hero-buchenlaub) ersetzen die Pollinations-Platzhalter (hero-trittsteine, -buchenzweig, -see, -eiche, -morgennebel, -huegel-nebel gelöscht).

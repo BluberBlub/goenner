@@ -64,3 +64,4 @@
 - [x] "wieso ist da ein umbruch nach ravensburger? solche probleme haben wir recht oft" (So finden Sie uns, Kontakt, 2026-11-11) → 11.11.: Ursache Kit-.satz balance, Fix + breitere Spalte, Kit-Vorschlag, deployt
 - [x] "zentriere die li spalte vertikal zur rechten spalte" (So finden Sie uns, 2026-11-11) → 11.11.: vertikal zentriert (Kontakt + Praxis), deployt
   - Plan 11.11.: (a) site.css: .sektions-kopf breiter, .satz text-wrap pretty statt balance (Ursache Umbruch "Ravensburger": Kit-Lesefluss setzt jeden Lead-Satz als Block mit balance), (b) Wrapper col-span um SektionsKopf prüfen, (c) Hero-Bilder: 11 Natur-Motive per generate-image.js (public/images/hero-*.jpg, KI-BILDER.md), (d) Kontakt: ganze li Spalte sticky, So finden Sie uns items-center
+- [x] "unter transfer hast du bilder für die hero sektionen. nutze sie passend" (2026-11-11) → 4 Bilder auf alle 10 Unterseiten-Heroes verteilt, deployt
