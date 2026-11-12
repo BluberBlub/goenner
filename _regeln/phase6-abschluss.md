@@ -46,6 +46,11 @@ aus dem Gedächtnis rekonstruiert werden: Du hast diese Änderungen nie gesehen.
 der Abschluss später nicht sauber ermitteln, was von Hand geändert wurde.
 Dieser Schritt ist Pflicht.
 
+Vor dem Marker bei jedem Projekt mit Mega-Menü prüfen (Niko, 11.11.2026, hmt): Unterpunkte in betitelten
+Spalten gruppiert, Menü öffnet erst nach echter Mausbewegung (8 px) oder Tab, 140 ms Verzögerung, schließt
+nach Klick auf einen Menülink, auf Touch öffnet der erste Tipp. Muster: hmt `src/sections/TouchMenue.astro`
+(auch Schwabenpflege, Gönner). Fehlt etwas davon: nachziehen, erst dann abschließen.
+
 
 <!-- verschoben aus CLAUDE.md am 09.11.2026 (CLAUDE.md läuft bei jedem Schritt mit) -->
 ## ⬤ ABSCHLUSS: MARKER SETZEN UND LEARNINGS SICHERN

@@ -85,3 +85,4 @@
 - [x] "die welle sitzt knapp an der kante zum unsichbaren.. das wirkt so etwas seltsam.. lass in diesem fall mehr abstand nach unten, sodass die welle nicht so an der bildschirmrand sitzt" (2026-11-11) → 11.11.: Hero endet mit Luft über dem Fensterrand (--hero-luft), alle Seiten
 - [x] "und irgendwas ist mit dem grünen strich passiert, wir verlieren ihm beim scrollen auf der seite irgendwann aus dem sichtfeld" (2026-11-11) → 11.11.: Linienspitze folgt dem Fenster, bleibt immer im Blick
 - [x] "der strich sollte immer beim cta hängen bleiben. genau da, wo die überschrift ist.. der erste schritt.." (2026-11-11) → 11.11.: Linie endet mit Schleife hinter der CTA-Überschrift, im hellgrünen CTA dunkelgrün
+- [x] "fertig" (2026-11-12) → 12.11.: abschluss.js, VERBESSERUNGEN.md (10 Punkte), Arbeitszeit im Bericht

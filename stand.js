@@ -323,7 +323,7 @@ for (const [name, vz] of KOMPONENTEN) {
 }
 console.log('\nPrüf-Skripte und Regeln:');
 for (const g of GATES) { if (g === 'deploy.js') deployAbgleich(); else pruefe(g, join(ROOT, g), g); }
-pruefe('CLAUDE.md', join(ROOT, 'CLAUDE.md'), 'CLAUDE.md');
+// CLAUDE.md: im Projekt nur ein Verweis, die Regeln lädt Claude Code aus dem Ordner Websites (kein Abgleich)
 if (existsSync(join(ROOT, '_regeln'))) {
   for (const r of readdirSync(join(ROOT, '_regeln'))) pruefe(r, join(ROOT, '_regeln', r), join('_regeln', r));
 }
